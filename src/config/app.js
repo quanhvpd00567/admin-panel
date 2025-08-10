@@ -3,14 +3,14 @@
  * Centralizes app-wide configuration settings
  */
 
-import { ENV, getConfig } from './env.js'
+import { ENV, getConfig } from './env.js';
 
 // Application-wide configuration
 export const APP_CONFIG = {
   // Application Info
   name: ENV.APP_NAME,
   version: ENV.APP_VERSION,
-  
+
   // API Configuration
   api: {
     baseUrl: ENV.API_BASE_URL,
@@ -19,7 +19,7 @@ export const APP_CONFIG = {
     retryAttempts: 3,
     retryDelay: 1000,
   },
-  
+
   // Authentication Configuration
   auth: {
     tokenKey: 'blog_admin_token',
@@ -29,7 +29,7 @@ export const APP_CONFIG = {
     redirectAfterLogin: '/dashboard',
     redirectAfterLogout: '/login',
   },
-  
+
   // UI Configuration
   ui: {
     theme: 'light', // 'light' | 'dark' | 'system'
@@ -48,7 +48,7 @@ export const APP_CONFIG = {
       maxVisible: 3,
     },
   },
-  
+
   // File Upload Configuration
   upload: {
     maxFileSize: 5 * 1024 * 1024, // 5MB
@@ -56,7 +56,7 @@ export const APP_CONFIG = {
     imageFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
     documentFormats: ['pdf', 'doc', 'docx'],
   },
-  
+
   // Blog Configuration
   blog: {
     postsPerPage: 12,
@@ -73,7 +73,7 @@ export const APP_CONFIG = {
       'Tips & Tricks',
     ],
   },
-  
+
   // User Management Configuration
   users: {
     roles: ['admin', 'editor', 'author'],
@@ -82,7 +82,7 @@ export const APP_CONFIG = {
     passwordMinLength: 8,
     sessionTimeout: 30 * 60 * 1000, // 30 minutes
   },
-  
+
   // Validation Rules
   validation: {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -90,7 +90,7 @@ export const APP_CONFIG = {
     username: /^[a-zA-Z0-9_]{3,20}$/,
     slug: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
   },
-  
+
   // Feature Flags
   features: {
     analytics: ENV.ENABLE_ANALYTICS,
@@ -104,7 +104,7 @@ export const APP_CONFIG = {
     seo: true,
     socialSharing: true,
   },
-  
+
   // Development Configuration
   development: {
     enableLogs: getConfig().enableLogs,
@@ -112,7 +112,7 @@ export const APP_CONFIG = {
     enableMockData: getConfig().enableMockData,
     mockDelay: 1000, // Mock API delay in ms
   },
-}
+};
 
 // Routes configuration
 export const ROUTES = {
@@ -122,34 +122,34 @@ export const ROUTES = {
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
-  
+
   // Protected routes
   DASHBOARD: '/dashboard',
   PROFILE: '/profile',
   SETTINGS: '/settings',
-  
+
   // Blog management
   POSTS: '/posts',
   POSTS_CREATE: '/posts/create',
   POSTS_EDIT: '/posts/edit/:id',
   POSTS_VIEW: '/posts/:id',
-  
+
   // User management (Admin only)
   USERS: '/users',
   USERS_CREATE: '/users/create',
   USERS_EDIT: '/users/edit/:id',
   USERS_VIEW: '/users/:id',
-  
+
   // Categories and Tags
   CATEGORIES: '/categories',
   TAGS: '/tags',
-  
+
   // Media management
   MEDIA: '/media',
-  
+
   // System
   NOT_FOUND: '/404',
-}
+};
 
 // Navigation menu configuration
 export const NAVIGATION = {
@@ -206,7 +206,7 @@ export const NAVIGATION = {
       icon: 'CogIcon',
     },
   ],
-}
+};
 
 // Status codes and messages
 export const STATUS_CODES = {
@@ -219,7 +219,7 @@ export const STATUS_CODES = {
   NOT_FOUND: 404,
   CONFLICT: 409,
   INTERNAL_SERVER_ERROR: 500,
-}
+};
 
 export const ERROR_MESSAGES = {
   NETWORK_ERROR: 'Network error. Please check your connection.',
@@ -229,6 +229,6 @@ export const ERROR_MESSAGES = {
   VALIDATION_ERROR: 'Please check your input and try again.',
   SERVER_ERROR: 'Server error. Please try again later.',
   UNKNOWN_ERROR: 'An unexpected error occurred.',
-}
+};
 
-export default APP_CONFIG
+export default APP_CONFIG;

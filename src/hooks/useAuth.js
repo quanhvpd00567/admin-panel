@@ -4,34 +4,37 @@
  */
 
 import { useState, useEffect, useContext } from 'react';
-import { AuthContext, useAuth as useAuthContext } from '../contexts/AuthContext';
+import {
+  AuthContext,
+  useAuth as useAuthContext,
+} from '../contexts/AuthContext';
 
 // Hook to check if user has specific role
-export const useRole = (requiredRole) => {
+export const useRole = requiredRole => {
   const { hasRole, user, isLoading } = useContext(AuthContext);
-  
+
   return {
     hasRole: hasRole(requiredRole),
     isLoading,
-    user
+    user,
   };
 };
 
 // Hook to check if user has specific permission
-export const usePermission = (requiredPermission) => {
+export const usePermission = requiredPermission => {
   const { hasPermission, user, isLoading } = useContext(AuthContext);
-  
+
   return {
     hasPermission: hasPermission(requiredPermission),
     isLoading,
-    user
+    user,
   };
 };
 
 // Hook for protected actions that require authentication
 export const useProtectedAction = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
-  
+
   const executeIfAuthenticated = (action, fallback) => {
     if (isAuthenticated) {
       return action();
@@ -39,11 +42,11 @@ export const useProtectedAction = () => {
       return fallback ? fallback() : null;
     }
   };
-  
+
   return {
     isAuthenticated,
     user,
-    executeIfAuthenticated
+    executeIfAuthenticated,
   };
 };
 
@@ -51,7 +54,7 @@ export const useProtectedAction = () => {
 export const useAuthState = () => {
   const { isAuthenticated, user, isLoading } = useContext(AuthContext);
   const [authState, setAuthState] = useState('loading');
-  
+
   useEffect(() => {
     if (isLoading) {
       setAuthState('loading');
@@ -61,26 +64,26 @@ export const useAuthState = () => {
       setAuthState('unauthenticated');
     }
   }, [isAuthenticated, user, isLoading]);
-  
+
   return {
     authState,
     isLoading,
     isAuthenticated,
-    user
+    user,
   };
 };
 
 // Hook for auth redirects
 export const useAuthRedirect = (redirectTo = '/login') => {
   const { isAuthenticated, isLoading } = useContext(AuthContext);
-  
+
   const shouldRedirect = !isLoading && !isAuthenticated;
-  
+
   return {
     shouldRedirect,
     redirectTo,
     isLoading,
-    isAuthenticated
+    isAuthenticated,
   };
 };
 
@@ -93,5 +96,5 @@ export default {
   usePermission,
   useProtectedAction,
   useAuthState,
-  useAuthRedirect
+  useAuthRedirect,
 };

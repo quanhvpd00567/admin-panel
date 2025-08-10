@@ -32,7 +32,10 @@ import NotFound from './pages/NotFound';
 
 // Import route guards
 import ProtectedRoute from './components/auth/ProtectedRoute';
-import RoleGuard, { AdminRoute, ManagerRoute } from './components/auth/RoleGuard';
+import RoleGuard, {
+  AdminRoute,
+  ManagerRoute,
+} from './components/auth/RoleGuard';
 
 // Define the router configuration with comprehensive route structure
 export const router = createBrowserRouter([
@@ -46,7 +49,7 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
-      
+
       // Authentication routes (redirect if already logged in)
       {
         path: 'login',
@@ -76,7 +79,7 @@ export const router = createBrowserRouter([
         path: 'reset-password',
         element: <ResetPassword />,
       },
-      
+
       // Protected routes
       {
         path: 'dashboard',
@@ -102,7 +105,7 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-      
+
       // Blog management routes
       {
         path: 'posts',
@@ -141,7 +144,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      
+
       // Categories and Tags management
       {
         path: 'categories',
@@ -159,7 +162,7 @@ export const router = createBrowserRouter([
           </ManagerRoute>
         ),
       },
-      
+
       // Media management
       {
         path: 'media',
@@ -169,7 +172,7 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      
+
       // User management routes (Admin only)
       {
         path: 'users',
@@ -208,7 +211,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      
+
       // Demo routes
       {
         path: 'demo',
@@ -223,7 +226,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      
+
       // Catch all route - 404
       {
         path: '*',

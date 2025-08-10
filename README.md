@@ -5,23 +5,27 @@ A comprehensive admin panel application for blog management built with React.js,
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ (currently using Node.js 20.*)
+
+- Node.js 18+ (currently using Node.js 20.\*)
 - npm or yarn package manager
 
 ### Installation
 
 1. **Clone and install dependencies:**
+
 ```bash
 cd blog-admin-panel
 npm install
 ```
 
 2. **Set up environment variables:**
+
 ```bash
 cp .env.example .env
 ```
 
 3. **Start development server:**
+
 ```bash
 npm run dev
 ```
@@ -71,6 +75,7 @@ npm run format:check # Check code formatting
 ## 🎯 Current Status
 
 ### ✅ Completed (Phase 1)
+
 - [x] Vite + React project setup
 - [x] Tailwind CSS configuration
 - [x] Basic folder structure
@@ -80,9 +85,11 @@ npm run format:check # Check code formatting
 - [x] Environment configuration
 
 ### 🚧 In Progress
+
 - Phase 2: Authentication System (Next)
 
 ### 📋 Upcoming Features
+
 - User authentication and authorization
 - Blog post management (CRUD)
 - User management (Admin)
@@ -94,12 +101,14 @@ npm run format:check # Check code formatting
 ## 🔧 Technology Stack
 
 ### Core
+
 - **React.js 19+** - Frontend framework
 - **Vite 4+** - Build tool and development server
 - **Tailwind CSS 4+** - Utility-first CSS framework
 - **React Router 7+** - Client-side routing
 
 ### Additional Libraries
+
 - **Axios** - HTTP client for API requests
 - **React Hook Form** - Form handling and validation
 - **Headless UI** - Unstyled, accessible UI components
@@ -107,6 +116,7 @@ npm run format:check # Check code formatting
 - **clsx** - Conditional CSS classes
 
 ### Development Tools
+
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 - **PostCSS** - CSS processing

@@ -4,14 +4,14 @@
  */
 
 import { useState } from 'react';
-import { 
-  FaUser, 
-  FaEnvelope, 
-  FaPhone, 
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
   FaSearch,
   FaLock,
   FaEye,
-  FaEyeSlash
+  FaEyeSlash,
 } from 'react-icons/fa';
 import Input from '../components/ui/Input.jsx';
 import TextArea from '../components/ui/TextArea.jsx';
@@ -27,40 +27,42 @@ const FormComponentsDemo = () => {
     accountType: '',
     description: '',
     password: '',
-    search: ''
+    search: '',
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const handleInputChange = (field) => (e) => {
+  const handleInputChange = field => e => {
     setFormData(prev => ({
       ...prev,
-      [field]: e.target.value
+      [field]: e.target.value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({
         ...prev,
-        [field]: ''
+        [field]: '',
       }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-    if (!formData.accountType) newErrors.accountType = 'Please select an account type';
-    
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = 'Email is invalid';
+    if (!formData.accountType)
+      newErrors.accountType = 'Please select an account type';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     if (validateForm()) {
       console.log('Form submitted:', formData);
@@ -72,7 +74,9 @@ const FormComponentsDemo = () => {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Form Elements</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          Form Elements
+        </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
           Beautiful, modern form components with dark mode support.
         </p>
@@ -81,8 +85,12 @@ const FormComponentsDemo = () => {
       {/* Default Variant Forms */}
       <Card>
         <Card.Header>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Default Variant</h2>
-          <p className="text-gray-600 dark:text-gray-400">Clean and professional form design</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Default Variant
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Clean and professional form design
+          </p>
         </Card.Header>
         <Card.Body>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -180,8 +188,12 @@ const FormComponentsDemo = () => {
       {/* Filled Variant */}
       <Card>
         <Card.Header>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Filled Variant</h2>
-          <p className="text-gray-600 dark:text-gray-400">Modern filled background design</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Filled Variant
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Modern filled background design
+          </p>
         </Card.Header>
         <Card.Body>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -219,8 +231,12 @@ const FormComponentsDemo = () => {
       {/* Outlined Variant */}
       <Card>
         <Card.Header>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Outlined Variant</h2>
-          <p className="text-gray-600 dark:text-gray-400">Bold outlined design for emphasis</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Outlined Variant
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Bold outlined design for emphasis
+          </p>
         </Card.Header>
         <Card.Body>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -255,8 +271,12 @@ const FormComponentsDemo = () => {
       {/* Size Variants */}
       <Card>
         <Card.Header>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Size Variants</h2>
-          <p className="text-gray-600 dark:text-gray-400">Different sizes for various use cases</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Size Variants
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Different sizes for various use cases
+          </p>
         </Card.Header>
         <Card.Body>
           <div className="space-y-6">
@@ -284,8 +304,12 @@ const FormComponentsDemo = () => {
       {/* Disabled State */}
       <Card>
         <Card.Header>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Disabled State</h2>
-          <p className="text-gray-600 dark:text-gray-400">Form elements in disabled state</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Disabled State
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Form elements in disabled state
+          </p>
         </Card.Header>
         <Card.Body>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -296,11 +320,7 @@ const FormComponentsDemo = () => {
               value="Jane Doe"
             />
 
-            <Select
-              label="Disabled Select"
-              disabled
-              value="option1"
-            >
+            <Select label="Disabled Select" disabled value="option1">
               <option value="option1">Selected Option</option>
               <option value="option2">Option 2</option>
             </Select>

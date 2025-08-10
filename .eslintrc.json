@@ -1,11 +1,6 @@
 {
-  "extends": [
-    "eslint:recommended"
-  ],
-  "plugins": [
-    "react",
-    "react-hooks"
-  ],
+  "extends": ["eslint:recommended"],
+  "plugins": ["react", "react-hooks"],
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
@@ -31,10 +26,13 @@
     }
   },
   "rules": {
-    "no-unused-vars": ["warn", { 
-      "varsIgnorePattern": "^_",
-      "argsIgnorePattern": "^_" 
-    }],
+    "no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "no-console": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",

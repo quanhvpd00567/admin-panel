@@ -12,7 +12,11 @@ import Button from '../ui/Button';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Card from '../ui/Card';
-import { getTinyMCEConfig, TINYMCE_API_KEY, INITIAL_CONTENT } from '../../config/tinymceConfig';
+import {
+  getTinyMCEConfig,
+  TINYMCE_API_KEY,
+  INITIAL_CONTENT,
+} from '../../config/tinymceConfig';
 
 // Title and Slug Form Component
 export const TitleSlugForm = ({ control, errors }) => {
@@ -22,9 +26,12 @@ export const TitleSlugForm = ({ control, errors }) => {
         <Controller
           name="title"
           control={control}
-          rules={{ 
+          rules={{
             required: 'Title is required',
-            maxLength: { value: 200, message: 'Title must be less than 200 characters' }
+            maxLength: {
+              value: 200,
+              message: 'Title must be less than 200 characters',
+            },
           }}
           render={({ field }) => (
             <Input
@@ -40,9 +47,13 @@ export const TitleSlugForm = ({ control, errors }) => {
         <Controller
           name="slug"
           control={control}
-          rules={{ 
+          rules={{
             required: 'Slug is required',
-            pattern: { value: /^[a-z0-9-]+$/, message: 'Slug can only contain lowercase letters, numbers, and hyphens' }
+            pattern: {
+              value: /^[a-z0-9-]+$/,
+              message:
+                'Slug can only contain lowercase letters, numbers, and hyphens',
+            },
           }}
           render={({ field }) => (
             <Input
@@ -61,7 +72,10 @@ export const TitleSlugForm = ({ control, errors }) => {
 };
 
 // Content Editor Component
-export const ContentEditor = ({ editorRef, initialContent = INITIAL_CONTENT }) => {
+export const ContentEditor = ({
+  editorRef,
+  initialContent = INITIAL_CONTENT,
+}) => {
   return (
     <Card>
       <div className="p-6">
@@ -71,13 +85,14 @@ export const ContentEditor = ({ editorRef, initialContent = INITIAL_CONTENT }) =
         <div className="border rounded-lg overflow-hidden bg-white">
           <Editor
             apiKey={TINYMCE_API_KEY}
-            onInit={(evt, editor) => editorRef.current = editor}
+            onInit={(evt, editor) => (editorRef.current = editor)}
             initialValue={initialContent}
             init={getTinyMCEConfig()}
           />
         </div>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          Rich text editor with image upload, tables, code blocks, and advanced formatting
+          Rich text editor with image upload, tables, code blocks, and advanced
+          formatting
         </p>
       </div>
     </Card>
@@ -92,8 +107,11 @@ export const ExcerptForm = ({ control, errors }) => {
         <Controller
           name="excerpt"
           control={control}
-          rules={{ 
-            maxLength: { value: 300, message: 'Excerpt must be less than 300 characters' }
+          rules={{
+            maxLength: {
+              value: 300,
+              message: 'Excerpt must be less than 300 characters',
+            },
           }}
           render={({ field }) => (
             <div>
@@ -123,7 +141,12 @@ export const ExcerptForm = ({ control, errors }) => {
 };
 
 // SEO Fields Component
-export const SEOFields = ({ control, errors, showSeoFields, setShowSeoFields }) => {
+export const SEOFields = ({
+  control,
+  errors,
+  showSeoFields,
+  setShowSeoFields,
+}) => {
   return (
     <Card>
       <div className="p-6">
@@ -141,7 +164,12 @@ export const SEOFields = ({ control, errors, showSeoFields, setShowSeoFields }) 
             <Controller
               name="seo.metaTitle"
               control={control}
-              rules={{ maxLength: { value: 60, message: 'Meta title should be under 60 characters' }}}
+              rules={{
+                maxLength: {
+                  value: 60,
+                  message: 'Meta title should be under 60 characters',
+                },
+              }}
               render={({ field }) => (
                 <Input
                   {...field}
@@ -157,7 +185,12 @@ export const SEOFields = ({ control, errors, showSeoFields, setShowSeoFields }) 
             <Controller
               name="seo.metaDescription"
               control={control}
-              rules={{ maxLength: { value: 160, message: 'Meta description should be under 160 characters' }}}
+              rules={{
+                maxLength: {
+                  value: 160,
+                  message: 'Meta description should be under 160 characters',
+                },
+              }}
               render={({ field }) => (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
@@ -197,14 +230,14 @@ export const SEOFields = ({ control, errors, showSeoFields, setShowSeoFields }) 
 };
 
 // Category and Tags Component
-export const CategoryTagsForm = ({ 
-  control, 
-  errors, 
-  categoryOptions, 
-  tagOptions, 
-  selectedTags, 
-  handleTagAdd, 
-  handleTagRemove 
+export const CategoryTagsForm = ({
+  control,
+  errors,
+  categoryOptions,
+  tagOptions,
+  selectedTags,
+  handleTagAdd,
+  handleTagRemove,
 }) => {
   return (
     <Card>
@@ -238,7 +271,7 @@ export const CategoryTagsForm = ({
             options={tagOptions}
             variant="outlined"
           />
-          
+
           {selectedTags.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
               {selectedTags.map(tag => (
@@ -266,14 +299,18 @@ export const CategoryTagsForm = ({
 };
 
 // Featured Image Component
-export const FeaturedImageForm = ({ featuredImage, handleImageUpload, setFeaturedImage }) => {
+export const FeaturedImageForm = ({
+  featuredImage,
+  handleImageUpload,
+  setFeaturedImage,
+}) => {
   return (
     <Card>
       <div className="p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           Featured Image
         </h3>
-        
+
         {featuredImage ? (
           <div className="space-y-3">
             <img
@@ -333,7 +370,7 @@ export const PublishSettingsForm = ({ control, isEdit = false }) => {
               label="Status"
               options={[
                 { value: 'draft', label: 'Draft' },
-                { value: 'published', label: 'Published' }
+                { value: 'published', label: 'Published' },
               ]}
               variant="outlined"
             />
@@ -349,7 +386,11 @@ export const PublishSettingsForm = ({ control, isEdit = false }) => {
               type="datetime-local"
               label="Publish Date"
               variant="outlined"
-              helperText={isEdit ? "Leave empty to keep current date" : "Leave empty to publish immediately"}
+              helperText={
+                isEdit
+                  ? 'Leave empty to keep current date'
+                  : 'Leave empty to publish immediately'
+              }
             />
           )}
         />

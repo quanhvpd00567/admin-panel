@@ -13,18 +13,24 @@ import {
   FaCog,
 } from 'react-icons/fa';
 import { ROUTES } from '../constants/routes.js';
-import { StatsCard, StatsGrid, Card, Button, Badge } from '../components/ui/index.js';
+import {
+  StatsCard,
+  StatsGrid,
+  Card,
+  Button,
+  Badge,
+} from '../components/ui/index.js';
 
 const Home = () => {
   // Mock dashboard statistics
-    const stats = [
+  const stats = [
     {
       id: 1,
       name: 'Total Posts',
       value: '24',
       icon: FaFileAlt,
       color: 'text-blue-600 bg-blue-100',
-      link: ROUTES.BLOG.LIST
+      link: ROUTES.BLOG.LIST,
     },
     {
       id: 2,
@@ -32,7 +38,7 @@ const Home = () => {
       value: '145',
       icon: FaUsers,
       color: 'text-green-600 bg-green-100',
-      link: ROUTES.USER_MANAGEMENT
+      link: ROUTES.USER_MANAGEMENT,
     },
     {
       id: 3,
@@ -40,7 +46,7 @@ const Home = () => {
       value: '89',
       icon: FaImage,
       color: 'text-purple-600 bg-purple-100',
-      link: ROUTES.MEDIA
+      link: ROUTES.MEDIA,
     },
     {
       id: 4,
@@ -48,7 +54,7 @@ const Home = () => {
       value: '12.5k',
       icon: FaEye,
       color: 'text-orange-600 bg-orange-100',
-      link: ROUTES.ANALYTICS
+      link: ROUTES.ANALYTICS,
     },
   ];
 
@@ -83,9 +89,7 @@ const Home = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-            <p className="mt-2 text-gray-600">
-              Welcome back!
-            </p>
+            <p className="mt-2 text-gray-600">Welcome back!</p>
           </div>
           <div className="flex space-x-3">
             <Button
@@ -110,7 +114,7 @@ const Home = () => {
 
       {/* Stats grid */}
       <StatsGrid className="mb-8">
-        {stats.map((stat) => (
+        {stats.map(stat => (
           <Link key={stat.name} to={stat.href}>
             <StatsCard
               title={stat.name}
@@ -131,7 +135,9 @@ const Home = () => {
         <Card>
           <Card.Header>
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Recent Posts</h3>
+              <h3 className="text-lg font-medium text-gray-900">
+                Recent Posts
+              </h3>
               <Link
                 to={ROUTES.POSTS}
                 className="text-sm text-blue-600 hover:text-blue-500 font-medium"
@@ -142,14 +148,18 @@ const Home = () => {
           </Card.Header>
           <Card.Body>
             <div className="space-y-4">
-              {recentPosts.map((post) => (
-                <div key={post.id} className="flex items-center justify-between">
+              {recentPosts.map(post => (
+                <div
+                  key={post.id}
+                  className="flex items-center justify-between"
+                >
                   <div className="flex-1">
                     <h4 className="text-sm font-medium text-gray-900">
                       {post.title}
                     </h4>
                     <p className="text-sm text-gray-500">
-                      {new Date(post.date).toLocaleDateString()} • {post.views} views
+                      {new Date(post.date).toLocaleDateString()} • {post.views}{' '}
+                      views
                     </p>
                   </div>
                   <Badge
@@ -176,8 +186,12 @@ const Home = () => {
               >
                 {/* <DocumentTextIcon className="h-8 w-8 text-blue-600" /> */}
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-900">Create New Post</p>
-                  <p className="text-sm text-gray-500">Write and publish a new blog post</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    Create New Post
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Write and publish a new blog post
+                  </p>
                 </div>
               </Link>
               <Link
@@ -186,7 +200,9 @@ const Home = () => {
               >
                 {/* <PhotoIcon className="h-8 w-8 text-green-600" /> */}
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-900">Upload Media</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    Upload Media
+                  </p>
                   <p className="text-sm text-gray-500">Add images and files</p>
                 </div>
               </Link>
@@ -197,7 +213,9 @@ const Home = () => {
                 {/* <UsersIcon className="h-8 w-8 text-purple-600" /> */}
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-900">Add User</p>
-                  <p className="text-sm text-gray-500">Create a new user account</p>
+                  <p className="text-sm text-gray-500">
+                    Create a new user account
+                  </p>
                 </div>
               </Link>
             </div>

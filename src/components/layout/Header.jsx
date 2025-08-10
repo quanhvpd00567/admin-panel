@@ -45,13 +45,15 @@ const Header = ({ onMenuClick, user = null }) => {
   const generateBreadcrumbs = () => {
     const pathSegments = location.pathname.split('/').filter(Boolean);
     const breadcrumbs = [{ name: 'Dashboard', href: ROUTES.DASHBOARD }];
-    
+
     let currentPath = '';
     pathSegments.forEach((segment, index) => {
       currentPath += `/${segment}`;
       if (index === pathSegments.length - 1 && pathSegments.length > 1) {
         // Don't make the last segment a link
-        breadcrumbs.push({ name: segment.charAt(0).toUpperCase() + segment.slice(1) });
+        breadcrumbs.push({
+          name: segment.charAt(0).toUpperCase() + segment.slice(1),
+        });
       } else if (pathSegments.length > 1) {
         breadcrumbs.push({
           name: segment.charAt(0).toUpperCase() + segment.slice(1),
@@ -59,7 +61,7 @@ const Header = ({ onMenuClick, user = null }) => {
         });
       }
     });
-    
+
     return breadcrumbs;
   };
 
@@ -81,7 +83,10 @@ const Header = ({ onMenuClick, user = null }) => {
           </button>
 
           {/* Logo */}
-          <Link to={ROUTES.DASHBOARD} className="flex items-center ml-4 lg:ml-0">
+          <Link
+            to={ROUTES.DASHBOARD}
+            className="flex items-center ml-4 lg:ml-0"
+          >
             <div className="flex-shrink-0 flex items-center">
               <div className="h-8 w-8 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">B</span>
@@ -143,8 +148,12 @@ const Header = ({ onMenuClick, user = null }) => {
                 <FaUserCircle className="h-8 w-8 text-gray-400 dark:text-gray-500" />
               )}
               <div className="hidden sm:block text-left">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">{currentUser.name}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{currentUser.role}</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  {currentUser.name}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {currentUser.role}
+                </p>
               </div>
               <FaChevronDown className="h-4 w-4 text-gray-400" />
             </Menu.Button>
@@ -160,8 +169,12 @@ const Header = ({ onMenuClick, user = null }) => {
             >
               <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-gray-700 focus:outline-none">
                 <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{currentUser.name}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{currentUser.email}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {currentUser.name}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {currentUser.email}
+                  </p>
                 </div>
                 <div className="py-1">
                   <Menu.Item>

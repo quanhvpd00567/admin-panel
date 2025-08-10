@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  FaEye, 
-  FaEyeSlash, 
-  FaUser, 
-  FaLock, 
+import {
+  FaEye,
+  FaEyeSlash,
+  FaUser,
+  FaLock,
   FaEnvelope,
-  FaUserPlus 
+  FaUserPlus,
 } from 'react-icons/fa';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
@@ -27,7 +27,7 @@ const RegisterForm = () => {
     formState: { errors, isSubmitting },
     setError,
     clearErrors,
-    watch
+    watch,
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -35,8 +35,8 @@ const RegisterForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
-      role: 'user'
-    }
+      role: 'user',
+    },
   });
 
   const password = watch('password');
@@ -44,40 +44,40 @@ const RegisterForm = () => {
   const roleOptions = [
     { value: 'user', label: 'User' },
     { value: 'manager', label: 'Manager' },
-    { value: 'admin', label: 'Admin' }
+    { value: 'admin', label: 'Admin' },
   ];
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setIsLoading(true);
     clearErrors();
-    
+
     try {
       const result = await registerUser({
         name: data.name,
         email: data.email,
         password: data.password,
-        role: data.role
+        role: data.role,
       });
-      
+
       if (result.success) {
         // Redirect to login page with success message
-        navigate('/login', { 
-          state: { 
+        navigate('/login', {
+          state: {
             message: 'Account created successfully! Please sign in.',
-            type: 'success'
-          }
+            type: 'success',
+          },
         });
       } else {
         // Handle registration errors
         if (result.field) {
           setError(result.field, {
             type: 'manual',
-            message: result.message
+            message: result.message,
           });
         } else {
           setError('root', {
             type: 'manual',
-            message: result.message || 'Registration failed. Please try again.'
+            message: result.message || 'Registration failed. Please try again.',
           });
         }
       }
@@ -85,7 +85,7 @@ const RegisterForm = () => {
       console.error('Registration error:', error);
       setError('root', {
         type: 'manual',
-        message: 'An unexpected error occurred. Please try again.'
+        message: 'An unexpected error occurred. Please try again.',
       });
     } finally {
       setIsLoading(false);
@@ -139,8 +139,8 @@ const RegisterForm = () => {
                   required: 'Name is required',
                   minLength: {
                     value: 2,
-                    message: 'Name must be at least 2 characters'
-                  }
+                    message: 'Name must be at least 2 characters',
+                  },
                 })}
               />
             </div>
@@ -159,8 +159,8 @@ const RegisterForm = () => {
                   required: 'Email is required',
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address'
-                  }
+                    message: 'Invalid email address',
+                  },
                 })}
               />
             </div>
@@ -174,7 +174,7 @@ const RegisterForm = () => {
                 variant="outlined"
                 error={errors.role?.message}
                 {...register('role', {
-                  required: 'Role is required'
+                  required: 'Role is required',
                 })}
               />
             </div>
@@ -194,12 +194,13 @@ const RegisterForm = () => {
                     required: 'Password is required',
                     minLength: {
                       value: 8,
-                      message: 'Password must be at least 8 characters'
+                      message: 'Password must be at least 8 characters',
                     },
                     pattern: {
                       value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                      message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
-                    }
+                      message:
+                        'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+                    },
                   })}
                 />
                 <button
@@ -230,7 +231,7 @@ const RegisterForm = () => {
                   {...register('confirmPassword', {
                     required: 'Please confirm your password',
                     validate: value =>
-                      value === password || 'Passwords do not match'
+                      value === password || 'Passwords do not match',
                   })}
                 />
                 <button

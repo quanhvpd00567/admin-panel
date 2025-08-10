@@ -33,13 +33,14 @@ const Categories = () => {
             </button>
           </div>
         </div>
-        
+
         <div className="mt-8 bg-white overflow-hidden shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <p className="text-center text-gray-600 mb-6">
-              Category management will be implemented in Phase 5: Categories & Tags
+              Category management will be implemented in Phase 5: Categories &
+              Tags
             </p>
-            
+
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
               <table className="min-w-full divide-y divide-gray-300">
                 <thead className="bg-gray-50">
@@ -59,7 +60,7 @@ const Categories = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {categories.map((category) => (
+                  {categories.map(category => (
                     <tr key={category.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {category.name}

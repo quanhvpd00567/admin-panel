@@ -7,6 +7,7 @@ This project uses React Router v7 for client-side routing. The routing system is
 ## Route Structure
 
 ### Public Routes
+
 Routes accessible without authentication:
 
 - `/` - Home page
@@ -16,6 +17,7 @@ Routes accessible without authentication:
 - `/reset-password` - Password reset form with token
 
 ### Protected Routes
+
 Routes requiring authentication (to be implemented in Phase 2):
 
 - `/dashboard` - Main admin dashboard
@@ -23,6 +25,7 @@ Routes requiring authentication (to be implemented in Phase 2):
 - `/settings` - Application settings
 
 ### Blog Management Routes
+
 Routes for content management:
 
 - `/posts` - List all blog posts
@@ -31,6 +34,7 @@ Routes for content management:
 - `/posts/:id` - View post details
 
 ### Content Organization Routes
+
 Routes for organizing content:
 
 - `/categories` - Manage blog categories
@@ -38,6 +42,7 @@ Routes for organizing content:
 - `/media` - Media library and file management
 
 ### User Management Routes
+
 Admin-only routes for user management:
 
 - `/users` - List all users
@@ -46,6 +51,7 @@ Admin-only routes for user management:
 - `/users/:id` - View user profile
 
 ### Error Routes
+
 - `*` (catch-all) - 404 Not Found page
 
 ## File Structure
@@ -144,10 +150,10 @@ export const ROUTES = {
 
 // Helper functions for dynamic routes
 export const buildRoute = {
-  postsEdit: (id) => `/posts/edit/${id}`,
-  postsView: (id) => `/posts/${id}`,
-  usersEdit: (id) => `/users/edit/${id}`,
-  usersView: (id) => `/users/${id}`,
+  postsEdit: id => `/posts/edit/${id}`,
+  postsView: id => `/posts/${id}`,
+  usersEdit: id => `/users/edit/${id}`,
+  usersView: id => `/users/${id}`,
 };
 ```
 
@@ -277,17 +283,20 @@ Routes are organized into groups for access control and navigation:
 ## Future Enhancements
 
 ### Phase 2: Authentication System
+
 - Route protection middleware
 - Role-based access control
 - Redirect after login functionality
 - Session management integration
 
 ### Phase 3: Layout System
+
 - Nested layout components
 - Sidebar navigation integration
 - Breadcrumb generation from routes
 
 ### Phase 4: Advanced Features
+
 - Route prefetching
 - Lazy loading for code splitting
 - Route animations/transitions

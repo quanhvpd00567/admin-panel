@@ -13,11 +13,7 @@ const ViewPost = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center space-x-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate('/posts')}
-        >
+        <Button variant="ghost" size="sm" onClick={() => navigate('/posts')}>
           Back to Posts
         </Button>
         <div>
@@ -38,13 +34,11 @@ const ViewPost = () => {
               Post Viewer Coming Soon
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              The post viewer will be implemented in the next phase of development. 
-              This will include full content display, comments, social sharing, and more.
+              The post viewer will be implemented in the next phase of
+              development. This will include full content display, comments,
+              social sharing, and more.
             </p>
-            <Button 
-              variant="primary"
-              onClick={() => navigate('/posts')}
-            >
+            <Button variant="primary" onClick={() => navigate('/posts')}>
               Return to Post List
             </Button>
           </div>

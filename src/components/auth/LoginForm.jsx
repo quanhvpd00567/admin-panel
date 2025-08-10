@@ -21,23 +21,23 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
-    clearErrors
+    clearErrors,
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
       email: 'admin@blog.com',
       password: 'admin123',
-      rememberMe: false
-    }
+      rememberMe: false,
+    },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setIsLoading(true);
     clearErrors();
-    
+
     try {
       const result = await login(data.email, data.password, data.rememberMe);
-      
+
       if (result.success) {
         // Redirect to intended page or dashboard
         navigate(from, { replace: true });
@@ -46,12 +46,12 @@ const LoginForm = () => {
         if (result.field) {
           setError(result.field, {
             type: 'manual',
-            message: result.message
+            message: result.message,
           });
         } else {
           setError('root', {
             type: 'manual',
-            message: result.message || 'Login failed. Please try again.'
+            message: result.message || 'Login failed. Please try again.',
           });
         }
       }
@@ -59,7 +59,7 @@ const LoginForm = () => {
       console.error('Login error:', error);
       setError('root', {
         type: 'manual',
-        message: 'An unexpected error occurred. Please try again.'
+        message: 'An unexpected error occurred. Please try again.',
       });
     } finally {
       setIsLoading(false);
@@ -109,8 +109,8 @@ const LoginForm = () => {
                   required: 'Email is required',
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address'
-                  }
+                    message: 'Invalid email address',
+                  },
                 })}
               />
             </div>
@@ -130,8 +130,8 @@ const LoginForm = () => {
                     required: 'Password is required',
                     minLength: {
                       value: 6,
-                      message: 'Password must be at least 6 characters'
-                    }
+                      message: 'Password must be at least 6 characters',
+                    },
                   })}
                 />
                 <button
@@ -158,7 +158,10 @@ const LoginForm = () => {
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-blue-600"
                 {...register('rememberMe')}
               />
-              <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+              <label
+                htmlFor="rememberMe"
+                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
+              >
                 Remember me
               </label>
             </div>
@@ -202,9 +205,15 @@ const LoginForm = () => {
               Demo Credentials:
             </h3>
             <div className="space-y-1 text-xs text-gray-600 dark:text-gray-400">
-              <div><strong>Admin:</strong> admin@blog.com / admin123</div>
-              <div><strong>Manager:</strong> manager@blog.com / manager123</div>
-              <div><strong>User:</strong> user@blog.com / user123</div>
+              <div>
+                <strong>Admin:</strong> admin@blog.com / admin123
+              </div>
+              <div>
+                <strong>Manager:</strong> manager@blog.com / manager123
+              </div>
+              <div>
+                <strong>User:</strong> user@blog.com / user123
+              </div>
             </div>
           </div>
         </form>

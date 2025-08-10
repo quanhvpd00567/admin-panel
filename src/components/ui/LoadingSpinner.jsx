@@ -4,9 +4,9 @@ import clsx from 'clsx';
 const LoadingSpinner = ({ size = 'md', className = '', color = 'blue' }) => {
   const sizeClasses = {
     sm: 'h-4 w-4',
-    md: 'h-8 w-8', 
+    md: 'h-8 w-8',
     lg: 'h-12 w-12',
-    xl: 'h-16 w-16'
+    xl: 'h-16 w-16',
   };
 
   const colorClasses = {
@@ -14,17 +14,13 @@ const LoadingSpinner = ({ size = 'md', className = '', color = 'blue' }) => {
     gray: 'text-gray-600 dark:text-gray-400',
     white: 'text-white',
     green: 'text-green-600 dark:text-green-400',
-    red: 'text-red-600 dark:text-red-400'
+    red: 'text-red-600 dark:text-red-400',
   };
 
   return (
     <div className={clsx('flex items-center justify-center', className)}>
       <svg
-        className={clsx(
-          'animate-spin',
-          sizeClasses[size],
-          colorClasses[color]
-        )}
+        className={clsx('animate-spin', sizeClasses[size], colorClasses[color])}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

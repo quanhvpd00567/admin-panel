@@ -20,11 +20,12 @@ const ResetPassword = () => {
             Please enter your new password below.
           </p>
         </div>
-        
+
         <div className="mt-8 space-y-6">
           <div className="bg-white p-6 rounded-lg shadow">
             <p className="text-center text-gray-600 mb-4">
-              Password reset form will be implemented in Phase 2: Authentication System
+              Password reset form will be implemented in Phase 2: Authentication
+              System
             </p>
             {token && (
               <p className="text-xs text-gray-500 text-center mb-4">

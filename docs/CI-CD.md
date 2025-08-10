@@ -9,6 +9,7 @@ This project includes a comprehensive CI/CD pipeline using GitHub Actions with f
 **Triggers**: Push to main/develop, Pull Requests
 
 **Jobs**:
+
 - **Lint and Format**: ESLint, Prettier, TypeScript checking
 - **Security Audit**: npm audit, vulnerability scanning
 - **Dependency Check**: Outdated packages, license compliance, bundle analysis
@@ -18,6 +19,7 @@ This project includes a comprehensive CI/CD pipeline using GitHub Actions with f
 **Triggers**: Push, Pull Requests
 
 **Jobs**:
+
 - **Unit Tests**: Multiple Node.js versions (18, 20)
 - **Component Tests**: React component testing
 - **E2E Tests**: Playwright end-to-end testing
@@ -28,6 +30,7 @@ This project includes a comprehensive CI/CD pipeline using GitHub Actions with f
 **Triggers**: Push to main, manual dispatch
 
 **Jobs**:
+
 - **Build**: Application build, Docker image creation
 - **Deploy to Staging**: Automatic staging deployment
 - **Deploy to Production**: Manual approval required
@@ -38,6 +41,7 @@ This project includes a comprehensive CI/CD pipeline using GitHub Actions with f
 **Triggers**: Weekly schedule (Mondays 9 AM UTC), manual dispatch
 
 **Jobs**:
+
 - **Security Updates**: Automatic security vulnerability fixes
 - **Minor Updates**: Minor version updates with testing
 - **Major Updates**: Report generation for manual review
@@ -67,11 +71,13 @@ GHCR_TOKEN=your_github_token
 ## Environment Configuration
 
 ### Staging Environment
+
 - **URL**: https://staging.blog-admin.example.com
 - **Deployment**: Automatic on main branch
 - **Testing**: Smoke tests included
 
-### Production Environment  
+### Production Environment
+
 - **URL**: https://blog-admin.example.com
 - **Deployment**: Manual approval required
 - **Testing**: Health checks included
@@ -79,6 +85,7 @@ GHCR_TOKEN=your_github_token
 ## Package.json Scripts
 
 ### Testing
+
 ```bash
 npm run test              # Run all tests
 npm run test:unit         # Unit tests only
@@ -89,6 +96,7 @@ npm run test:coverage     # Coverage report
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint              # ESLint check
 npm run lint:fix          # Fix ESLint issues
@@ -98,6 +106,7 @@ npm run type-check        # TypeScript check
 ```
 
 ### Security
+
 ```bash
 npm run security:audit    # Security audit
 npm run security:fix      # Fix vulnerabilities
@@ -106,6 +115,7 @@ npm run deps:update       # Update dependencies
 ```
 
 ### Docker
+
 ```bash
 npm run docker:build      # Build Docker image
 npm run docker:run        # Run Docker container
@@ -114,18 +124,21 @@ npm run docker:run        # Run Docker container
 ## Manual Workflows
 
 ### Security Updates
+
 ```bash
 # Trigger security updates
 gh workflow run dependencies.yml -f update_type=security
 ```
 
 ### Minor Updates
+
 ```bash
 # Trigger minor dependency updates
 gh workflow run dependencies.yml -f update_type=minor
 ```
 
 ### Production Deployment
+
 ```bash
 # Deploy to production (manual approval required)
 gh workflow run deploy.yml -f environment=production

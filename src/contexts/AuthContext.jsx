@@ -3,20 +3,26 @@
  * Global state management for user authentication and authorization
  */
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { 
-  isTokenExpired, 
-  getUserFromToken, 
+import {
+  isTokenExpired,
+  getUserFromToken,
   isValidTokenFormat,
   needsTokenRefresh,
   ROLES,
   PERMISSIONS,
   roleHasPermission,
   canAccessRole,
-  getTokenErrorMessage
+  getTokenErrorMessage,
 } from '../utils/authUtils';
 import { mockAuthAPI } from '../services/mockAuthAPI';
 
@@ -49,10 +55,11 @@ export const AuthProvider = ({ children }) => {
   const USER_KEY = 'blog_admin_user';
 
   // API base URL (will be configured later)
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
   // Helper function to validate token
-  const isTokenValid = (token) => {
+  const isTokenValid = token => {
     return token && isValidTokenFormat(token) && !isTokenExpired(token);
   };
 
@@ -60,26 +67,26 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Request interceptor to add token to headers
     const requestInterceptor = axios.interceptors.request.use(
-      (config) => {
+      config => {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
-      (error) => {
+      error => {
         return Promise.reject(error);
       }
     );
 
     // Response interceptor to handle token expiration
     const responseInterceptor = axios.interceptors.response.use(
-      (response) => response,
-      async (error) => {
+      response => response,
+      async error => {
         const originalRequest = error.config;
-        
+
         if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
-          
+
           try {
             await refreshTokenHandler();
             return axios(originalRequest);
@@ -88,7 +95,7 @@ export const AuthProvider = ({ children }) => {
             return Promise.reject(refreshError);
           }
         }
-        
+
         return Promise.reject(error);
       }
     );
@@ -108,8 +115,11 @@ export const AuthProvider = ({ children }) => {
   // Initialize authentication from stored tokens
   const initializeAuth = useCallback(async () => {
     try {
-      const storedToken = Cookies.get(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
-      const storedRefreshToken = Cookies.get(REFRESH_TOKEN_KEY) || localStorage.getItem(REFRESH_TOKEN_KEY);
+      const storedToken =
+        Cookies.get(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+      const storedRefreshToken =
+        Cookies.get(REFRESH_TOKEN_KEY) ||
+        localStorage.getItem(REFRESH_TOKEN_KEY);
       const storedUser = localStorage.getItem(USER_KEY);
 
       if (storedToken && storedUser) {
@@ -137,19 +147,32 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Store auth data securely
-  const storeAuthData = (authToken, authRefreshToken, userData, rememberMe = false) => {
+  const storeAuthData = (
+    authToken,
+    authRefreshToken,
+    userData,
+    rememberMe = false
+  ) => {
     if (rememberMe) {
       // Store in cookies for persistent login
-      Cookies.set(TOKEN_KEY, authToken, { expires: 7, secure: true, sameSite: 'strict' });
-      Cookies.set(REFRESH_TOKEN_KEY, authRefreshToken, { expires: 30, secure: true, sameSite: 'strict' });
+      Cookies.set(TOKEN_KEY, authToken, {
+        expires: 7,
+        secure: true,
+        sameSite: 'strict',
+      });
+      Cookies.set(REFRESH_TOKEN_KEY, authRefreshToken, {
+        expires: 30,
+        secure: true,
+        sameSite: 'strict',
+      });
     } else {
       // Store in localStorage for session
       localStorage.setItem(TOKEN_KEY, authToken);
       localStorage.setItem(REFRESH_TOKEN_KEY, authRefreshToken);
     }
-    
+
     localStorage.setItem(USER_KEY, JSON.stringify(userData));
-    
+
     setToken(authToken);
     setRefreshToken(authRefreshToken);
     setUser(userData);
@@ -163,7 +186,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
-    
+
     setToken(null);
     setRefreshToken(null);
     setUser(null);
@@ -174,25 +197,29 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password, rememberMe = false) => {
     try {
       setIsLoading(true);
-      
+
       // Use mock API for development
       const response = await mockAuthAPI.login(email, password);
-      
+
       if (!response.success) {
         return response; // Return error with field and message
       }
-      
-      const { user: userData, token: authToken, refreshToken: authRefreshToken } = response.data;
-      
+
+      const {
+        user: userData,
+        token: authToken,
+        refreshToken: authRefreshToken,
+      } = response.data;
+
       storeAuthData(authToken, authRefreshToken, userData, rememberMe);
-      
+
       return { success: true, user: userData };
     } catch (error) {
       console.error('Login error:', error);
-      
-      return { 
-        success: false, 
-        message: 'An unexpected error occurred. Please try again.' 
+
+      return {
+        success: false,
+        message: 'An unexpected error occurred. Please try again.',
       };
     } finally {
       setIsLoading(false);
@@ -200,24 +227,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Register function
-  const register = async (userData) => {
+  const register = async userData => {
     try {
       setIsLoading(true);
-      
+
       // Use mock API for development
       const response = await mockAuthAPI.register(userData);
-      
+
       if (!response.success) {
         return response; // Return error with field and message
       }
-      
+
       return { success: true, user: response.data.user };
     } catch (error) {
       console.error('Registration error:', error);
-      
-      return { 
-        success: false, 
-        message: 'An unexpected error occurred. Please try again.' 
+
+      return {
+        success: false,
+        message: 'An unexpected error occurred. Please try again.',
       };
     } finally {
       setIsLoading(false);
@@ -245,17 +272,17 @@ export const AuthProvider = ({ children }) => {
       }
 
       const response = await mockAuthAPI.refreshToken(refreshToken);
-      
+
       if (!response.success) {
         throw new Error(response.message || 'Token refresh failed');
       }
 
       const { token: newToken, refreshToken: newRefreshToken } = response.data;
-      
+
       // Update tokens
       const rememberMe = Cookies.get(TOKEN_KEY) ? true : false;
       storeAuthData(newToken, newRefreshToken, user, rememberMe);
-      
+
       return newToken;
     } catch (error) {
       console.error('Token refresh error:', error);
@@ -265,24 +292,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Check if user has specific role
-  const hasRole = (role) => {
+  const hasRole = role => {
     if (!user || !user.role) return false;
-    
+
     // Role hierarchy: admin > manager > user
     const roleHierarchy = {
       admin: ['admin', 'manager', 'user'],
       manager: ['manager', 'user'],
-      user: ['user']
+      user: ['user'],
     };
-    
+
     const userRole = user.role.toLowerCase();
     return roleHierarchy[userRole]?.includes(role.toLowerCase()) || false;
   };
 
   // Check if user has specific permission
-  const hasPermission = (permission) => {
+  const hasPermission = permission => {
     if (!user || !user.permissions) return false;
-    
+
     // Check if user has the specific permission
     return user.permissions.includes(permission);
   };
@@ -292,10 +319,10 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/auth/me`);
       const userData = response.data.user;
-      
+
       setUser(userData);
       localStorage.setItem(USER_KEY, JSON.stringify(userData));
-      
+
       return userData;
     } catch (error) {
       console.error('Get current user error:', error);
@@ -304,16 +331,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Forgot password
-  const forgotPassword = async (email) => {
+  const forgotPassword = async email => {
     try {
       await axios.post(`${API_BASE_URL}/auth/forgot-password`, { email });
       return { success: true };
     } catch (error) {
       console.error('Forgot password error:', error);
-      
-      const errorMessage = error.response?.data?.message || 
-                          'Failed to send reset email. Please try again.';
-      
+
+      const errorMessage =
+        error.response?.data?.message ||
+        'Failed to send reset email. Please try again.';
+
       return { success: false, error: errorMessage };
     }
   };
@@ -323,16 +351,17 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.post(`${API_BASE_URL}/auth/reset-password`, {
         token,
-        password: newPassword
+        password: newPassword,
       });
-      
+
       return { success: true };
     } catch (error) {
       console.error('Reset password error:', error);
-      
-      const errorMessage = error.response?.data?.message || 
-                          'Failed to reset password. Please try again.';
-      
+
+      const errorMessage =
+        error.response?.data?.message ||
+        'Failed to reset password. Please try again.';
+
       return { success: false, error: errorMessage };
     }
   };
@@ -344,7 +373,7 @@ export const AuthProvider = ({ children }) => {
     token,
     isAuthenticated,
     isLoading,
-    
+
     // Actions
     login,
     register,
@@ -353,17 +382,13 @@ export const AuthProvider = ({ children }) => {
     getCurrentUser,
     forgotPassword,
     resetPassword,
-    
+
     // Permissions
     hasRole,
     hasPermission,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;

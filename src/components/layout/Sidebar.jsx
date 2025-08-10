@@ -101,10 +101,10 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
     },
   ];
 
-  const toggleSubmenu = (itemName) => {
+  const toggleSubmenu = itemName => {
     setExpandedMenus(prev => ({
       ...prev,
-      [itemName]: !prev[itemName]
+      [itemName]: !prev[itemName],
     }));
   };
 
@@ -114,7 +114,7 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
   };
 
   // Check if user has access to menu item (placeholder logic)
-  const hasAccess = (roles) => {
+  const hasAccess = roles => {
     // For now, assume admin role - this will be implemented in Phase 2
     return roles.includes('admin');
   };
@@ -162,15 +162,19 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
                 <FaUserCircle className="h-10 w-10 text-gray-400 dark:text-gray-500" />
               )}
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">{currentUser.name}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{currentUser.role}</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  {currentUser.name}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {currentUser.role}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
-            {navigation.map((item) => {
+            {navigation.map(item => {
               if (!hasAccess(item.roles)) return null;
 
               const isExpanded = expandedMenus[item.name];
@@ -192,7 +196,9 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
                         <item.icon
                           className={clsx(
                             'mr-3 h-5 w-5',
-                            item.current ? 'text-indigo-500 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500'
+                            item.current
+                              ? 'text-indigo-500 dark:text-indigo-400'
+                              : 'text-gray-400 dark:text-gray-500'
                           )}
                           aria-hidden="true"
                         />
@@ -218,7 +224,9 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
                       <item.icon
                         className={clsx(
                           'mr-3 h-5 w-5',
-                          item.current ? 'text-indigo-500 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500'
+                          item.current
+                            ? 'text-indigo-500 dark:text-indigo-400'
+                            : 'text-gray-400 dark:text-gray-500'
                         )}
                         aria-hidden="true"
                       />
@@ -229,7 +237,7 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
                   {/* Submenu */}
                   {hasChildren && isExpanded && (
                     <div className="ml-6 mt-1 space-y-1">
-                      {item.children.map((child) => (
+                      {item.children.map(child => (
                         <Link
                           key={child.name}
                           to={child.href}

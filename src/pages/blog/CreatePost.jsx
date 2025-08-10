@@ -9,14 +9,14 @@ import { useForm } from 'react-hook-form';
 import { FaArrowLeft, FaSave, FaEye } from 'react-icons/fa';
 
 import Button from '../../components/ui/Button';
-import { 
+import {
   TitleSlugForm,
   ContentEditor,
   ExcerptForm,
   SEOFields,
   CategoryTagsForm,
   FeaturedImageForm,
-  PublishSettingsForm
+  PublishSettingsForm,
 } from '../../components/blog/BlogFormComponents';
 import { getCategories, getTags } from '../../services/mockBlogData';
 
@@ -37,7 +37,7 @@ const CreatePost = () => {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isDirty }
+    formState: { errors, isDirty },
   } = useForm({
     defaultValues: {
       title: '',
@@ -51,9 +51,9 @@ const CreatePost = () => {
         metaTitle: '',
         metaDescription: '',
         keywords: '',
-        canonicalUrl: ''
-      }
-    }
+        canonicalUrl: '',
+      },
+    },
   });
 
   const watchTitle = watch('title');
@@ -94,25 +94,27 @@ const CreatePost = () => {
     setAutoSaving(true);
     try {
       // Get current content from TinyMCE editor
-      const editorContent = editorRef.current ? editorRef.current.getContent() : '';
-      
+      const editorContent = editorRef.current
+        ? editorRef.current.getContent()
+        : '';
+
       // Get current form data
       const formData = watch();
-      
+
       const draftData = {
         ...formData,
         content: editorContent,
         tags: selectedTags,
         featuredImage: featuredImage,
-        lastSaved: new Date()
+        lastSaved: new Date(),
       };
-      
+
       // Simulate auto-save API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Store in localStorage as backup
       localStorage.setItem('blog_post_draft', JSON.stringify(draftData));
-      
+
       console.log('Auto-saved draft at:', new Date().toLocaleTimeString());
     } catch (error) {
       console.error('Auto-save failed:', error);
@@ -121,26 +123,28 @@ const CreatePost = () => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setIsLoading(true);
     try {
       // Get content from TinyMCE editor
-      const editorContent = editorRef.current ? editorRef.current.getContent() : '';
-      
+      const editorContent = editorRef.current
+        ? editorRef.current.getContent()
+        : '';
+
       const postData = {
         ...data,
         content: editorContent,
         tags: selectedTags,
         featuredImage: featuredImage,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       console.log('Creating post:', postData);
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       navigate('/posts');
     } catch (error) {
       console.error('Error creating post:', error);
@@ -157,32 +161,32 @@ const CreatePost = () => {
   const handlePublish = () => {
     setValue('status', 'published');
     setValue('publishDate', new Date().toISOString());
-    handleSubmit(async (data) => {
+    handleSubmit(async data => {
       await onSubmit(data);
       // Clear draft from localStorage after successful publish
       localStorage.removeItem('blog_post_draft');
     })();
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = event => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setFeaturedImage(e.target.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleTagAdd = (tagId) => {
+  const handleTagAdd = tagId => {
     const tag = tags.find(t => t.id === parseInt(tagId));
     if (tag && !selectedTags.find(t => t.id === tag.id)) {
       setSelectedTags([...selectedTags, tag]);
     }
   };
 
-  const handleTagRemove = (tagId) => {
+  const handleTagRemove = tagId => {
     setSelectedTags(selectedTags.filter(tag => tag.id !== tagId));
   };
 
@@ -191,25 +195,30 @@ const CreatePost = () => {
     if (savedDraft) {
       try {
         const draftData = JSON.parse(savedDraft);
-        
+
         // Restore form fields
         Object.keys(draftData).forEach(key => {
-          if (key !== 'content' && key !== 'tags' && key !== 'featuredImage' && key !== 'lastSaved') {
+          if (
+            key !== 'content' &&
+            key !== 'tags' &&
+            key !== 'featuredImage' &&
+            key !== 'lastSaved'
+          ) {
             setValue(key, draftData[key]);
           }
         });
-        
+
         // Restore other state
         if (draftData.tags) setSelectedTags(draftData.tags);
         if (draftData.featuredImage) setFeaturedImage(draftData.featuredImage);
-        
+
         // Restore editor content after a short delay to ensure editor is ready
         setTimeout(() => {
           if (editorRef.current && draftData.content) {
             editorRef.current.setContent(draftData.content);
           }
         }, 500);
-        
+
         setShowRestoreDraft(false);
         console.log('Draft restored successfully');
       } catch (error) {
@@ -226,14 +235,14 @@ const CreatePost = () => {
 
   const categoryOptions = [
     { value: '', label: 'Select Category' },
-    ...categories.map(cat => ({ value: cat.id.toString(), label: cat.name }))
+    ...categories.map(cat => ({ value: cat.id.toString(), label: cat.name })),
   ];
 
   const tagOptions = [
     { value: '', label: 'Add Tag' },
     ...tags
       .filter(tag => !selectedTags.find(selected => selected.id === tag.id))
-      .map(tag => ({ value: tag.id.toString(), label: tag.name }))
+      .map(tag => ({ value: tag.id.toString(), label: tag.name })),
   ];
 
   return (
@@ -263,11 +272,7 @@ const CreatePost = () => {
               >
                 Discard
               </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleRestoreDraft}
-              >
+              <Button variant="primary" size="sm" onClick={handleRestoreDraft}>
                 Restore Draft
               </Button>
             </div>
@@ -291,10 +296,14 @@ const CreatePost = () => {
             </h1>
             <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
               {autoSaving && (
-                <span className="text-blue-600 dark:text-blue-400">Auto-saving...</span>
+                <span className="text-blue-600 dark:text-blue-400">
+                  Auto-saving...
+                </span>
               )}
               {isDirty && !autoSaving && (
-                <span className="text-orange-600 dark:text-orange-400">Unsaved changes</span>
+                <span className="text-orange-600 dark:text-orange-400">
+                  Unsaved changes
+                </span>
               )}
             </div>
           </div>
@@ -333,11 +342,11 @@ const CreatePost = () => {
           <ExcerptForm control={control} errors={errors} />
 
           {/* SEO Fields */}
-          <SEOFields 
-            control={control} 
-            errors={errors} 
-            showSeoFields={showSeoFields} 
-            setShowSeoFields={setShowSeoFields} 
+          <SEOFields
+            control={control}
+            errors={errors}
+            showSeoFields={showSeoFields}
+            setShowSeoFields={setShowSeoFields}
           />
         </div>
 

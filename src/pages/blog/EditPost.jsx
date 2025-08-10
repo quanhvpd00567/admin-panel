@@ -7,23 +7,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../hooks/useAuth';
-import { getPostById, getCategories, getTags } from '../../services/mockBlogData';
 import {
-  FaArrowLeft,
-  FaEye,
-  FaCheck,
-  FaSave
-} from 'react-icons/fa';
+  getPostById,
+  getCategories,
+  getTags,
+} from '../../services/mockBlogData';
+import { FaArrowLeft, FaEye, FaCheck, FaSave } from 'react-icons/fa';
 
 import Button from '../../components/ui/Button';
-import { 
+import {
   TitleSlugForm,
   ContentEditor,
   ExcerptForm,
   SEOFields,
   CategoryTagsForm,
   FeaturedImageForm,
-  PublishSettingsForm
+  PublishSettingsForm,
 } from '../../components/blog/BlogFormComponents';
 
 const EditPost = () => {
@@ -46,7 +45,7 @@ const EditPost = () => {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isDirty }
+    formState: { errors, isDirty },
   } = useForm({
     defaultValues: {
       title: '',
@@ -60,9 +59,9 @@ const EditPost = () => {
         metaTitle: '',
         metaDescription: '',
         keywords: '',
-        canonicalUrl: ''
-      }
-    }
+        canonicalUrl: '',
+      },
+    },
   });
 
   const watchTitle = watch('title');
@@ -73,7 +72,7 @@ const EditPost = () => {
       const foundPost = getPostById(parseInt(id));
       if (foundPost) {
         setPost(foundPost);
-        
+
         // Populate form with post data
         setValue('title', foundPost.title);
         setValue('slug', foundPost.slug);
@@ -82,29 +81,29 @@ const EditPost = () => {
         setValue('status', foundPost.status);
         setValue('category', foundPost.category?.id?.toString() || '');
         setValue('publishDate', foundPost.publishDate || '');
-        
+
         // SEO data
         setValue('seo.metaTitle', foundPost.seo?.metaTitle || '');
         setValue('seo.metaDescription', foundPost.seo?.metaDescription || '');
         setValue('seo.keywords', foundPost.seo?.keywords || '');
-        
+
         // Tags
         if (foundPost.tags) {
           setSelectedTags(foundPost.tags);
         }
-        
+
         // Featured image
         if (foundPost.featuredImage) {
           setFeaturedImage(foundPost.featuredImage);
         }
-        
+
         // Set editor content after a delay to ensure editor is ready
         setTimeout(() => {
           if (editorRef.current && foundPost.content) {
             editorRef.current.setContent(foundPost.content);
           }
         }, 500);
-        
+
         setLoading(false);
       } else {
         navigate('/posts');
@@ -129,22 +128,24 @@ const EditPost = () => {
     setAutoSaving(true);
     try {
       // Get current content from TinyMCE editor
-      const editorContent = editorRef.current ? editorRef.current.getContent() : '';
-      
+      const editorContent = editorRef.current
+        ? editorRef.current.getContent()
+        : '';
+
       // Get current form data
       const formData = watch();
-      
+
       const draftData = {
         ...formData,
         content: editorContent,
         tags: selectedTags,
         featuredImage: featuredImage,
-        lastSaved: new Date()
+        lastSaved: new Date(),
       };
-      
+
       // Simulate auto-save API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       console.log('Auto-saved draft at:', new Date().toLocaleTimeString());
     } catch (error) {
       console.error('Auto-save failed:', error);
@@ -153,26 +154,28 @@ const EditPost = () => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setIsLoading(true);
     try {
       // Get content from TinyMCE editor
-      const editorContent = editorRef.current ? editorRef.current.getContent() : '';
-      
+      const editorContent = editorRef.current
+        ? editorRef.current.getContent()
+        : '';
+
       const postData = {
         ...data,
         id: parseInt(id),
         content: editorContent,
         tags: selectedTags,
         featuredImage: featuredImage,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       console.log('Updating post:', postData);
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       navigate('/posts');
     } catch (error) {
       console.error('Error updating post:', error);
@@ -194,45 +197,47 @@ const EditPost = () => {
     handleSubmit(onSubmit)();
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = event => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setFeaturedImage(e.target.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleTagAdd = (tagId) => {
+  const handleTagAdd = tagId => {
     const tag = tags.find(t => t.id === parseInt(tagId));
     if (tag && !selectedTags.find(t => t.id === tag.id)) {
       setSelectedTags([...selectedTags, tag]);
     }
   };
 
-  const handleTagRemove = (tagId) => {
+  const handleTagRemove = tagId => {
     setSelectedTags(selectedTags.filter(tag => tag.id !== tagId));
   };
 
   const categoryOptions = [
     { value: '', label: 'Select Category' },
-    ...categories.map(cat => ({ value: cat.id.toString(), label: cat.name }))
+    ...categories.map(cat => ({ value: cat.id.toString(), label: cat.name })),
   ];
 
   const tagOptions = [
     { value: '', label: 'Add Tag' },
     ...tags
       .filter(tag => !selectedTags.find(selected => selected.id === tag.id))
-      .map(tag => ({ value: tag.id.toString(), label: tag.name }))
+      .map(tag => ({ value: tag.id.toString(), label: tag.name })),
   ];
 
   if (loading) {
     return (
       <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8 space-y-6">
         <div className="flex items-center justify-center py-12">
-          <div className="text-gray-500 dark:text-gray-400">Loading post...</div>
+          <div className="text-gray-500 dark:text-gray-400">
+            Loading post...
+          </div>
         </div>
       </div>
     );
@@ -256,10 +261,14 @@ const EditPost = () => {
             </h1>
             <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
               {autoSaving && (
-                <span className="text-blue-600 dark:text-blue-400">Auto-saving...</span>
+                <span className="text-blue-600 dark:text-blue-400">
+                  Auto-saving...
+                </span>
               )}
               {isDirty && !autoSaving && (
-                <span className="text-orange-600 dark:text-orange-400">Unsaved changes</span>
+                <span className="text-orange-600 dark:text-orange-400">
+                  Unsaved changes
+                </span>
               )}
             </div>
           </div>
@@ -298,11 +307,11 @@ const EditPost = () => {
           <ExcerptForm control={control} errors={errors} />
 
           {/* SEO Fields */}
-          <SEOFields 
-            control={control} 
-            errors={errors} 
-            showSeoFields={showSeoFields} 
-            setShowSeoFields={setShowSeoFields} 
+          <SEOFields
+            control={control}
+            errors={errors}
+            showSeoFields={showSeoFields}
+            setShowSeoFields={setShowSeoFields}
           />
         </div>
 

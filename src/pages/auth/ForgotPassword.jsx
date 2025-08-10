@@ -14,14 +14,16 @@ const ForgotPassword = () => {
             Reset your password
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email address and we&apos;ll send you a link to reset your password.
+            Enter your email address and we&apos;ll send you a link to reset
+            your password.
           </p>
         </div>
-        
+
         <div className="mt-8 space-y-6">
           <div className="bg-white p-6 rounded-lg shadow">
             <p className="text-center text-gray-600">
-              Password reset functionality will be implemented in Phase 2: Authentication System
+              Password reset functionality will be implemented in Phase 2:
+              Authentication System
             </p>
             <div className="mt-4 flex justify-center space-x-4">
               <Link

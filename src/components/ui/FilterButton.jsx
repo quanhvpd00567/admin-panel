@@ -5,28 +5,24 @@
 
 import { useState, Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import { 
-  FaFilter, 
-  FaChevronDown,
-  FaTimes 
-} from 'react-icons/fa';
+import { FaFilter, FaChevronDown, FaTimes } from 'react-icons/fa';
 import clsx from 'clsx';
 import Button from './Button.jsx';
 import Badge from './Badge.jsx';
 
-const FilterButton = ({ 
-  filters = [], 
-  activeFilters = [], 
+const FilterButton = ({
+  filters = [],
+  activeFilters = [],
   onFilterChange,
-  className 
+  className,
 }) => {
   const activeCount = activeFilters.length;
-  
-  const handleFilterToggle = (filterId) => {
+
+  const handleFilterToggle = filterId => {
     const newActiveFilters = activeFilters.includes(filterId)
       ? activeFilters.filter(id => id !== filterId)
       : [...activeFilters, filterId];
-    
+
     onFilterChange?.(newActiveFilters);
   };
 
@@ -35,7 +31,10 @@ const FilterButton = ({
   };
 
   return (
-    <Menu as="div" className={clsx("relative inline-block text-left", className)}>
+    <Menu
+      as="div"
+      className={clsx('relative inline-block text-left', className)}
+    >
       {/* Filter Button */}
       <Menu.Button as="div">
         <Button
@@ -49,7 +48,6 @@ const FilterButton = ({
           <FaFilter className="h-4 w-4 mr-2" />
           Filters
           <FaChevronDown className="h-4 w-4 ml-2" />
-          
           {/* Active Filter Count Badge */}
           {activeCount > 0 && (
             <span className="absolute -top-1 -right-1 h-5 w-5 bg-blue-500 dark:bg-blue-400 text-white dark:text-gray-900 text-xs font-medium rounded-full flex items-center justify-center">
@@ -89,13 +87,13 @@ const FilterButton = ({
 
             {/* Filter Options */}
             <div className="space-y-3">
-              {filters.map((filter) => (
+              {filters.map(filter => (
                 <div key={filter.id} className="space-y-2">
                   <div className="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                     {filter.label}
                   </div>
                   <div className="space-y-1">
-                    {filter.options.map((option) => (
+                    {filter.options.map(option => (
                       <label
                         key={option.id}
                         className="flex items-center p-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
@@ -128,10 +126,12 @@ const FilterButton = ({
                   Applied Filters
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  {activeFilters.map((filterId) => {
-                    const filter = filters.find(f => f.options.some(o => o.id === filterId));
+                  {activeFilters.map(filterId => {
+                    const filter = filters.find(f =>
+                      f.options.some(o => o.id === filterId)
+                    );
                     const option = filter?.options.find(o => o.id === filterId);
-                    
+
                     return option ? (
                       <Badge
                         key={filterId}

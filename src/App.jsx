@@ -12,7 +12,7 @@ function App() {
         <Layout>
           {/* Page content will be rendered here */}
           <Outlet />
-          
+
           {/* Debug component - only shows in development */}
           <EnvInfo />
         </Layout>

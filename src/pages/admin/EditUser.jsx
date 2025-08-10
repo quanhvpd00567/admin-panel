@@ -32,17 +32,21 @@ const EditUser = () => {
             </Link>
           </div>
         </div>
-        
+
         <div className="mt-8 bg-white overflow-hidden shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <p className="text-center text-gray-600 mb-6">
-              User editing form will be implemented in Phase 7: User Management System
+              User editing form will be implemented in Phase 7: User Management
+              System
             </p>
-            
+
             <form className="space-y-6">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     First Name
                   </label>
                   <input
@@ -54,9 +58,12 @@ const EditUser = () => {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-gray-50"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Last Name
                   </label>
                   <input
@@ -68,9 +75,12 @@ const EditUser = () => {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-gray-50"
                   />
                 </div>
-                
+
                 <div className="sm:col-span-2">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email Address
                   </label>
                   <input
@@ -82,9 +92,12 @@ const EditUser = () => {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-gray-50"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="role"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Role
                   </label>
                   <select
@@ -99,9 +112,12 @@ const EditUser = () => {
                     <option value="admin">Admin</option>
                   </select>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="status"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Status
                   </label>
                   <select
@@ -116,9 +132,12 @@ const EditUser = () => {
                     <option value="pending">Pending</option>
                   </select>
                 </div>
-                
+
                 <div className="sm:col-span-2">
-                  <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="bio"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Bio
                   </label>
                   <textarea
@@ -131,7 +150,7 @@ const EditUser = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="pt-5">
                 <div className="flex justify-end">
                   <Link

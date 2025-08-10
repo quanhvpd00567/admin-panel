@@ -21,13 +21,13 @@ const ThemeToggle = ({ className, size = 'md' }) => {
   const sizes = {
     sm: 'h-8 w-8',
     md: 'h-10 w-10',
-    lg: 'h-12 w-12'
+    lg: 'h-12 w-12',
   };
 
   const iconSizes = {
     sm: 'h-4 w-4',
     md: 'h-5 w-5',
-    lg: 'h-6 w-6'
+    lg: 'h-6 w-6',
   };
 
   return (
@@ -47,23 +47,23 @@ const ThemeToggle = ({ className, size = 'md' }) => {
     >
       <div className="relative flex items-center justify-center">
         {/* Sun icon for light mode */}
-        <FaSun 
+        <FaSun
           className={clsx(
             'transition-all duration-300 transform',
             iconSizes[size],
-            isDark 
-              ? 'opacity-0 rotate-90 scale-0' 
+            isDark
+              ? 'opacity-0 rotate-90 scale-0'
               : 'opacity-100 rotate-0 scale-100'
           )}
         />
-        
+
         {/* Moon icon for dark mode */}
-        <FaMoon 
+        <FaMoon
           className={clsx(
             'absolute inset-0 transition-all duration-300 transform',
             iconSizes[size],
-            isDark 
-              ? 'opacity-100 rotate-0 scale-100' 
+            isDark
+              ? 'opacity-100 rotate-0 scale-100'
               : 'opacity-0 -rotate-90 scale-0'
           )}
         />

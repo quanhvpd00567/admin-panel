@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  FaEye, 
-  FaEdit, 
-  FaTrash,
-  FaPlus
-} from 'react-icons/fa';
+import { FaEye, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
 const PostList = () => {
   const navigate = useNavigate();
@@ -17,7 +12,7 @@ const PostList = () => {
       status: 'published',
       author: 'John Doe',
       createdAt: '2024-01-15T10:00:00Z',
-      updatedAt: '2024-01-15T10:00:00Z'
+      updatedAt: '2024-01-15T10:00:00Z',
     },
     {
       id: 2,
@@ -26,15 +21,15 @@ const PostList = () => {
       status: 'draft',
       author: 'Jane Smith',
       createdAt: '2024-01-14T15:30:00Z',
-      updatedAt: '2024-01-14T15:30:00Z'
-    }
+      updatedAt: '2024-01-14T15:30:00Z',
+    },
   ]);
 
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
 
@@ -75,8 +70,11 @@ const PostList = () => {
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            {posts.map((post) => (
-              <tr key={post.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+            {posts.map(post => (
+              <tr
+                key={post.id}
+                className="hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
                     {post.title}
@@ -88,11 +86,13 @@ const PostList = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    post.status === 'published' 
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                      : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                  }`}>
+                  <span
+                    className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      post.status === 'published'
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                    }`}
+                  >
                     {post.status}
                   </span>
                 </td>
@@ -115,7 +115,11 @@ const PostList = () => {
                     </button>
                     <button
                       onClick={() => {
-                        if (window.confirm('Are you sure you want to delete this post?')) {
+                        if (
+                          window.confirm(
+                            'Are you sure you want to delete this post?'
+                          )
+                        ) {
                           console.log('Delete post:', post.id);
                         }
                       }}
@@ -135,5 +139,3 @@ const PostList = () => {
 };
 
 export default PostList;
-
-

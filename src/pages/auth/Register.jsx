@@ -23,11 +23,12 @@ const Register = () => {
             </Link>
           </p>
         </div>
-        
+
         <div className="mt-8 space-y-6">
           <div className="bg-white p-6 rounded-lg shadow">
             <p className="text-center text-gray-600">
-              Registration form will be implemented in Phase 2: Authentication System
+              Registration form will be implemented in Phase 2: Authentication
+              System
             </p>
             <div className="mt-4 flex justify-center">
               <Link

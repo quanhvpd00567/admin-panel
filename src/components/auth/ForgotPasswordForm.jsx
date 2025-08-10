@@ -15,34 +15,34 @@ const ForgotPasswordForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
-    clearErrors
+    clearErrors,
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      email: ''
-    }
+      email: '',
+    },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setIsLoading(true);
     clearErrors();
-    
+
     try {
       const result = await mockAuthAPI.forgotPassword(data.email);
-      
+
       if (result.success) {
         setIsSubmitted(true);
       } else {
         setError(result.field || 'root', {
           type: 'manual',
-          message: result.message
+          message: result.message,
         });
       }
     } catch (error) {
       console.error('Forgot password error:', error);
       setError('root', {
         type: 'manual',
-        message: 'An error occurred. Please try again.'
+        message: 'An error occurred. Please try again.',
       });
     } finally {
       setIsLoading(false);
@@ -83,14 +83,14 @@ const ForgotPasswordForm = () => {
         {/* Header */}
         <div>
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-orange-600 dark:bg-orange-500">
-            {/* <KeyIcon className="h-6 w-6 text-white" /> */}
-            a
+            {/* <KeyIcon className="h-6 w-6 text-white" /> */}a
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             Forgot your password?
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Enter your email address and we&apos;ll send you a link to reset your password.
+            Enter your email address and we&apos;ll send you a link to reset
+            your password.
           </p>
         </div>
 
@@ -109,8 +109,8 @@ const ForgotPasswordForm = () => {
                 required: 'Email is required',
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address'
-                }
+                  message: 'Invalid email address',
+                },
               })}
             />
           </div>

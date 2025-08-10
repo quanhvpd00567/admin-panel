@@ -35,15 +35,15 @@ const Tags = () => {
             </button>
           </div>
         </div>
-        
+
         <div className="mt-8 bg-white overflow-hidden shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <p className="text-center text-gray-600 mb-6">
               Tag management will be implemented in Phase 5: Categories & Tags
             </p>
-            
+
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {tags.map((tag) => (
+              {tags.map(tag => (
                 <div
                   key={tag.id}
                   className="bg-white overflow-hidden shadow rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
@@ -54,9 +54,7 @@ const Tags = () => {
                         <h3 className="text-lg leading-6 font-medium text-gray-900">
                           {tag.name}
                         </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {tag.slug}
-                        </p>
+                        <p className="mt-1 text-sm text-gray-500">{tag.slug}</p>
                         <p className="mt-2 text-sm text-gray-600">
                           {tag.postCount} posts
                         </p>
@@ -74,7 +72,7 @@ const Tags = () => {
                 </div>
               ))}
             </div>
-            
+
             <div className="mt-6 flex justify-center">
               <nav className="flex items-center justify-between">
                 <div className="flex-1 flex justify-between sm:hidden">

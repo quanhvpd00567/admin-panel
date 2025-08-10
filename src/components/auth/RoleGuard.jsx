@@ -5,17 +5,18 @@ import { ROLES, canAccessRole } from '../../utils/authUtils';
 import LoadingSpinner from '../ui/LoadingSpinner';
 
 /**
- * RoleGuard Component  
+ * RoleGuard Component
  * Protects routes by checking user role and permissions
  * Redirects to unauthorized page if user doesn't have required role
  */
-const RoleGuard = ({ 
-  children, 
-  allowedRoles = [], 
+const RoleGuard = ({
+  children,
+  allowedRoles = [],
   requiredPermissions = [],
-  fallbackPath = '/dashboard'
+  fallbackPath = '/dashboard',
 }) => {
-  const { user, isAuthenticated, isLoading, hasRole, hasPermission } = useAuth();
+  const { user, isAuthenticated, isLoading, hasRole, hasPermission } =
+    useAuth();
 
   // Show loading spinner while checking authentication
   if (isLoading) {
@@ -32,12 +33,15 @@ const RoleGuard = ({
   }
 
   // Check role-based access
-  const hasRequiredRole = allowedRoles.length === 0 || allowedRoles.some(role => {
-    return hasRole(role) || canAccessRole(user.role, role);
-  });
+  const hasRequiredRole =
+    allowedRoles.length === 0 ||
+    allowedRoles.some(role => {
+      return hasRole(role) || canAccessRole(user.role, role);
+    });
 
   // Check permission-based access
-  const hasRequiredPermissions = requiredPermissions.length === 0 || 
+  const hasRequiredPermissions =
+    requiredPermissions.length === 0 ||
     requiredPermissions.every(permission => hasPermission(permission));
 
   // If user doesn't have required role or permissions
@@ -55,23 +59,20 @@ const RoleGuard = ({
  */
 export const AdminRoute = ({ children, fallbackPath = '/dashboard' }) => {
   return (
-    <RoleGuard 
-      allowedRoles={[ROLES.ADMIN]} 
-      fallbackPath={fallbackPath}
-    >
+    <RoleGuard allowedRoles={[ROLES.ADMIN]} fallbackPath={fallbackPath}>
       {children}
     </RoleGuard>
   );
 };
 
 /**
- * ManagerRoute Component  
+ * ManagerRoute Component
  * Shorthand for routes that require manager or admin role
  */
 export const ManagerRoute = ({ children, fallbackPath = '/dashboard' }) => {
   return (
-    <RoleGuard 
-      allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} 
+    <RoleGuard
+      allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]}
       fallbackPath={fallbackPath}
     >
       {children}
@@ -83,12 +84,13 @@ export const ManagerRoute = ({ children, fallbackPath = '/dashboard' }) => {
  * PermissionRoute Component
  * Shorthand for routes that require specific permissions
  */
-export const PermissionRoute = ({ children, permissions = [], fallbackPath = '/dashboard' }) => {
+export const PermissionRoute = ({
+  children,
+  permissions = [],
+  fallbackPath = '/dashboard',
+}) => {
   return (
-    <RoleGuard 
-      requiredPermissions={permissions}
-      fallbackPath={fallbackPath}
-    >
+    <RoleGuard requiredPermissions={permissions} fallbackPath={fallbackPath}>
       {children}
     </RoleGuard>
   );
