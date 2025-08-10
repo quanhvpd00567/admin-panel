@@ -22,9 +22,9 @@ const EnvInfo = () => {
         <div><span className="text-gray-300">Debug:</span> {ENV.DEBUG ? '✅' : '❌'}</div>
         <div><span className="text-gray-300">Analytics:</span> {ENV.ENABLE_ANALYTICS ? '✅' : '❌'}</div>
       </div>
-      <div className="mt-2 pt-2 border-t border-gray-600">
+      {/* <div className="mt-2 pt-2 border-t border-gray-600">
         <div className="text-gray-400">Build: {__BUILD_TIME__}</div>
-      </div>
+      </div> */}
     </div>
   );
 };

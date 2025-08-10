@@ -61,7 +61,7 @@ const ForgotPasswordForm = () => {
               Check your email
             </h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              We've sent a password reset link to your email address.
+              We&apos;ve sent a password reset link to your email address.
             </p>
             <div className="mt-6">
               <Link
@@ -83,13 +83,14 @@ const ForgotPasswordForm = () => {
         {/* Header */}
         <div>
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-orange-600 dark:bg-orange-500">
-            <KeyIcon className="h-6 w-6 text-white" />
+            {/* <KeyIcon className="h-6 w-6 text-white" /> */}
+            a
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             Forgot your password?
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Enter your email address and we'll send you a link to reset your password.
+            Enter your email address and we&apos;ll send you a link to reset your password.
           </p>
         </div>
 

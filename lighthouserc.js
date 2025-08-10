@@ -1,4 +1,4 @@
-// Lighthouse CI Configuration
+/* eslint-disable */
 module.exports = {
   ci: {
     collect: {

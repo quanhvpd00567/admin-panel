@@ -84,7 +84,7 @@ const Home = () => {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
             <p className="mt-2 text-gray-600">
-              Welcome back! Here's what's happening with your blog.
+              Welcome back!
             </p>
           </div>
           <div className="flex space-x-3">
@@ -174,7 +174,7 @@ const Home = () => {
                 to={ROUTES.POSTS_CREATE}
                 className="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
               >
-                <DocumentTextIcon className="h-8 w-8 text-blue-600" />
+                {/* <DocumentTextIcon className="h-8 w-8 text-blue-600" /> */}
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-900">Create New Post</p>
                   <p className="text-sm text-gray-500">Write and publish a new blog post</p>
@@ -184,7 +184,7 @@ const Home = () => {
                 to={ROUTES.MEDIA}
                 className="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
               >
-                <PhotoIcon className="h-8 w-8 text-green-600" />
+                {/* <PhotoIcon className="h-8 w-8 text-green-600" /> */}
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-900">Upload Media</p>
                   <p className="text-sm text-gray-500">Add images and files</p>
@@ -194,7 +194,7 @@ const Home = () => {
                 to={ROUTES.USERS_CREATE}
                 className="flex items-center p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
               >
-                <UsersIcon className="h-8 w-8 text-purple-600" />
+                {/* <UsersIcon className="h-8 w-8 text-purple-600" /> */}
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-900">Add User</p>
                   <p className="text-sm text-gray-500">Create a new user account</p>

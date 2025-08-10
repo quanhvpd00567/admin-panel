@@ -120,7 +120,7 @@ const ViewUser = () => {
               <div className="space-y-3">
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="flex-shrink-0 w-2 h-2 bg-green-400 rounded-full mr-3"></span>
-                  Published post "Getting Started with React" - 2 days ago
+                  Published post &quot;Getting Started with React&quot; - 2 days ago
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="flex-shrink-0 w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
@@ -128,7 +128,7 @@ const ViewUser = () => {
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="flex-shrink-0 w-2 h-2 bg-yellow-400 rounded-full mr-3"></span>
-                  Created draft "Advanced JavaScript Tips" - 1 week ago
+                  Created draft &quot;Advanced JavaScript Tips&quot; - 1 week ago
                 </div>
               </div>
             </div>

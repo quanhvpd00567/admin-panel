@@ -16,7 +16,6 @@ const ViewPost = () => {
         <Button
           variant="ghost"
           size="sm"
-          icon={<ArrowLeftIcon className="w-4 h-4" />}
           onClick={() => navigate('/posts')}
         >
           Back to Posts
@@ -35,9 +34,6 @@ const ViewPost = () => {
       <Card>
         <div className="p-8 text-center">
           <div className="max-w-md mx-auto">
-            <div className="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
-              <EyeIcon className="w-8 h-8 text-green-600 dark:text-green-400" />
-            </div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               Post Viewer Coming Soon
             </h3>

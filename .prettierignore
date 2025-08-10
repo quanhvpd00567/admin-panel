@@ -1,0 +1,17 @@
+# Prettier ignore patterns
+node_modules/
+dist/
+build/
+coverage/
+.github/
+*.min.js
+*.min.css
+package-lock.json
+yarn.lock
+
+# Generated files
+vite.config.js.timestamp-*
+*.d.ts
+
+# Third-party
+public/tinymce/
