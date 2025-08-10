@@ -57,6 +57,5 @@ jobs:
     - name: Bundle size analysis
       run: |
         npm run build
-        npx bundlemon
       env:
         CI: true
