@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 
@@ -25,19 +25,18 @@ const LoginForm = () => {
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      email: 'admin@blog.com',
-      password: 'admin123',
+      email: 'admin@learningms.com',
+      password: 'Admin123!@#',
       rememberMe: false,
     },
   });
 
-  const onSubmit = async data => {
+  const onSubmit = async (data, event) => {
+    event?.preventDefault(); // Prevent default form submission
     setIsLoading(true);
     clearErrors();
-
     try {
       const result = await login(data.email, data.password, data.rememberMe);
-
       if (result.success) {
         // Redirect to intended page or dashboard
         navigate(from, { replace: true });
@@ -93,7 +92,7 @@ const LoginForm = () => {
         </div>
 
         {/* Login Form */}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="space-y-4">
             {/* Email Field */}
             <div>
@@ -206,13 +205,13 @@ const LoginForm = () => {
             </h3>
             <div className="space-y-1 text-xs text-gray-600 dark:text-gray-400">
               <div>
-                <strong>Admin:</strong> admin@blog.com / admin123
+                <strong>Admin:</strong> admin@learningms.com / admin123
               </div>
               <div>
-                <strong>Manager:</strong> manager@blog.com / manager123
+                <strong>Manager:</strong> manager@learningms.com / manager123
               </div>
               <div>
-                <strong>User:</strong> user@blog.com / user123
+                <strong>User:</strong> user@learningms.com / user123
               </div>
             </div>
           </div>

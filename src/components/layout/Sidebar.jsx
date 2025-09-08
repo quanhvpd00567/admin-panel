@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { ROLES } from '../../utils/authUtils.js';
 import {
   FaHome,
   FaEdit,
@@ -17,21 +18,50 @@ import {
   FaChevronDown,
   FaUserCircle,
   FaSignOutAlt,
+  FaUser,
+  FaGraduationCap,
+  FaBook,
+  FaChalkboardTeacher,
+  FaCalendarAlt,
+  FaQuestionCircle,
+  FaDatabase,
+  FaChartLine,
+  FaSpinner,
+  FaRobot,
 } from 'react-icons/fa';
 import clsx from 'clsx';
 import { ROUTES } from '../../constants/routes.js';
+import { authAPI } from '../../services/authAPI.js';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
-const Sidebar = ({ isOpen, onClose, user = null }) => {
+const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
   const [expandedMenus, setExpandedMenus] = useState({});
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { user: userLogin, logout, isAuthenticated } = useAuth();
 
-  // Mock user data
-  const currentUser = user || {
-    name: 'Admin User',
-    email: 'admin@example.com',
+ const currentUser = isAuthenticated && userLogin ? {
+    name: userLogin.name,
+    email: userLogin.email,
+    avatar: '',
+    role: userLogin.role,
+  } : {
+    name: 'Guest User',
+    email: 'guest@example.com',
     avatar: null,
-    role: 'Administrator',
+    role: 'Guest',
   };
+
+
+  const isAdmin = currentUser.role === ROLES.ADMIN;
+  const isParent = currentUser.role === ROLES.PARENT;
+  const isStudent = currentUser.role === ROLES.STUDENT;
+
+  const ALL_ROLES = [ROLES.ADMIN, ROLES.PARENT, ROLES.STUDENT];
+  const ADMIN_ROLES = [ROLES.ADMIN];
+  const PARENT_ROLES = [ROLES.ADMIN, ROLES.PARENT];
+  const STUDENT_ROLES = [ROLES.ADMIN, ROLES.STUDENT];
+
 
   // Navigation menu items
   const navigation = [
@@ -40,14 +70,14 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
       href: ROUTES.DASHBOARD,
       icon: FaHome,
       current: location.pathname === ROUTES.DASHBOARD,
-      roles: ['admin', 'editor', 'author'],
+      roles: ALL_ROLES
     },
     {
       name: 'Posts',
       href: ROUTES.POSTS,
       icon: FaEdit,
       current: location.pathname.startsWith('/posts'),
-      roles: ['admin', 'editor', 'author'],
+      roles: ADMIN_ROLES,
       children: [
         { name: 'All Posts', href: ROUTES.POSTS },
         { name: 'Create New', href: ROUTES.POSTS_CREATE },
@@ -58,45 +88,89 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
       href: ROUTES.MEDIA,
       icon: FaImage,
       current: location.pathname === ROUTES.MEDIA,
-      roles: ['admin', 'editor', 'author'],
+      roles: ADMIN_ROLES,
     },
     {
       name: 'Categories',
       href: ROUTES.CATEGORIES,
       icon: FaTag,
       current: location.pathname === ROUTES.CATEGORIES,
-      roles: ['admin', 'editor'],
+      roles: ADMIN_ROLES,
     },
     {
       name: 'Tags',
       href: ROUTES.TAGS,
       icon: FaHashtag,
       current: location.pathname === ROUTES.TAGS,
-      roles: ['admin', 'editor'],
+      roles: ADMIN_ROLES,
     },
     {
       name: 'Users',
       href: ROUTES.USERS,
       icon: FaUsers,
       current: location.pathname.startsWith('/users'),
-      roles: ['admin'],
+      roles: ADMIN_ROLES,
       children: [
         { name: 'All Users', href: ROUTES.USERS },
-        { name: 'Create New', href: ROUTES.USERS_CREATE },
+        // { name: 'Create New', href: ROUTES.USERS_CREATE },
       ],
+    },
+    {
+      name: 'Education',
+      href: ROUTES.EDUCATION,
+      icon: FaGraduationCap,
+      current: location.pathname.startsWith('/education'),
+      roles: ['administrator', 'parent'],
+      children: [
+        { name: 'Subjects', href: ROUTES.SUBJECTS, icon: FaBook },
+        { name: 'Classes', href: ROUTES.CLASSES, icon: FaChalkboardTeacher },
+        { name: 'Schedule', href: ROUTES.CLASSES_SCHEDULE, icon: FaCalendarAlt },
+        { name: 'Quizzes', href: '/quizzes', icon: FaQuestionCircle },
+        { name: 'Question Bank', href: '/questions', icon: FaDatabase },
+      ],
+    },
+    {
+      name: 'AI',
+      href: '/ai',
+      icon: FaRobot,
+      current: location.pathname.startsWith('/ai'),
+      roles: ['administrator', 'parent', 'student'],
+    },
+    // list child
+    {
+      name: 'Children',
+      href: ROUTES.CHILDREN,
+      icon: FaGraduationCap,
+      current: location.pathname.startsWith('/children'),
+      roles: PARENT_ROLES,
+      children: [
+        { name: 'List Children', href: ROUTES.CHILDREN, icon: FaGraduationCap },
+      ],
+    },
+
+    {
+      name: 'Student Portal',
+      href: '/student/quizzes',
+      icon: FaGraduationCap,
+      current: location.pathname.startsWith('/student'),
+      roles: STUDENT_ROLES,
+      children: [
+        { name: 'Available Quizzes', href: '/student/assigned-quizzes', icon: FaQuestionCircle },
+        { name: 'My Results', href: '/student/results', icon: FaChartLine },
+      ],
+    },
+    {
+      name: 'My Profile',
+      href: '/my-profile',
+      icon: FaUser,
+      current: location.pathname === '/my-profile',
+      roles: ALL_ROLES,
     },
     {
       name: 'Settings',
       href: ROUTES.SETTINGS,
       icon: FaCog,
       current: location.pathname === ROUTES.SETTINGS,
-      roles: ['admin', 'editor', 'author'],
-    },
-    {
-      name: 'Form Demo',
-      href: ROUTES.FORM_DEMO,
-      icon: FaEdit,
-      current: location.pathname === ROUTES.FORM_DEMO,
       roles: ['admin', 'editor', 'author'],
     },
   ];
@@ -108,15 +182,23 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
     }));
   };
 
-  const handleLogout = () => {
-    console.log('Logout - to be implemented in Phase 2');
-    // Logout logic will be implemented in Phase 2
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logout();
+    } catch (error) {
+      await logout();
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   // Check if user has access to menu item (placeholder logic)
-  const hasAccess = roles => {
-    // For now, assume admin role - this will be implemented in Phase 2
-    return roles.includes('admin');
+  const hasAccess = (roles) => {
+    if (isAdmin) return true;
+    if (isParent) return roles.includes('parent');
+    if (isStudent) return roles.includes('student');
+    return false;
   };
 
   return (
@@ -262,11 +344,16 @@ const Sidebar = ({ isOpen, onClose, user = null }) => {
           {/* Logout button */}
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
+              disabled={isLoggingOut}
               onClick={handleLogout}
               className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
-              <FaSignOutAlt className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
-              Sign out
+              {isLoggingOut ? (
+                <FaSpinner className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500 animate-spin" />
+              ) : (
+                <FaSignOutAlt className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+              )}
+              {isLoggingOut ? 'Signing out...' : 'Sign out'}
             </button>
           </div>
         </div>

@@ -92,6 +92,16 @@ const Home = () => {
             <p className="mt-2 text-gray-600">Welcome back!</p>
           </div>
           <div className="flex space-x-3">
+            <Link to="/ui-preview">
+              <Button
+                variant="secondary"
+                icon={<FaEye className="h-4 w-4" />}
+                size="sm"
+                className="bg-blue-600 text-white hover:bg-blue-700"
+              >
+                UI Preview
+              </Button>
+            </Link>
             <Button
               variant="secondary"
               icon={<FaCog className="h-4 w-4" />}

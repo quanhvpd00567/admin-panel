@@ -9,7 +9,7 @@ import Header from './Header.jsx';
 import Sidebar from './Sidebar.jsx';
 import { ROUTES } from '../../constants/routes.js';
 
-const Layout = ({ children, user = null }) => {
+const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
@@ -46,12 +46,12 @@ const Layout = ({ children, user = null }) => {
   return (
     <div className="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} user={user} />
+      <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
 
       {/* Main content area */}
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
         {/* Header */}
-        <Header onMenuClick={handleSidebarToggle} user={user} />
+        <Header onMenuClick={handleSidebarToggle} />
 
         {/* Page content */}
         <main className="flex-1 relative overflow-y-auto focus:outline-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">

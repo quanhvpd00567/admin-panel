@@ -1,12 +1,5 @@
 /**
- * Himport { 
-  FaBars,
-  FaBell,
-  FaUserCircle,
-  FaCog,
-  FaSignOutAlt,
-} from 'react-icons/fa';
-import { FaChevronDown } from 'react-icons/fa';mponent
+ * Header Component
  * Top navigation bar with user menu, notifications, and theme toggle
  */
 
@@ -19,26 +12,44 @@ import {
   FaUserCircle,
   FaCog,
   FaSignOutAlt,
+  FaSpinner,
 } from 'react-icons/fa';
 import { FaChevronDown } from 'react-icons/fa';
 import clsx from 'clsx';
 import { ROUTES } from '../../constants/routes.js';
 import ThemeToggle from '../ui/ThemeToggle.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { authAPI } from '../../services/authAPI.js';
 
-const Header = ({ onMenuClick, user = null }) => {
+const Header = ({ onMenuClick }) => {
   const location = useLocation();
+  const { user, logout, isAuthenticated } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Mock user data
-  const currentUser = user || {
-    name: 'Admin User',
-    email: 'admin@example.com',
+  // Use real user data from AuthContext - only show if authenticated
+  const currentUser = isAuthenticated && user ? {
+    name: user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User',
+    email: user.email || 'user@example.com',
+    avatar: user.avatar || null,
+    role: user.role || 'N/A',
+  } : {
+    name: 'Guest User',
+    email: 'guest@example.com',
     avatar: null,
-    role: 'Administrator',
+    role: 'Guest',
   };
 
-  const handleLogout = () => {
-    console.log('Logout - to be implemented in Phase 2');
-    // Logout logic will be implemented in Phase 2
+  console.log('🔍 Header user data:', { isAuthenticated, user, currentUser });
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logout();
+    } catch (error) {
+      await logout();
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   // Generate breadcrumbs from current path
@@ -135,28 +146,29 @@ const Header = ({ onMenuClick, user = null }) => {
             </span>
           </button>
 
-          {/* User menu */}
-          <Menu as="div" className="relative">
-            <Menu.Button className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400">
-              {currentUser.avatar ? (
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src={currentUser.avatar}
-                  alt={currentUser.name}
-                />
-              ) : (
-                <FaUserCircle className="h-8 w-8 text-gray-400 dark:text-gray-500" />
-              )}
-              <div className="hidden sm:block text-left">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {currentUser.name}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  {currentUser.role}
-                </p>
-              </div>
-              <FaChevronDown className="h-4 w-4 text-gray-400" />
-            </Menu.Button>
+          {/* User menu - only show when authenticated */}
+          {isAuthenticated ? (
+            <Menu as="div" className="relative">
+              <Menu.Button className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400">
+                {currentUser.avatar ? (
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                  />
+                ) : (
+                  <FaUserCircle className="h-8 w-8 text-gray-400 dark:text-gray-500" />
+                )}
+                <div className="hidden sm:block text-left">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {currentUser.name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {currentUser.role}
+                  </p>
+                </div>
+                <FaChevronDown className="h-4 w-4 text-gray-400" />
+              </Menu.Button>
 
             <Transition
               as={Fragment}
@@ -211,13 +223,18 @@ const Header = ({ onMenuClick, user = null }) => {
                     {({ active }) => (
                       <button
                         onClick={handleLogout}
+                        disabled={isLoggingOut}
                         className={clsx(
                           active ? 'bg-gray-100 dark:bg-gray-700' : '',
-                          'flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300'
+                          'flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 disabled:opacity-50'
                         )}
                       >
-                        <FaSignOutAlt className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
-                        Sign out
+                        {isLoggingOut ? (
+                          <FaSpinner className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500 animate-spin" />
+                        ) : (
+                          <FaSignOutAlt className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+                        )}
+                        {isLoggingOut ? 'Signing out...' : 'Sign out'}
                       </button>
                     )}
                   </Menu.Item>
@@ -225,6 +242,15 @@ const Header = ({ onMenuClick, user = null }) => {
               </Menu.Items>
             </Transition>
           </Menu>
+          ) : (
+            // Show login link when not authenticated
+            <Link
+              to="/login"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign In
+            </Link>
+          )}
         </div>
       </div>
     </header>

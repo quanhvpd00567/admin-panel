@@ -71,9 +71,11 @@ const CreatePost = () => {
     if (watchTitle) {
       const slug = watchTitle
         .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
+        .normalize('NFD')                 // tách ký tự và dấu
+        .replace(/[\u0300-\u036f]/g, '')  // xóa dấu
+        .replace(/[^a-z0-9\s-]/g, '')     // chỉ giữ a-z, số, khoảng trắng, dấu -
+        .replace(/\s+/g, '-')             // khoảng trắng → "-"
+        .replace(/-+/g, '-')              // nhiều "-" → 1 "-"
         .trim();
       setValue('slug', slug);
     }

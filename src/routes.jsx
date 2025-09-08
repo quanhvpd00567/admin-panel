@@ -12,7 +12,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
-import Dashboard from './pages/admin/Dashboard';
+import DashboardPage from './pages/admin/Dashboard';
 import PostList from './pages/blog/PostList';
 import CreatePost from './pages/blog/CreatePost';
 import EditPost from './pages/blog/EditPost';
@@ -24,18 +24,55 @@ import ViewUser from './pages/admin/ViewUser';
 import Categories from './pages/blog/Categories';
 import Tags from './pages/blog/Tags';
 import Media from './pages/Media';
-import Profile from './pages/Profile';
 import Settings from './pages/admin/Settings';
 import FormComponentsDemo from './pages/FormComponentsDemo';
 import AuthDemo from './pages/AuthDemo';
 import NotFound from './pages/NotFound';
 
+// Import education management pages (Phase 7)
+import EducationDashboard from './pages/education/EducationDashboard';
+
+
+import SubjectList from './pages/education/subjects/SubjectList';
+import CreateSubject from './pages/education/subjects/CreateSubject';
+import EditSubject from './pages/education/subjects/EditSubject';
+import ViewSubject from './pages/education/subjects/ViewSubject';
+import ClassList from './pages/education/classes/ClassList';
+import CreateClass from './pages/education/classes/CreateClass';
+import EditClass from './pages/education/classes/EditClass';
+import ViewClass from './pages/education/classes/ViewClass';
+import ClassSchedule from './pages/education/classes/ClassSchedule';
+
+// Import quiz management pages (Phase 9.1)
+import QuizListV1 from './pages/quizzes/QuizListV1';
+import EditQuiz from './pages/quizzes/EditQuiz';
+import QuizDetail from './pages/quizzes/QuizDetail';
+import TakeQuiz from './pages/quizzes/TakeQuiz';
+import { StudentMakeQuizzes, StudentQuizResults, StudentAssignedQuizzes} from './pages/student/index';
+// import MakeQuizzes from './pages/student/MakeQuizzes';
+import TakeQuizNature from './pages/quizzes/TakeQuizNature';
+import CreateQuizV1 from './pages/quizzes/CreateQuizV1'; // Ensure CreateQuizV1 is imported
+import UIPreviewIndex from './pages/UIPreviewIndex';
+
+// Import question management pages (Phase 9.2)
+import QuestionList from './pages/questions/QuestionList';
+import QuestionForm from './pages/questions/QuestionForm';
+import QuestionDetail from './pages/questions/QuestionDetail';
+
+// Import child management pages (Phase 10)
+import ChildList from './pages/children/ChildList';
+
 // Import route guards
 import ProtectedRoute from './components/auth/ProtectedRoute';
-import RoleGuard, {
+import {
   AdminRoute,
   ManagerRoute,
 } from './components/auth/RoleGuard';
+
+import studentRoutes from './routes/student_routes';
+
+// Import AI pages
+import AiDashboard from './pages/ai/AiDashboard';
 
 // Define the router configuration with comprehensive route structure
 export const router = createBrowserRouter([
@@ -48,6 +85,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: 'ui-preview',
+        element: <UIPreviewIndex />,
       },
 
       // Authentication routes (redirect if already logged in)
@@ -85,15 +126,7 @@ export const router = createBrowserRouter([
         path: 'dashboard',
         element: (
           <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'profile',
-        element: (
-          <ProtectedRoute>
-            <Profile />
+            <DashboardPage />
           </ProtectedRoute>
         ),
       },
@@ -212,6 +245,211 @@ export const router = createBrowserRouter([
         ],
       },
 
+      // Education Management routes (Phase 7)
+      {
+        path: 'education',
+        element: (
+          <ManagerRoute>
+            <EducationDashboard />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: 'subjects',
+        children: [
+          {
+            index: true,
+            element: (
+              <ManagerRoute>
+                <SubjectList />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: 'create',
+            element: (
+              <ManagerRoute>
+                <CreateSubject />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: 'edit/:id',
+            element: (
+              <ManagerRoute>
+                <EditSubject />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: ':id',
+            element: (
+              <ProtectedRoute>
+                <ViewSubject />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      {
+        path: 'classes',
+        children: [
+          {
+            index: true,
+            element: (
+              <ManagerRoute>
+                <ClassList />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: 'create',
+            element: (
+              <ManagerRoute>
+                <CreateClass />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: 'edit/:id',
+            element: (
+              <ManagerRoute>
+                <EditClass />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: ':id',
+            element: (
+              <ProtectedRoute>
+                <ViewClass />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'schedule',
+            element: (
+              <ProtectedRoute>
+                <ClassSchedule />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+
+      // Quiz Management routes (Phase 9.1)
+      {
+        path: 'quizzes',
+        children: [
+          {
+            index: true,
+            element: (
+              <ManagerRoute>
+                <QuizListV1 />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: 'create-v1',
+            element: (
+              <ManagerRoute>
+                <CreateQuizV1 />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: 'edit/:id',
+            element: (
+              <ManagerRoute>
+                <EditQuiz />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: ':id',
+            element: (
+              <ProtectedRoute>
+                <QuizDetail />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'take/:id',
+            element: (
+              <ProtectedRoute>
+                <TakeQuiz />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'nature',
+            element: (
+              <ProtectedRoute>
+                <TakeQuizNature />
+              </ProtectedRoute>
+            ),
+          }
+        ],
+      },
+
+      // Student routes
+      ...studentRoutes,
+  
+      // Quiz Results routes
+      {
+        path: 'questions',
+        children: [
+          {
+            index: true,
+            element: (
+              <ManagerRoute>
+                <QuestionList />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: 'create',
+            element: (
+              <ManagerRoute>
+                <QuestionForm />
+              </ManagerRoute>
+            ),
+          },
+          {
+            path: ':id',
+            element: (
+              <ProtectedRoute>
+                <QuestionDetail />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: ':id/edit',
+            element: (
+              <ManagerRoute>
+                <QuestionForm />
+              </ManagerRoute>
+            ),
+          },
+        ],
+      },
+
+
+      // Child management routes (Phase 10)
+      {
+        path: 'children',
+        children: [
+          {
+            index: true,
+            element: (
+              <ManagerRoute>
+                <ChildList />
+              </ManagerRoute>
+            ),
+          },
+        ],
+      },
+
       // Demo routes
       {
         path: 'demo',
@@ -225,6 +463,12 @@ export const router = createBrowserRouter([
             element: <AuthDemo />,
           },
         ],
+      },
+
+      // AI routes
+      {
+        path: 'ai',
+        element: <AiDashboard />,
       },
 
       // Catch all route - 404

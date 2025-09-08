@@ -24,7 +24,7 @@ import {
   canAccessRole,
   getTokenErrorMessage,
 } from '../utils/authUtils';
-import { mockAuthAPI } from '../services/mockAuthAPI';
+import { authAPI } from '../services/authAPI';
 
 // Create AuthContext
 const AuthContext = createContext(undefined);
@@ -63,6 +63,22 @@ export const AuthProvider = ({ children }) => {
     return token && isValidTokenFormat(token) && !isTokenExpired(token);
   };
 
+  // Helper function to validate auth state without API calls
+  const validateAuthLocally = () => {
+    const storedToken = Cookies.get(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+    const storedUser = localStorage.getItem(USER_KEY);
+    
+    if (storedToken && storedUser && isTokenValid(storedToken)) {
+      const userData = JSON.parse(storedUser);
+      setToken(storedToken);
+      setUser(userData);
+      setIsAuthenticated(true);
+      return true;
+    }
+    
+    return false;
+  };
+
   // Configure axios interceptors
   useEffect(() => {
     // Request interceptor to add token to headers
@@ -84,16 +100,24 @@ export const AuthProvider = ({ children }) => {
       async error => {
         const originalRequest = error.config;
 
+        // Only handle 401 errors (unauthorized)
         if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
 
-          try {
-            await refreshTokenHandler();
+          // Check if we have a valid token locally before calling logout
+          const currentToken = Cookies.get(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+          
+          if (currentToken && isTokenValid(currentToken)) {
             return axios(originalRequest);
-          } catch (refreshError) {
+          } else {
+            // Token is actually expired, logout
             logout();
-            return Promise.reject(refreshError);
           }
+        }
+
+        // For network errors (no response), don't logout automatically
+        if (!error.response) {
+          console.warn('Network error, not logging out automatically:', error.message);
         }
 
         return Promise.reject(error);
@@ -114,34 +138,92 @@ export const AuthProvider = ({ children }) => {
 
   // Initialize authentication from stored tokens
   const initializeAuth = useCallback(async () => {
+    console.log('🚀 Initializing auth...');
+    
     try {
       const storedToken =
         Cookies.get(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
-      const storedRefreshToken =
-        Cookies.get(REFRESH_TOKEN_KEY) ||
-        localStorage.getItem(REFRESH_TOKEN_KEY);
       const storedUser = localStorage.getItem(USER_KEY);
 
+      console.log('📁 Found stored data:', {
+        hasToken: !!storedToken,
+        hasUser: !!storedUser,
+        tokenPreview: storedToken ? storedToken.substring(0, 20) + '...' : null
+      });
+
       if (storedToken && storedUser) {
-        // Check if token is valid using utility function
+        // First, check token validity locally (JWT decode)
         if (isTokenValid(storedToken)) {
-          // Token is valid
+          console.log('✅ Token is valid locally');
+          const userData = JSON.parse(storedUser);
+          
+          // Set auth state immediately with stored data
           setToken(storedToken);
-          setRefreshToken(storedRefreshToken);
-          setUser(JSON.parse(storedUser));
+          setUser(userData);
           setIsAuthenticated(true);
-        } else if (storedRefreshToken) {
-          // Try to refresh token
-          await refreshTokenHandler();
+          setIsLoading(false);
+
+          console.log('🎯 Auth state set from storage:', {
+            userId: userData.id,
+            userEmail: userData.email,
+            userRole: userData.role
+          });
+
+          // Only validate with backend if token needs refresh soon (optional background validation)
+          if (needsTokenRefresh(storedToken)) {
+            console.log('⏰ Token needs refresh, validating with backend...');
+            try {
+              const validation = await authAPI.validateToken(storedToken);
+              
+              if (validation.success) {
+                console.log('✅ Backend validation successful');
+                // Token is still valid, optionally get fresh user data
+                const currentUser = await authAPI.getCurrentUser();
+                
+                if (currentUser.success) {
+                  console.log('👤 Updated user data from backend');
+                  setUser(currentUser.data.user);
+                  localStorage.setItem(USER_KEY, JSON.stringify(currentUser.data.user));
+                }
+              } else {
+                console.log('❌ Backend validation failed, clearing auth');
+                // Token is invalid on backend, clear auth
+                clearAuthData();
+              }
+            } catch (error) {
+              console.warn('⚠️ Background token validation failed, but keeping local auth:', error);
+              // Don't clear auth data on network errors - user can still use the app
+            }
+          } else {
+            console.log('✅ Token is fresh, no backend validation needed');
+          }
         } else {
-          // Token expired and no refresh token
+          // Token is expired locally
+          console.log('❌ Token is expired locally, clearing auth data');
           clearAuthData();
+          setIsLoading(false);
         }
+      } else {
+        // No stored token or user data
+        console.log('📭 No stored auth data found');
+        setIsLoading(false);
       }
     } catch (error) {
-      console.error('Auth initialization error:', error);
-      clearAuthData();
-    } finally {
+      console.error('💥 Auth initialization error:', error);
+      // On error, try to preserve auth if token is still valid locally
+      const storedToken = Cookies.get(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+      const storedUser = localStorage.getItem(USER_KEY);
+      
+      if (storedToken && storedUser && isTokenValid(storedToken)) {
+        console.log('🛡️ Preserving auth despite error (token still valid)');
+        // Keep user logged in even if API call failed
+        setToken(storedToken);
+        setUser(JSON.parse(storedUser));
+        setIsAuthenticated(true);
+      } else {
+        console.log('🧹 Clearing auth due to error');
+        clearAuthData();
+      }
       setIsLoading(false);
     }
   }, []);
@@ -160,19 +242,11 @@ export const AuthProvider = ({ children }) => {
         secure: true,
         sameSite: 'strict',
       });
-      Cookies.set(REFRESH_TOKEN_KEY, authRefreshToken, {
-        expires: 30,
-        secure: true,
-        sameSite: 'strict',
-      });
     } else {
       // Store in localStorage for session
       localStorage.setItem(TOKEN_KEY, authToken);
-      localStorage.setItem(REFRESH_TOKEN_KEY, authRefreshToken);
     }
-
     localStorage.setItem(USER_KEY, JSON.stringify(userData));
-
     setToken(authToken);
     setRefreshToken(authRefreshToken);
     setUser(userData);
@@ -198,20 +272,22 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoading(true);
 
-      // Use mock API for development
-      const response = await mockAuthAPI.login(email, password);
-
+      // Use real API for authentication
+      const response = await authAPI.login(email, password);
       if (!response.success) {
-        return response; // Return error with field and message
+        return {
+          success: false,
+          message: response.error || 'Login failed. Please try again.',
+        };
       }
 
       const {
         user: userData,
         token: authToken,
-        refreshToken: authRefreshToken,
+        expiresAt,
       } = response.data;
 
-      storeAuthData(authToken, authRefreshToken, userData, rememberMe);
+      storeAuthData(authToken, null, userData, rememberMe);
 
       return { success: true, user: userData };
     } catch (error) {
@@ -255,7 +331,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       if (token) {
-        await mockAuthAPI.logout(token);
+        await authAPI.logout();
       }
     } catch (error) {
       console.error('Logout error:', error);
@@ -264,54 +340,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Refresh token function
+  // Refresh token function (placeholder - not implemented in backend yet)
   const refreshTokenHandler = async () => {
-    try {
-      if (!refreshToken) {
-        throw new Error('No refresh token available');
-      }
-
-      const response = await mockAuthAPI.refreshToken(refreshToken);
-
-      if (!response.success) {
-        throw new Error(response.message || 'Token refresh failed');
-      }
-
-      const { token: newToken, refreshToken: newRefreshToken } = response.data;
-
-      // Update tokens
-      const rememberMe = Cookies.get(TOKEN_KEY) ? true : false;
-      storeAuthData(newToken, newRefreshToken, user, rememberMe);
-
-      return newToken;
-    } catch (error) {
-      console.error('Token refresh error:', error);
-      clearAuthData();
-      throw error;
-    }
+    console.warn('Token refresh not implemented yet');
+    clearAuthData();
+    throw new Error('Token expired. Please login again.');
   };
 
   // Check if user has specific role
   const hasRole = role => {
     if (!user || !user.role) return false;
 
-    // Role hierarchy: admin > manager > user
-    const roleHierarchy = {
-      admin: ['admin', 'manager', 'user'],
-      manager: ['manager', 'user'],
-      user: ['user'],
+    // Map backend roles to frontend roles
+    const roleMap = {
+      administrator: ROLES.ADMIN,
+      parent: ROLES.MANAGER,
+      student: ROLES.STUDENT,
     };
 
-    const userRole = user.role.toLowerCase();
-    return roleHierarchy[userRole]?.includes(role.toLowerCase()) || false;
+    const mappedUserRole = roleMap[user.role] || user.role.toLowerCase();
+    
+    // Role hierarchy: admin > manager > user
+    const roleHierarchy = {
+      admin: [ROLES.ADMIN, ROLES.PARENT, ROLES.STUDENT],
+      parent: [ROLES.MANAGER],
+      student: [ROLES.STUDENT],
+    };
+
+    return roleHierarchy[mappedUserRole]?.includes(role.toLowerCase()) || false;
   };
 
   // Check if user has specific permission
   const hasPermission = permission => {
-    if (!user || !user.permissions) return false;
+    if (!user || !user.role) return false;
 
-    // Check if user has the specific permission
-    return user.permissions.includes(permission);
+    // For now, only administrators have all permissions
+    // This can be expanded later with more granular permissions
+    return user.role === ROLES.ADMIN;
   };
 
   // Get current user profile
@@ -382,6 +447,7 @@ export const AuthProvider = ({ children }) => {
     getCurrentUser,
     forgotPassword,
     resetPassword,
+    validateAuthLocally,
 
     // Permissions
     hasRole,

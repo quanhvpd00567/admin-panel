@@ -20,7 +20,8 @@ export const ENV = {
   JWT_EXPIRES_IN: import.meta.env.VITE_JWT_EXPIRES_IN || '7d',
 
   // Development Configuration
-  DEBUG: import.meta.env.VITE_DEBUG === 'true' || import.meta.env.DEV,
+  // DEBUG: import.meta.env.VITE_DEBUG === 'true' || import.meta.env.DEV,
+  DEBUG: false,
   LOG_LEVEL: import.meta.env.VITE_LOG_LEVEL || 'info',
 
   // Feature Flags
@@ -34,6 +35,13 @@ export const ENV = {
 
 // Validation function for required environment variables
 export const validateEnv = () => {
+  console.log('🔧 Environment validation:', {
+    VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+    MODE: import.meta.env.MODE,
+    DEV: import.meta.env.DEV,
+    allEnvVars: import.meta.env
+  });
+
   const requiredVars = ['VITE_API_BASE_URL', 'VITE_APP_NAME'];
 
   const missingVars = requiredVars.filter(varName => {

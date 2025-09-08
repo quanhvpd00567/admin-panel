@@ -4,11 +4,12 @@
  */
 
 import { ROLES } from '../utils/authUtils';
+import { userAPI } from './mockUserData';
 
-// Mock user database
+// Mock user database (minimal login credentials)
 const MOCK_USERS = [
   {
-    id: 1,
+    id: 'user-001',
     email: 'admin@blog.com',
     password: 'admin123',
     name: 'Admin User',
@@ -18,7 +19,7 @@ const MOCK_USERS = [
     isActive: true,
   },
   {
-    id: 2,
+    id: 'user-002',
     email: 'manager@blog.com',
     password: 'manager123',
     name: 'Manager User',
@@ -28,7 +29,7 @@ const MOCK_USERS = [
     isActive: true,
   },
   {
-    id: 3,
+    id: 'user-003',
     email: 'user@blog.com',
     password: 'user123',
     name: 'Regular User',
@@ -94,16 +95,13 @@ export const mockAuthAPI = {
     const token = createMockToken(user);
     const refreshToken = 'mock-refresh-' + user.id + '-' + Date.now();
 
+    // Get full user data from mockUserData
+    const fullUserData = await userAPI.getUser(user.id);
+
     return {
       success: true,
       data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          avatar: user.avatar,
-        },
+        user: fullUserData, // Return complete user data
         token,
         refreshToken,
         expiresIn: 86400, // 24 hours in seconds
@@ -127,9 +125,28 @@ export const mockAuthAPI = {
       };
     }
 
-    // Create new user
+    // Create user in the main user database
+    const nameParts = name.split(' ');
+    const firstName = nameParts[0] || 'User';
+    const lastName = nameParts.slice(1).join(' ') || 'User';
+    
+    const newUserData = {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      status: 'active',
+      bio: '',
+      phone: '',
+      department: ''
+    };
+
+    const createdUser = await userAPI.createUser(newUserData);
+
+    // Add to login credentials
     const newUser = {
-      id: MOCK_USERS.length + 1,
+      id: createdUser.id,
       email,
       password,
       name,
@@ -144,13 +161,7 @@ export const mockAuthAPI = {
     return {
       success: true,
       data: {
-        user: {
-          id: newUser.id,
-          email: newUser.email,
-          name: newUser.name,
-          role: newUser.role,
-          avatar: newUser.avatar,
-        },
+        user: createdUser, // Return full user data
         message: 'Account created successfully',
       },
     };
@@ -168,7 +179,8 @@ export const mockAuthAPI = {
     }
 
     // Extract user ID from refresh token
-    const userId = parseInt(refreshToken.split('-')[2]);
+    const tokenParts = refreshToken.split('-');
+    const userId = tokenParts.slice(2, -1).join('-'); // Handle user-001 format
     const user = MOCK_USERS.find(u => u.id === userId);
 
     if (!user) {

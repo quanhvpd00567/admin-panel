@@ -5,8 +5,11 @@
 
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { FaCog, FaTags, FaImage } from 'react-icons/fa';
+import { FaCog, FaTags, FaImage, FaCalendar } from 'react-icons/fa';
 import { Editor } from '@tinymce/tinymce-react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../../styles/datepicker.css';
 
 import Button from '../ui/Button';
 import Input from '../ui/Input';
@@ -380,18 +383,33 @@ export const PublishSettingsForm = ({ control, isEdit = false }) => {
         <Controller
           name="publishDate"
           control={control}
-          render={({ field }) => (
-            <Input
-              {...field}
-              type="datetime-local"
-              label="Publish Date"
-              variant="outlined"
-              helperText={
-                isEdit
+          render={({ field: { onChange, value, ...field } }) => (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Publish Date
+              </label>
+              <div className="relative">
+                <FaCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 z-10" />
+                <DatePicker
+                  {...field}
+                  selected={value ? new Date(value) : null}
+                  onChange={(date) => onChange(date ? date.toISOString() : '')}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  dateFormat="MMM dd, yyyy h:mm aa"
+                  placeholderText="Select publish date and time"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10"
+                  minDate={new Date()}
+                  isClearable
+                />
+              </div>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {isEdit
                   ? 'Leave empty to keep current date'
-                  : 'Leave empty to publish immediately'
-              }
-            />
+                  : 'Leave empty to publish immediately'}
+              </p>
+            </div>
           )}
         />
       </div>

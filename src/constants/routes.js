@@ -1,6 +1,17 @@
 /**
  * Route Constants
- * Centralized route definitions to prevent typos and ensure consistency
+ * Centralized  // Education management (Phase 7)
+  EDUCATION: '/education',
+  SUBJECTS: '/subjects',
+  SUBJECTS_CREATE: '/subjects/create',
+  SUBJECTS_EDIT: '/subjects/edit/:id',
+  SUBJECTS_VIEW: '/subjects/:id',
+  
+  CLASSES: '/classes',
+  CLASSES_CREATE: '/classes/create',
+  CLASSES_EDIT: '/classes/edit/:id',
+  CLASSES_VIEW: '/classes/:id',
+  CLASSES_SCHEDULE: '/classes/schedule',nitions to prevent typos and ensure consistency
  */
 
 export const ROUTES = {
@@ -35,6 +46,29 @@ export const ROUTES = {
   USERS_EDIT: '/users/edit/:id',
   USERS_VIEW: '/users/:id',
 
+  // Education Management - Phase 7
+  SUBJECTS: '/subjects',
+  SUBJECTS_CREATE: '/subjects/create',
+  SUBJECTS_EDIT: '/subjects/edit/:id',
+  SUBJECTS_VIEW: '/subjects/:id',
+  
+  CLASSES: '/classes',
+  CLASSES_CREATE: '/classes/create',
+  CLASSES_EDIT: '/classes/edit/:id',
+  CLASSES_VIEW: '/classes/:id',
+  CLASSES_SCHEDULE: '/classes/schedule',
+
+  // Question Management - Phase 9.2
+  QUESTIONS: '/questions',
+  QUESTIONS_CREATE: '/questions/create',
+  QUESTIONS_EDIT: '/questions/edit/:id',
+  QUESTIONS_VIEW: '/questions/:id',
+
+  CHILDREN: '/children', // Phase 10 - Child management for parents
+  CHILDREN_CREATE: '/children/create',
+  CHILDREN_EDIT: '/children/edit/:id',
+  CHILDREN_VIEW: '/children/:id',
+
   // Demo pages
   FORM_DEMO: '/demo/forms',
 
@@ -48,6 +82,12 @@ export const buildRoute = {
   postsView: id => `/posts/${id}`,
   usersEdit: id => `/users/edit/${id}`,
   usersView: id => `/users/${id}`,
+  subjectsEdit: id => `/subjects/edit/${id}`,
+  subjectsView: id => `/subjects/${id}`,
+  classesEdit: id => `/classes/edit/${id}`,
+  classesView: id => `/classes/${id}`,
+  questionsEdit: id => `/questions/edit/${id}`,
+  questionsView: id => `/questions/${id}`,
   resetPassword: token => `/reset-password?token=${token}`,
 };
 
@@ -68,6 +108,10 @@ export const ROUTE_GROUPS = {
     ROUTES.POSTS_CREATE,
     ROUTES.MEDIA,
     ROUTES.SETTINGS,
+    ROUTES.EDUCATION,
+    ROUTES.SUBJECTS,
+    ROUTES.CLASSES,
+    ROUTES.QUESTIONS,
   ],
 
   ADMIN_ONLY: [ROUTES.USERS, ROUTES.USERS_CREATE],

@@ -88,9 +88,9 @@ export const needsTokenRefresh = token => {
 
 // Role hierarchy for permission checking
 export const ROLES = {
-  ADMIN: 'admin',
-  MANAGER: 'manager',
-  USER: 'user',
+  ADMIN: 'administrator',
+  PARENT: 'parent',
+  STUDENT: 'student',
 };
 
 // Permission constants
@@ -125,7 +125,7 @@ export const PERMISSIONS = {
 // Default permissions by role
 export const DEFAULT_PERMISSIONS = {
   [ROLES.ADMIN]: [...Object.values(PERMISSIONS)],
-  [ROLES.MANAGER]: [
+  [ROLES.PARENT]: [
     PERMISSIONS.CREATE_POST,
     PERMISSIONS.READ_POST,
     PERMISSIONS.UPDATE_POST,
@@ -138,7 +138,7 @@ export const DEFAULT_PERMISSIONS = {
     PERMISSIONS.MANAGE_TAGS,
     PERMISSIONS.VIEW_ANALYTICS,
   ],
-  [ROLES.USER]: [PERMISSIONS.READ_POST, PERMISSIONS.READ_USER],
+  [ROLES.STUDENT]: [PERMISSIONS.READ_POST, PERMISSIONS.READ_USER],
 };
 
 // Check if role has permission
@@ -150,9 +150,9 @@ export const roleHasPermission = (role, permission) => {
 // Check if role can access another role's functions
 export const canAccessRole = (currentRole, targetRole) => {
   const hierarchy = {
-    [ROLES.ADMIN]: [ROLES.ADMIN, ROLES.MANAGER, ROLES.USER],
-    [ROLES.MANAGER]: [ROLES.MANAGER, ROLES.USER],
-    [ROLES.USER]: [ROLES.USER],
+    [ROLES.ADMIN]: [ROLES.ADMIN, ROLES.PARENT, ROLES.STUDENT],
+    [ROLES.PARENT]: [ROLES.PARENT],
+    [ROLES.STUDENT]: [ROLES.STUDENT],
   };
 
   return hierarchy[currentRole]?.includes(targetRole) || false;

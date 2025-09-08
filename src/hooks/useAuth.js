@@ -8,6 +8,7 @@ import {
   AuthContext,
   useAuth as useAuthContext,
 } from '../contexts/AuthContext';
+import { ROLES } from '../utils/authUtils';
 
 // Hook to check if user has specific role
 export const useRole = requiredRole => {
@@ -87,6 +88,18 @@ export const useAuthRedirect = (redirectTo = '/login') => {
   };
 };
 
+export const isAdmin = user => {
+  return user && user.role === ROLES.ADMIN;
+}
+
+export const isParent = user => {
+  return user && user.role === ROLES.PARENT;
+}
+
+export const isStudent = user => {
+  return user && user.role === ROLES.STUDENT;
+};
+
 // Main useAuth hook - re-export from AuthContext
 export const useAuth = useAuthContext;
 
@@ -97,4 +110,7 @@ export default {
   useProtectedAction,
   useAuthState,
   useAuthRedirect,
+  isAdmin,
+  isParent,
+  isStudent,
 };

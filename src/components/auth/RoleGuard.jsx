@@ -15,9 +15,7 @@ const RoleGuard = ({
   requiredPermissions = [],
   fallbackPath = '/dashboard',
 }) => {
-  const { user, isAuthenticated, isLoading, hasRole, hasPermission } =
-    useAuth();
-
+  const { user, isAuthenticated, isLoading, hasRole, hasPermission } = useAuth();
   // Show loading spinner while checking authentication
   if (isLoading) {
     return (
@@ -38,6 +36,7 @@ const RoleGuard = ({
     allowedRoles.some(role => {
       return hasRole(role) || canAccessRole(user.role, role);
     });
+
 
   // Check permission-based access
   const hasRequiredPermissions =
@@ -72,7 +71,22 @@ export const AdminRoute = ({ children, fallbackPath = '/dashboard' }) => {
 export const ManagerRoute = ({ children, fallbackPath = '/dashboard' }) => {
   return (
     <RoleGuard
-      allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]}
+      allowedRoles={[ROLES.ADMIN, ROLES.PARENT]}
+      fallbackPath={fallbackPath}
+    >
+      {children}
+    </RoleGuard>
+  );
+};
+
+/**
+ * StudentRoute Component
+ * Shorthand for routes that require student role
+ */
+export const StudentRoute = ({ children, fallbackPath = '/dashboard' }) => {
+  return (
+    <RoleGuard
+      allowedRoles={[ROLES.ADMIN, ROLES.STUDENT]}
       fallbackPath={fallbackPath}
     >
       {children}

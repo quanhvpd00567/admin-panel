@@ -3,7 +3,7 @@
  * Modern select dropdown with beautiful design
  */
 
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import clsx from 'clsx';
 
@@ -14,16 +14,25 @@ const Select = forwardRef(
       error,
       helperText,
       children,
+      options,
       className,
       containerClassName,
       size = 'md',
       variant = 'default',
       disabled = false,
       placeholder,
+      value,
+      onValueChange,
+      onChange,
       ...props
     },
     ref
   ) => {
+    // Handle both onValueChange and onChange
+    const handleChange = (e) => {
+      if (onChange) onChange(e);
+      if (onValueChange) onValueChange(e.target.value);
+    };
     // Base classes with modern design
     const baseClasses =
       'block w-full border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:cursor-not-allowed appearance-none';
@@ -72,8 +81,10 @@ const Select = forwardRef(
           {/* Select Field */}
           <select
             ref={ref}
+            value={value}
             disabled={disabled}
             className={selectClasses}
+            onChange={handleChange}
             {...props}
           >
             {placeholder && (
@@ -81,7 +92,15 @@ const Select = forwardRef(
                 {placeholder}
               </option>
             )}
-            {children}
+            {options ? (
+              options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))
+            ) : (
+              children
+            )}
           </select>
 
           {/* Dropdown Icon */}
@@ -128,7 +147,36 @@ const Select = forwardRef(
 
 Select.displayName = 'Select';
 
-Select.displayName = 'Select';
+// Sub-components for advanced Select usage
+const SelectTrigger = ({ children, className, ...props }) => (
+  <div className={clsx('relative', className)} {...props}>
+    {children}
+  </div>
+);
 
-export { Select };
+const SelectValue = ({ placeholder, children, ...props }) => (
+  <span className="text-gray-500 dark:text-gray-400" {...props}>
+    {children || placeholder}
+  </span>
+);
+
+const SelectContent = ({ children, className, ...props }) => (
+  <React.Fragment {...props}>
+    {children}
+  </React.Fragment>
+);
+
+const SelectItem = ({ children, value, className, ...props }) => (
+  <option value={value} className={className} {...props}>
+    {children}
+  </option>
+);
+
+export { 
+  Select,
+  SelectTrigger,
+  SelectValue, 
+  SelectContent,
+  SelectItem
+};
 export default Select;

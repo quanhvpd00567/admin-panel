@@ -72,9 +72,48 @@ const CardFooter = ({ children, className, ...props }) => {
   );
 };
 
+const CardTitle = ({ children, className, ...props }) => {
+  const classes = clsx(
+    'text-lg font-semibold text-gray-900 dark:text-white',
+    className
+  );
+
+  return (
+    <h3 className={classes} {...props}>
+      {children}
+    </h3>
+  );
+};
+
+const CardDescription = ({ children, className, ...props }) => {
+  const classes = clsx(
+    'text-sm text-gray-600 dark:text-gray-400 mt-1',
+    className
+  );
+
+  return (
+    <p className={classes} {...props}>
+      {children}
+    </p>
+  );
+};
+
+const CardContent = ({ children, className, ...props }) => {
+  const classes = clsx('px-6 py-4', className);
+
+  return (
+    <div className={classes} {...props}>
+      {children}
+    </div>
+  );
+};
+
 Card.Header = CardHeader;
 Card.Body = CardBody;
 Card.Footer = CardFooter;
+Card.Title = CardTitle;
+Card.Description = CardDescription;
+Card.Content = CardContent;
 
-export { Card };
+export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardDescription, CardContent };
 export default Card;
