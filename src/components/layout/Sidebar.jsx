@@ -112,7 +112,6 @@ const Sidebar = ({ isOpen, onClose }) => {
       roles: ADMIN_ROLES,
       children: [
         { name: 'All Users', href: ROUTES.USERS },
-        // { name: 'Create New', href: ROUTES.USERS_CREATE },
       ],
     },
     {
@@ -134,7 +133,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       href: '/ai',
       icon: FaRobot,
       current: location.pathname.startsWith('/ai'),
-      roles: ['administrator', 'parent', 'student'],
+      roles: ['administrator', 'parent'],
     },
     // list child
     {

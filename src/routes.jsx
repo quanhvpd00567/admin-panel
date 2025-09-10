@@ -468,7 +468,11 @@ export const router = createBrowserRouter([
       // AI routes
       {
         path: 'ai',
-        element: <AiDashboard />,
+        element: (
+          <ManagerRoute>
+            <AiDashboard />
+          </ManagerRoute>
+        ),
       },
 
       // Catch all route - 404

@@ -22,6 +22,11 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
 
+  BLOG: {
+    LIST: '/blog',
+    VIEW: '/blog/:id',
+  },
+
   // Protected routes
   DASHBOARD: '/dashboard',
   PROFILE: '/profile',

@@ -1,12 +1,14 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import { showToast } from '../../components/ui';
 import { FaTrashAlt, FaCheck } from 'react-icons/fa';
+import { SiOpenai, SiGooglegemini } from 'react-icons/si';
 import { quizAPI } from '../../services/quizzes';
+import React from 'react';
 
 const AiDashboard = () => {
+  const [selectedModel, setSelectedModel] = React.useState('gemini');
   const {
     register,
     handleSubmit,
@@ -31,6 +33,8 @@ const AiDashboard = () => {
   });
 
   const onSubmit = async (data) => {
+    // Thêm model vào data
+    const submitData = { ...data, model: selectedModel };
     const { totalQuestions, easyQuestions, mediumQuestions, hardQuestions, totalPoints } = data;
 
     if (totalQuestions !== easyQuestions + mediumQuestions + hardQuestions) {
@@ -43,7 +47,7 @@ const AiDashboard = () => {
       return;
     }
 
-    const result = await quizAPI.generateQuizAI(data);
+    const result = await quizAPI.generateQuizAI(submitData);
 
     if (result.success) {
       showToast.success('Bài kiểm tra đã được tạo thành công!');
@@ -58,6 +62,38 @@ const AiDashboard = () => {
         Tạo bài kiểm tra bằng AI
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6">
+        {/* Card chọn model AI */}
+        <div className="col-span-1 md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+            Chọn mô hình AI
+          </label>
+          <div className="flex space-x-4">
+            <button
+              type="button"
+              className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${
+                selectedModel === 'gemini'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+              }`}
+              onClick={() => setSelectedModel('gemini')}
+            >
+              <SiGooglegemini className="mr-2" />
+              Gemini
+            </button>
+            <button
+              type="button"
+              className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${
+                selectedModel === 'openai'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+              }`}
+              onClick={() => setSelectedModel('openai')}
+            >
+              <SiOpenai className="mr-2" />
+              OpenAI
+            </button>
+          </div>
+        </div>
         {/* Chủ đề */}
         <div className="col-span-1 md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
