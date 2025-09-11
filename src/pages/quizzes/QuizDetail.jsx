@@ -281,29 +281,41 @@ const QuizDetail = () => {
         <h3 className="text-xl font-semibold mb-4">Danh sách câu hỏi</h3>
         {quiz.questions.length > 0 ? (
           <ul className="space-y-4">
-            {quiz.questions.map((question, index) => (
-              <li
-                key={question._id}
-                className="p-4 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 flex justify-between items-center"
-              >
-                <div className="flex items-center space-x-4">
-                  <span className="text-gray-800 dark:text-gray-200 font-medium">
-                    Câu {index + 1}: {question.title}
-                  </span>
-                  <span className="text-sm font-bold text-indigo-600 dark:text-indigo-300">
-                    {question.points || 0} điểm
-                  </span>
-                </div>
-                <Button
-                  variant="outline"
-                  className="text-xs px-2 py-1"
-                  onClick={() => openModal(question)}
+            {quiz.questions.map((question, index) => {
+              let typeBg = 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200';
+              if (question.type === 'essay') typeBg = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+              if (question.type === 'true_false') typeBg = 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200';
+              if (question.type === 'fill_blank') typeBg = 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200';
+              if (question.type === 'multiple_choice') typeBg = 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200';
+              return (
+                <li
+                  key={question._id}
+                  className="p-4 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 flex justify-between items-center"
                 >
-                  <FaEye className="w-3 h-3 mr-1" title="Xem chi tiết" />
-                  Xem chi tiết
-                </Button>
-              </li>
-            ))}
+                  <div className="flex items-center space-x-4">
+                    <span className="text-gray-800 dark:text-gray-200 font-medium">
+                      Câu {index + 1}: {question.title}
+                    </span>
+                    <span className="text-sm font-bold text-indigo-600 dark:text-indigo-300">
+                      {question.points || 0} điểm
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className={`text-xs px-2 py-1 rounded font-semibold ${typeBg}`}>
+                      {question.type}
+                    </span>
+                    <Button
+                      variant="outline"
+                      className="text-xs px-2 py-1 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 hover:from-blue-200 hover:via-purple-200 hover:to-pink-200 text-blue-900 font-bold rounded shadow transition-all duration-300 border border-blue-300 dark:bg-gradient-to-r dark:from-blue-900 dark:via-purple-900 dark:to-pink-900 dark:text-white dark:border-blue-800"
+                      onClick={() => openModal(question)}
+                    >
+                      <FaEye className="w-3 h-3 mr-1" title="Xem chi tiết" />
+                      Xem chi tiết
+                    </Button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <p className="text-gray-700 dark:text-gray-300 text-left">Không có câu hỏi nào.</p>

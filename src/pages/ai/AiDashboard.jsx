@@ -9,6 +9,14 @@ import React from 'react';
 
 const AiDashboard = () => {
   const [selectedModel, setSelectedModel] = React.useState('gemini');
+  const [isCreatingSubject, setIsCreatingSubject] = React.useState(false);
+  const [subjectOptions, setSubjectOptions] = React.useState([
+    'Toán lớp 4',
+    'Vật lý lớp 7',
+    'Hóa học lớp 8',
+    'Tiếng Anh',
+    'Lịch sử',
+  ]);
   const {
     register,
     handleSubmit,
@@ -53,7 +61,7 @@ const AiDashboard = () => {
       showToast.success('Bài kiểm tra đã được tạo thành công!');
     } else {
       showToast.error(result.error);
-    } 
+    }
   };
 
   return (
@@ -70,11 +78,10 @@ const AiDashboard = () => {
           <div className="flex space-x-4">
             <button
               type="button"
-              className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${
-                selectedModel === 'gemini'
+              className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${selectedModel === 'gemini'
                   ? 'bg-purple-600 text-white'
                   : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-              }`}
+                }`}
               onClick={() => setSelectedModel('gemini')}
             >
               <SiGooglegemini className="mr-2" />
@@ -82,11 +89,10 @@ const AiDashboard = () => {
             </button>
             <button
               type="button"
-              className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${
-                selectedModel === 'openai'
+              className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${selectedModel === 'openai'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-              }`}
+                }`}
               onClick={() => setSelectedModel('openai')}
             >
               <SiOpenai className="mr-2" />
@@ -99,10 +105,40 @@ const AiDashboard = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
             Chủ đề
           </label>
-          <Input
-            {...register('subject', { required: 'Chủ đề là bắt buộc' })}
-            placeholder="Nhập chủ đề"
-          />
+          <div className="flex items-center space-x-2">
+            {!isCreatingSubject ? (
+              <>
+                <select
+                  {...register('subject', { required: 'Chủ đề là bắt buộc' })}
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                  style={{ minWidth: 0 }}
+                  defaultValue={subjectOptions[0]}
+                >
+                  {subjectOptions.map((option, idx) => (
+                    <option key={idx} value={option}>{option}</option>
+                  ))}
+                </select>
+
+              </>
+            ) : (
+              <>
+                <Input
+                  {...register('subject', { required: 'Chủ đề là bắt buộc' })}
+                  placeholder="Nhập chủ đề mới"
+                  className="flex-1 min-w-0"
+                />
+              </>
+            )}
+
+            <Button
+              type="button"
+              className="ml-2 px-3 py-2 h-10 text-sm bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 flex items-center justify-center min-w-[100px] w-auto"
+              onClick={() => setIsCreatingSubject(!isCreatingSubject)}
+            >
+              Tạo mới
+            </Button>
+          </div>
+          
           {errors.subject && (
             <p className="text-red-500 text-sm mt-1 text-left">{errors.subject.message}</p>
           )}
