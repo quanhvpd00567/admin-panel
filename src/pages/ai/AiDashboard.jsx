@@ -9,7 +9,7 @@ import React from 'react';
 
 const AiDashboard = () => {
   const [selectedModel, setSelectedModel] = React.useState('gemini');
-  const [isCreatingSubject, setIsCreatingSubject] = React.useState(false);
+  const [isAddingSubject, setIsAddingSubject] = React.useState(false);
   const [subjectOptions, setSubjectOptions] = React.useState([
     'Toán lớp 4',
     'Vật lý lớp 7',
@@ -79,8 +79,8 @@ const AiDashboard = () => {
             <button
               type="button"
               className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${selectedModel === 'gemini'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
                 }`}
               onClick={() => setSelectedModel('gemini')}
             >
@@ -90,8 +90,8 @@ const AiDashboard = () => {
             <button
               type="button"
               className={`px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex items-center space-x-2 ${selectedModel === 'openai'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
                 }`}
               onClick={() => setSelectedModel('openai')}
             >
@@ -101,47 +101,54 @@ const AiDashboard = () => {
           </div>
         </div>
         {/* Chủ đề */}
-        <div className="col-span-1 md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
-            Chủ đề
-          </label>
-          <div className="flex items-center space-x-2">
-            {!isCreatingSubject ? (
-              <>
-                <select
-                  {...register('subject', { required: 'Chủ đề là bắt buộc' })}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
-                  style={{ minWidth: 0 }}
-                  defaultValue={subjectOptions[0]}
-                >
-                  {subjectOptions.map((option, idx) => (
-                    <option key={idx} value={option}>{option}</option>
-                  ))}
-                </select>
-
-              </>
+        <div className="col-span-1 md:col-span-2 flex items-center">
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+              Chủ đề
+            </label>
+            {!isAddingSubject ? (
+              <select
+                {...register('subject', { required: 'Chủ đề là bắt buộc' })}
+                className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                defaultValue={subjectOptions[0]}
+              >
+                {subjectOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             ) : (
-              <>
-                <Input
-                  {...register('subject', { required: 'Chủ đề là bắt buộc' })}
-                  placeholder="Nhập chủ đề mới"
-                  className="flex-1 min-w-0"
-                />
-              </>
+              <Input
+                {...register('subject', { required: 'Chủ đề là bắt buộc' })}
+                placeholder="Nhập chủ đề mới"
+              />
             )}
-
-            <Button
-              type="button"
-              className="ml-2 px-3 py-2 h-10 text-sm bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 flex items-center justify-center min-w-[100px] w-auto"
-              onClick={() => setIsCreatingSubject(!isCreatingSubject)}
-            >
-              Tạo mới
-            </Button>
+            {errors.subject && (
+              <p className="text-red-500 text-sm mt-1 text-left">{errors.subject.message}</p>
+            )}
           </div>
-          
-          {errors.subject && (
-            <p className="text-red-500 text-sm mt-1 text-left">{errors.subject.message}</p>
-          )}
+          <div className="ml-4 mt-6">
+            {!isAddingSubject ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="px-3 py-2 border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 rounded"
+                onClick={() => setIsAddingSubject(true)}
+              >
+                Thêm mới
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                className="px-3 py-2 border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 rounded"
+                onClick={() => setIsAddingSubject(false)}
+              >
+                Chọn từ danh sách
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
