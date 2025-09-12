@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import { showToast } from '../../components/ui';
@@ -8,6 +9,7 @@ import { quizAPI } from '../../services/quizzes';
 import React from 'react';
 
 const AiDashboard = () => {
+  const navigator = useNavigate();
   const [selectedModel, setSelectedModel] = React.useState('gemini');
   const [isAddingSubject, setIsAddingSubject] = React.useState(false);
   const [subjectOptions, setSubjectOptions] = React.useState([
@@ -17,6 +19,7 @@ const AiDashboard = () => {
     'Tiếng Anh',
     'Lịch sử',
   ]);
+  const [isDisabled, setIsDisabled] = React.useState(false);
   const {
     register,
     handleSubmit,
@@ -41,27 +44,36 @@ const AiDashboard = () => {
   });
 
   const onSubmit = async (data) => {
-    // Thêm model vào data
-    const submitData = { ...data, model: selectedModel };
-    const { totalQuestions, easyQuestions, mediumQuestions, hardQuestions, totalPoints } = data;
+    if (isDisabled) return;
+    setIsDisabled(true);
+   try {
+     // Thêm model vào data
+     const submitData = { ...data, model: selectedModel };
+     const { totalQuestions, easyQuestions, mediumQuestions, hardQuestions, totalPoints } = data;
 
-    if (totalQuestions !== easyQuestions + mediumQuestions + hardQuestions) {
-      showToast.error('Tổng số câu hỏi phải bằng tổng số câu dễ, vừa và khó.');
-      return;
-    }
+     if (totalQuestions !== easyQuestions + mediumQuestions + hardQuestions) {
+       showToast.error('Tổng số câu hỏi phải bằng tổng số câu dễ, vừa và khó.');
+       return;
+     }
 
-    if (totalPoints !== 100) {
-      showToast.error('Tổng điểm phải bằng 100.');
-      return;
-    }
+     if (totalPoints !== 100) {
+       showToast.error('Tổng điểm phải bằng 100.');
+       return;
+     }
 
-    const result = await quizAPI.generateQuizAI(submitData);
+     const result = await quizAPI.generateQuizAI(submitData);
 
-    if (result.success) {
-      showToast.success('Bài kiểm tra đã được tạo thành công!');
-    } else {
-      showToast.error(result.error);
-    }
+     if (result.success) {
+       showToast.success('Bài kiểm tra đã được tạo thành công!');
+       navigator('/ai/generate-process');
+     } else {
+       showToast.error(result.error);
+     }
+   } catch (error) {
+     showToast.error('Đã xảy ra lỗi. Vui lòng thử lại.');
+   } finally {
+     setIsDisabled(false);
+   }
   };
 
   return (
@@ -320,6 +332,7 @@ const AiDashboard = () => {
             Xóa
           </Button>
           <Button
+            disabled={isDisabled}
             variant="primary"
             className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 rounded-lg shadow-md flex items-center justify-center transition-all duration-300"
             type="submit"

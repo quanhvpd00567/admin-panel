@@ -62,6 +62,9 @@ import QuestionDetail from './pages/questions/QuestionDetail';
 // Import child management pages (Phase 10)
 import ChildList from './pages/children/ChildList';
 
+// Import AI pages
+import { AiDashboard, AiGenerateProcess} from './pages/ai';
+
 // Import route guards
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import {
@@ -70,9 +73,6 @@ import {
 } from './components/auth/RoleGuard';
 
 import studentRoutes from './routes/student_routes';
-
-// Import AI pages
-import AiDashboard from './pages/ai/AiDashboard';
 
 // Define the router configuration with comprehensive route structure
 export const router = createBrowserRouter([
@@ -471,6 +471,14 @@ export const router = createBrowserRouter([
         element: (
           <ManagerRoute>
             <AiDashboard />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: 'ai/generate-process',
+        element: (
+          <ManagerRoute>
+            <AiGenerateProcess />
           </ManagerRoute>
         ),
       },

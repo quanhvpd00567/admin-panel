@@ -130,10 +130,14 @@ const Sidebar = ({ isOpen, onClose }) => {
     },
     {
       name: 'AI',
-      href: '/ai',
+      href: '/',
       icon: FaRobot,
       current: location.pathname.startsWith('/ai'),
       roles: ['administrator', 'parent'],
+      children: [
+        { name: 'AI Dashboard', href: '/ai', icon: FaRobot },
+        { name: 'Generate Process', href: '/ai/generate-process', icon: FaSpinner },
+      ],
     },
     // list child
     {
