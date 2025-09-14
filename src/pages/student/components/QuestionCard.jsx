@@ -12,6 +12,7 @@ const QuestionCard = ({
   onToggleFlag,
   onPrevious,
   onNext,
+  isDisabledSubmit
 }) => {
   const optionIcons = ['🌸', '🌺', '🌻', '🌷', '🌹', '🌼', '🌿', '', '🍀', '🍃', '🍂', '🍁', '🪴', '🥀']
 
@@ -127,6 +128,7 @@ const QuestionCard = ({
                         name={`question-${question._id}`}
                         value={answer._id}
                         checked={isSelected}
+                        disabled={isDisabledSubmit}
                         onChange={() => onAnswerChange(question._id, answer._id, question.type === "multiple_choice")}
                         className="sr-only"
                       />

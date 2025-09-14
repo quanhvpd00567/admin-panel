@@ -13,6 +13,7 @@ import QuizHeader from "./components/QuizHeader"
 import QuizProgress from "./components/QuizProgress"
 import QuestionCard from "./components/QuestionCard"
 import QuizSubmitModal from "./components/QuizSubmitModal"
+import QuizCompletionModal from "./components/QuizCompletionModal"
 import { showToast } from "../../components/ui"
 
 const StudentMakeQuizzes = () => {
@@ -22,14 +23,17 @@ const StudentMakeQuizzes = () => {
   const [quiz, setQuiz] = useState({})
   const [loading, setLoading] = useState(true)
   const [loadingStart, setLoadingStart] = useState(false)
+  const [isDisabledSubmit, setIsDisabledSubmit] = useState(false)
   const calledRef = useRef(false)
   const [totalPoints, setTotalPoints] = useState(0)
   const [questions, setQuestions] = useState([])
+  const [showCongratulationsModal, setShowCongratulationsModal] = useState(false);
 
   const defaultTimer = { timeRemaining: null, quizStarted: false, startTimer: () => {}, formatTime: () => 'N/A' };
   const quizTimer = useQuizTimer(() => setShowSubmitModal(true));
   const timer = quiz && quiz.timeLimit ? quizTimer : defaultTimer;
   const { timeRemaining, quizStarted, startTimer, formatTime } = timer;
+  const [resultData, setResultData] = useState(null);
 
   const {
     currentQuestionIndex,
@@ -43,7 +47,6 @@ const StudentMakeQuizzes = () => {
     toggleFlag,
     getAnswerStats,
   } = useQuizState(questions, quiz.shuffleAnswers)
-
   // Fetch quiz data
   useEffect(() => {
     const fetchQuizDetail = async () => {
@@ -87,7 +90,7 @@ const StudentMakeQuizzes = () => {
       setLoadingStart(true);
       const response = await studentQuizAPI.updateStatus(id)
       if (!response.success) {
-        showToast.error('Error updating quiz status');
+        showToast.error(response.error || 'Bắt đầu quiz thất bại. Vui lòng thử lại.');
         return;
       }
       startTimer(quiz.timeLimit)
@@ -102,6 +105,11 @@ const StudentMakeQuizzes = () => {
     setShowSubmitModal(true)
   }
 
+  const closeAndBackToList = () => {
+    setShowCongratulationsModal(false);
+    navigate('/student/assigned-quizzes');
+  }
+
   const handleConfirmSubmit = async () => {
     // thời gian nộp bài
     const submissionTime = (quiz.timeLimit * 60) - timeRemaining;
@@ -111,16 +119,16 @@ const StudentMakeQuizzes = () => {
     try {
       const response = await makeQuizAPI.studentSubmissions(id, dataSubmission)
       if (response.success) {
-        showToast.success("Quiz submitted successfully!")
-        if (quiz.showResultsImmediately) {
-          const history_id = response.data.id;
-          navigate(`/student/quizzes/${history_id}/results`);
-        }
+        showToast.success("Hoàn thành bài kiểm tra thành công!");
+        setShowCongratulationsModal(true);
+        setResultData(response.data);
+        setIsDisabledSubmit(true);
       } else {
         showToast.error('Error submitting quiz');
       }
     } catch (error) {
       showToast.error("Error submitting quiz:" + error.message)
+      setIsDisabledSubmit(false);
     } finally {
       setLoading(false);
     }
@@ -198,6 +206,7 @@ const StudentMakeQuizzes = () => {
                 currentQuestionIndex={currentQuestionIndex}
                 goToQuestion={goToQuestion}
                 onSubmit={handleSubmit}
+                isDisabledSubmit={isDisabledSubmit}
               />
 
               {currentQuestion && (
@@ -212,6 +221,7 @@ const StudentMakeQuizzes = () => {
                   onToggleFlag={toggleFlag}
                   onPrevious={goToPrevious}
                   onNext={goToNext}
+                   isDisabledSubmit={isDisabledSubmit}
                 />
               )}
             </div>
@@ -222,6 +232,11 @@ const StudentMakeQuizzes = () => {
       {/* Submit Modal */}
       <Modal isOpen={showSubmitModal} size="lg" onClose={() => setShowSubmitModal(false)} title="">
         <QuizSubmitModal stats={stats} onCancel={() => setShowSubmitModal(false)} onConfirm={handleConfirmSubmit} />
+      </Modal>
+
+      {/* Congratulations Modal */}
+      <Modal isOpen={showCongratulationsModal} size="md" onClose={closeAndBackToList} title="">
+        <QuizCompletionModal quiz={quiz} isOpen={showCongratulationsModal} resultData={resultData} onClose={() => setShowCongratulationsModal(false)} />
       </Modal>
     </>
   )

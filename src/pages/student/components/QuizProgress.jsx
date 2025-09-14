@@ -9,6 +9,7 @@ const QuizProgress = ({
   currentQuestionIndex,
   goToQuestion,
   onSubmit,
+  isDisabledSubmit,
 }) => {
   return (
     <div className="mb-6">
@@ -135,6 +136,7 @@ const QuizProgress = ({
           {/* Harvest Button */}
           <div className="lg:col-span-1 flex items-center">
             <Button
+              disabled={isDisabledSubmit}
               onClick={onSubmit}
               className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 border-2 border-green-400"
             >

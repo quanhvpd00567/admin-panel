@@ -5,17 +5,17 @@
 
 // Question Types
 export const QUESTION_TYPES = [
-  { value: 'true_false', label: 'True/False' },
-  { value: 'multiple_choice', label: 'Multiple Choice' },
-  { value: 'single_choice', label: 'Single Choice' },
-  { value: 'fill_blank', label: 'Fill in the Blank' }
+  { value: 'true_false', label: 'Đúng/Sai' },
+  { value: 'multiple_choice', label: 'Chọn nhiều đáp án' },
+  { value: 'single_choice', label: 'Chọn 1 đáp án' },
+  { value: 'fill_blank', label: 'Điền vào chỗ trống' }
 ];
 
 // Difficulty Levels
 export const DIFFICULTY_LEVELS = [
-  { value: 'easy', label: 'Easy' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'hard', label: 'Hard' }
+  { value: 'easy', label: 'Dễ' },
+  { value: 'medium', label: 'Trung bình' },
+  { value: 'hard', label: 'Khó' }
 ];
 
 // Helper functions

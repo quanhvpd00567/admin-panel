@@ -18,14 +18,12 @@ import {
   FaChevronDown,
   FaUserCircle,
   FaSignOutAlt,
-  FaUser,
   FaGraduationCap,
   FaBook,
   FaChalkboardTeacher,
   FaCalendarAlt,
   FaQuestionCircle,
   FaDatabase,
-  FaChartLine,
   FaSpinner,
   FaRobot,
 } from 'react-icons/fa';
@@ -66,66 +64,65 @@ const Sidebar = ({ isOpen, onClose }) => {
   // Navigation menu items
   const navigation = [
     {
-      name: 'Dashboard',
+      name: 'Bảng điều khiển',
       href: ROUTES.DASHBOARD,
       icon: FaHome,
       current: location.pathname === ROUTES.DASHBOARD,
       roles: ALL_ROLES
     },
     {
-      name: 'Posts',
+      name: 'Bài viết',
       href: ROUTES.POSTS,
       icon: FaEdit,
       current: location.pathname.startsWith('/posts'),
       roles: ADMIN_ROLES,
       children: [
-        { name: 'All Posts', href: ROUTES.POSTS },
-        { name: 'Create New', href: ROUTES.POSTS_CREATE },
+        { name: 'Tất cả bài viết', href: ROUTES.POSTS },
+        { name: 'Tạo bài viết mới', href: ROUTES.POSTS_CREATE },
       ],
     },
     {
-      name: 'Media',
+      name: 'Thư viện',
       href: ROUTES.MEDIA,
       icon: FaImage,
       current: location.pathname === ROUTES.MEDIA,
       roles: ADMIN_ROLES,
     },
     {
-      name: 'Categories',
+      name: 'Danh mục',
       href: ROUTES.CATEGORIES,
       icon: FaTag,
       current: location.pathname === ROUTES.CATEGORIES,
       roles: ADMIN_ROLES,
     },
     {
-      name: 'Tags',
+      name: 'Thẻ',
       href: ROUTES.TAGS,
       icon: FaHashtag,
       current: location.pathname === ROUTES.TAGS,
       roles: ADMIN_ROLES,
     },
     {
-      name: 'Users',
+      name: 'Người dùng',
       href: ROUTES.USERS,
       icon: FaUsers,
       current: location.pathname.startsWith('/users'),
       roles: ADMIN_ROLES,
       children: [
-        { name: 'All Users', href: ROUTES.USERS },
+        { name: 'Tất cả người dùng', href: ROUTES.USERS },
       ],
     },
     {
-      name: 'Education',
+      name: 'Học tập',
       href: ROUTES.EDUCATION,
       icon: FaGraduationCap,
       current: location.pathname.startsWith('/education'),
       roles: ['administrator', 'parent'],
       children: [
-        { name: 'Subjects', href: ROUTES.SUBJECTS, icon: FaBook },
-        { name: 'Classes', href: ROUTES.CLASSES, icon: FaChalkboardTeacher },
-        { name: 'Schedule', href: ROUTES.CLASSES_SCHEDULE, icon: FaCalendarAlt },
-        { name: 'Quizzes', href: '/quizzes', icon: FaQuestionCircle },
-        { name: 'Question Bank', href: '/questions', icon: FaDatabase },
+        { name: 'Chủ đề', href: ROUTES.SUBJECTS, icon: FaBook},
+        { name: 'Lớp học', href: ROUTES.CLASSES, icon: FaChalkboardTeacher, roles: ['administrator']  },
+        { name: 'Bài kiểm tra', href: '/quizzes', icon: FaQuestionCircle },
+        { name: 'Ngân hàng câu hỏi', href: '/questions', icon: FaDatabase },
       ],
     },
     {
@@ -135,42 +132,32 @@ const Sidebar = ({ isOpen, onClose }) => {
       current: location.pathname.startsWith('/ai'),
       roles: ['administrator', 'parent'],
       children: [
-        { name: 'AI Dashboard', href: '/ai', icon: FaRobot },
-        { name: 'Generate Process', href: '/ai/generate-process', icon: FaSpinner },
+        { name: 'Bảng điều khiển AI', href: '/ai', icon: FaRobot },
+        { name: 'Quá trình tạo', href: '/ai/generate-process', icon: FaSpinner },
       ],
     },
-    // list child
     {
-      name: 'Children',
+      name: 'Con cái',
       href: ROUTES.CHILDREN,
       icon: FaGraduationCap,
       current: location.pathname.startsWith('/children'),
       roles: PARENT_ROLES,
       children: [
-        { name: 'List Children', href: ROUTES.CHILDREN, icon: FaGraduationCap },
+        { name: 'Danh sách con cái', href: ROUTES.CHILDREN, icon: FaGraduationCap },
       ],
     },
-
     {
-      name: 'Student Portal',
+      name: 'Bài tập',
       href: '/student/quizzes',
       icon: FaGraduationCap,
       current: location.pathname.startsWith('/student'),
       roles: STUDENT_ROLES,
       children: [
-        { name: 'Available Quizzes', href: '/student/assigned-quizzes', icon: FaQuestionCircle },
-        { name: 'My Results', href: '/student/results', icon: FaChartLine },
+        { name: 'Danh sách bài tập', href: '/student/assigned-quizzes', icon: FaQuestionCircle },
       ],
     },
     {
-      name: 'My Profile',
-      href: '/my-profile',
-      icon: FaUser,
-      current: location.pathname === '/my-profile',
-      roles: ALL_ROLES,
-    },
-    {
-      name: 'Settings',
+      name: 'Cài đặt',
       href: ROUTES.SETTINGS,
       icon: FaCog,
       current: location.pathname === ROUTES.SETTINGS,
@@ -229,7 +216,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <span className="text-white font-bold text-lg">B</span>
               </div>
               <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-white">
-                Blog Admin
+                Hệ thống quản lý học sinh
               </span>
             </div>
           </div>

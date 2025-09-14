@@ -2,27 +2,31 @@ import React, { useEffect, useState, useRef } from 'react';
 import { aiAPI } from '../../services/quizzes';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaSearch, FaTimes, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import Select from '../../components/ui/Select';
 import Pagination from '../../components/ui/Pagination';
+import { useNavigate } from 'react-router-dom';
+import { LoadingSpinner } from '../../components/ui';
 
 const STATUS_OPTIONS = [
-    { label: 'All Status', value: '' },
-    { label: 'Chưa bắt đầu', value: 'not-started' },
+    { label: 'Tất cả', value: '' },
+    { label: 'Chưa bắt đầu', value: 'not_started' },
     { label: 'Hoàn thành', value: 'completed' },
     { label: 'Đang xử lý', value: 'in_progress' },
     { label: 'Lỗi', value: 'failed' },
 ];
 const MODEL_OPTIONS = [
-    { label: 'All Model', value: '' },
+    { label: 'Tất cả', value: '' },
     { label: 'Gemini', value: 'gemini' },
     { label: 'OpenAI', value: 'openai' },
 ];
 
 const AiGenerateProcess = () => {
+    const navigate = useNavigate();
     const [processList, setProcessList] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filterStatus, setFilterStatus] = useState('not-started');
+    const [isReset, setIsReset] = useState(false);
+    const [filterStatus, setFilterStatus] = useState('');
     const [filter, setFilter] = useState({ search: '', subject: '', status: '', model: '' });
     const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 10, totalPages: 1 });
 
@@ -33,30 +37,27 @@ const AiGenerateProcess = () => {
             limit: pagination.limit,
             status: filterStatus,
             modelName: filter.model,
+            search: filter.search,
+            // subject: filter.subject,
             page: pagination.page,
         });
-        console.log(filter);
-        
         setProcessList(result?.data || []);
         setPagination(result?.pagination || { total: 0, page: 1, limit: 10, totalPages: 1 });
         setLoading(false);
     };
-    useEffect(() => {
-        fetchProcess();
-    }, [filterStatus, filter.model]);
 
     useEffect(() => {
-        console.log('Pagination changed:', pagination);
         fetchProcess();
-    }, [pagination.page, pagination.limit]);
+    }, [filterStatus, filter.model, pagination.page, pagination.limit, isReset]);
 
     const handlePageChange = (newPage) => {
         setPagination(prev => ({ ...prev, page: newPage }));
     }
     const handleReset = () => {
-        setFilterStatus('not-started');
+        setFilterStatus('');
         setFilter({ search: '', subject: '', status: '', model: '' });
         setPagination({ total: 0, page: 1, limit: 10, totalPages: 1 });
+        setIsReset(!isReset); // Toggle to trigger useEffect
     };
 
     return (
@@ -65,53 +66,78 @@ const AiGenerateProcess = () => {
                 AI Generate Process
             </h1>
             {/* Card: Filter bar */}
-            <Card className="mb-4 p-4 bg-gray-900">
-                <div className="flex flex-wrap items-center gap-2">
-                    <div className="flex flex-wrap gap-2 flex-1">
+            <Card className="mb-4 p-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {/* Input Search */}
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+                            Tìm kiếm
+                        </label>
                         <input
                             type="text"
-                            className="px-3 py-2 rounded bg-gray-800 text-white border border-gray-700 w-1/2"
-                            placeholder="Search quiz..."
+                            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                            placeholder="Nhập tên bài kiểm tra..."
                             value={filter.search}
-                            onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}
+                            onChange={(e) => setFilter((f) => ({ ...f, search: e.target.value }))}
                         />
                     </div>
-                    <div className="flex flex-wrap gap-2 flex-1">
+
+                    {/* Select Status */}
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+                            Trạng thái
+                        </label>
                         <Select
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value)}
-                            className="w-full sm:w-auto"
+                            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                         >
-                            {STATUS_OPTIONS.map(opt => (
-                                <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            {STATUS_OPTIONS.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                </option>
                             ))}
                         </Select>
+                    </div>
+
+                    {/* Select Model */}
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+                            Mô hình
+                        </label>
                         <Select
                             value={filter.model}
-                            onChange={(e) => setFilter(f => ({ ...f, model: e.target.value }))}
-                            className="w-full sm:w-auto"
+                            onChange={(e) => setFilter((f) => ({ ...f, model: e.target.value }))}
+                            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                         >
-                            {MODEL_OPTIONS.map(opt => (
-                                <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            {MODEL_OPTIONS.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                </option>
                             ))}
                         </Select>
                     </div>
-                    <div className="flex gap-2 ml-auto">
-                        <Button
-                            variant="primary"
-                            className="px-3 py-2 text-xs border border-blue-500 bg-blue-500 text-white hover:bg-blue-700 rounded"
-                            onClick={() => { }}
-                        >
-                            Search
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="px-3 py-2 text-xs border border-blue-500 text-blue-500 hover:bg-blue-900 hover:text-white rounded"
-                            onClick={handleReset}
-                        >
-                            Reset
-                        </Button>
-                    </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-center mt-6 space-x-4">
+                    <Button
+                        variant="primary"
+                        className="flex items-center px-6 py-2"
+                        onClick={() => fetchProcess()}
+                    >
+                        <FaSearch className="w-4 h-4 mr-2" />
+                        Tìm kiếm
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="flex items-center px-6 py-2 text-red-500 border-red-500 hover:bg-red-100"
+
+                        onClick={handleReset}
+                    >
+                        <FaTimes className="w-4 h-4 mr-2" />
+                        Đặt lại
+                    </Button>
                 </div>
             </Card>
 
@@ -138,7 +164,7 @@ const AiGenerateProcess = () => {
                                         <td className="px-3 py-2">
                                             <div className="flex items-center gap-2">
                                                 <div>
-                                                    <div className="font-semibold">{process.id}</div>
+                                                    <div className="font-semibold">{process.title}</div>
                                                     {/* <div className="text-xs text-gray-400">{process.subject}</div> */}
                                                 </div>
                                             </div>
@@ -158,9 +184,12 @@ const AiGenerateProcess = () => {
                                         </td>
                                         <td className="px-3 py-2 text-right w-32">
                                             <div className="flex gap-2 justify-end">
-                                                <Button variant="ghost" className="p-2 text-blue-400 hover:text-blue-600"><FaEye /></Button>
-                                                <Button variant="ghost" className="p-2 text-gray-400 hover:text-gray-600"><FaEdit /></Button>
-                                                <Button variant="ghost" className="p-2 text-red-400 hover:text-red-600"><FaTrash /></Button>
+                                                {/* nếu status == completed redirect */}
+                                                {process.status === 'completed' && (
+                                                    <Button onClick={() => navigate('/quizzes/' + process.quiz)} variant="ghost" className="p-2 text-blue-400 hover:text-blue-600"><FaEye /></Button>
+                                                )}
+                                                {/* <Button variant="ghost" className="p-2 text-gray-400 hover:text-gray-600"><FaEdit /></Button> */}
+                                                {/* <Button variant="ghost" className="p-2 text-red-400 hover:text-red-600"><FaTrash /></Button> */}
                                             </div>
                                         </td>
                                     </tr>

@@ -12,11 +12,12 @@ const ChildList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
   const [isAddingChild, setIsAddingChild] = useState(false); // State for adding new child
   const calledRef = useRef(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     const fetchChildren = async () => {
-      if (calledRef.current) return;
-      calledRef.current = true;
+      // if (calledRef.current) return;
+      // calledRef.current = true;
       try {
         setLoading(true);
         const response = await parentAPI.getChildren();
@@ -33,7 +34,7 @@ const ChildList = () => {
     };
 
     fetchChildren();
-  }, []);
+  }, [isFetching]);
 
   const handleViewChild = (child) => {
     setSelectedChild(child); // Set selected child
@@ -51,6 +52,8 @@ const ChildList = () => {
     setSelectedChild(null); // Clear selected child
     setIsAddingChild(false); // Reset "add" mode
     setIsModalOpen(false); // Close modal
+    // get lại list children
+    setIsFetching((prev) => !prev);
   };
 
   const handleSaveChild = (childData) => {
@@ -154,7 +157,6 @@ const ChildList = () => {
         onClose={closeModal}
         isAddNew={isAddingChild}
         child={isAddingChild ? null : selectedChild}
-        onSave={handleSaveChild}
       />
     </div>
   );

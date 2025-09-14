@@ -166,7 +166,7 @@ const QuestionList = () => {
     setFilters({
       type: '',
       subject: '',
-      class: CLASS_OPTIONS[0].code,
+      class: CLASS_OPTIONS[3].code,
       difficulty: '',
       search: ''
     });
@@ -201,14 +201,14 @@ const QuestionList = () => {
 
   return (
     <div className="p-6">
-      {/* Statistics Cards */}
+      {/* Thống kê */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-center">
             <FaQuestionCircle className="w-8 h-8 text-blue-500" />
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                Total Questions
+                Tổng số câu hỏi
               </p>
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {stats.total || 0}
@@ -222,7 +222,7 @@ const QuestionList = () => {
             <FaCheck className="w-8 h-8 text-green-500" />
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                True/False
+                Đúng/Sai
               </p>
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {stats.byType?.true_false || 0}
@@ -236,7 +236,7 @@ const QuestionList = () => {
             <FaList className="w-8 h-8 text-orange-500" />
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                Multiple Choice
+                Trắc nghiệm nhiều lựa chọn
               </p>
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {stats.byType?.multiple_choice || 0}
@@ -250,7 +250,7 @@ const QuestionList = () => {
             <FaCircle className="w-8 h-8 text-purple-500" />
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                Single Choice
+                Trắc nghiệm một lựa chọn
               </p>
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {stats.byType?.single_choice || 0}
@@ -260,29 +260,29 @@ const QuestionList = () => {
         </div>
       </div>
 
-      {/* Header with title and create button */}
+      {/* Tiêu đề và nút tạo mới */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Questions Management</h2>
+        <h2 className="text-2xl font-bold">Quản lý câu hỏi</h2>
         <Button
           variant="primary"
           onClick={() => navigate('/questions/create')}
         >
           <FaPlus className="mr-2" />
-          Create Question
+          Tạo câu hỏi mới
         </Button>
       </div>
 
-      {/* Filters */}
+      {/* Bộ lọc */}
       <Card className="mb-6">
         <div className="p-4">
-          {/* Row 1: Search, Difficulty, Question Type */}
+          {/* Hàng 1: Tìm kiếm, Độ khó, Loại câu hỏi */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Search
+              <label className="text-left block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Tìm kiếm
               </label>
               <Input
-                placeholder="Search questions..."
+                placeholder="Tìm kiếm câu hỏi..."
                 value={filters.search}
                 onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
                 onKeyDown={e => {
@@ -297,11 +297,11 @@ const QuestionList = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Difficulty
+              <label className="text-left block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Độ khó
               </label>
               <Select value={filters.difficulty} onValueChange={(value) => handleFilterChange('difficulty', value)}>
-                <option value="">All Difficulties</option>
+                <option value="">Tất cả độ khó</option>
                 {DIFFICULTY_LEVELS.map((difficulty, index) => (
                   <option key={index} value={difficulty.value}>
                     {difficulty.label}
@@ -311,11 +311,11 @@ const QuestionList = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Question Type
+              <label className="text-left block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Loại câu hỏi
               </label>
               <Select value={filters.type} onValueChange={(value) => handleFilterChange('type', value)}>
-                <option value="">All Types</option>
+                <option value="">Tất cả loại</option>
                 {QUESTION_TYPES.map((type, index) => (
                   <option key={index} value={type.value}>
                     {type.label}
@@ -325,14 +325,14 @@ const QuestionList = () => {
             </div>
           </div>
 
-          {/* Row 2: Class, Subject, Buttons */}
+          {/* Hàng 2: Lớp, Môn học, Nút hành động */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Class
+              <label className="text-left block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Lớp
               </label>
               <Select value={filters.class} onValueChange={(value) => handleFilterChange('class', value)}>
-                <option value="">All Classes</option>
+                <option value="">Tất cả lớp</option>
                 {CLASS_OPTIONS.map((classItem, index) => (
                   <option key={index} value={classItem.code}>
                     {classItem.name}
@@ -342,11 +342,11 @@ const QuestionList = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Subject
+              <label className="text-left block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Môn học
               </label>
               <Select value={filters.subject} onValueChange={(value) => handleFilterChange('subject', value)}>
-                <option value="">All Subjects</option>
+                <option value="">Tất cả môn học</option>
                 {subjects.map((subject, index) => (
                   <option key={index} value={subject._id}>
                     {subject.name}
@@ -356,21 +356,21 @@ const QuestionList = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Actions
+              <label className="text-left block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Hành động
               </label>
               <div className="flex gap-2 h-10">
                 <Button variant="outline" onClick={clearFilters} className="flex-1 h-full">
                   <FaFilter className="mr-1" />
-                  Clear
+                  Xóa bộ lọc
                 </Button>
                 <Button variant="primary" onClick={() => { setPagination(prev => ({ ...prev, current: 1 })); loadQuestions(); }} className="flex-1 h-full">
                   <FaSearch className="mr-1" />
-                  Search
+                  Tìm kiếm
                 </Button>
                 <Button variant="outline" onClick={loadQuestions} className="flex-1 h-full">
                   <FaSync className="mr-1" />
-                  Refresh
+                  Làm mới
                 </Button>
               </div>
             </div>
@@ -378,14 +378,11 @@ const QuestionList = () => {
         </div>
       </Card>
 
-      {/* Questions Table */}
+      {/* Danh sách câu hỏi */}
       <Card>
         <div className="p-4">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-medium">Questions List</h3>
-            <div className="text-sm text-gray-500">
-              {pagination.total} questions found
-            </div>
+            <h3 className="text-lg font-medium">Danh sách câu hỏi</h3>
           </div>
           
           {loading ? (
@@ -395,8 +392,8 @@ const QuestionList = () => {
           ) : questions.length === 0 ? (
             <div className="text-center py-8">
               <FaQuestionCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No questions found</h3>
-              <p className="text-gray-500 dark:text-gray-400">Try adjusting your search criteria or create a new question.</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Không tìm thấy câu hỏi nào</h3>
+              <p className="text-gray-500 dark:text-gray-400">Hãy thử thay đổi tiêu chí tìm kiếm hoặc tạo câu hỏi mới.</p>
             </div>
           ) : (
             <>
@@ -404,12 +401,12 @@ const QuestionList = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Question title</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Type</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Subject</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Class</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Difficulty</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white text-center">Actions</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Tiêu đề câu hỏi</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Loại</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Môn học</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Lớp</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Độ khó</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white text-center">Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -452,7 +449,7 @@ const QuestionList = () => {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => navigate(`/questions/${question._id}`)}
-                                title="View Question"
+                                title="Xem câu hỏi"
                                 className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                               >
                                 <FaEye className="w-4 h-4" />
@@ -461,7 +458,7 @@ const QuestionList = () => {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => navigate(`/questions/${question._id}/edit`)}
-                                title="Edit Question"
+                                title="Chỉnh sửa câu hỏi"
                                 className="text-gray-600 hover:text-gray-700 hover:bg-gray-50"
                               >
                                 <FaEdit className="w-4 h-4" />
@@ -470,7 +467,7 @@ const QuestionList = () => {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => setDeleteModal({ show: true, questionId: question._id })}
-                                title="Delete Question"
+                                title="Xóa câu hỏi"
                                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
                               >
                                 <FaTrash className="w-4 h-4" />
@@ -484,7 +481,7 @@ const QuestionList = () => {
                 </table>
               </div>
 
-              {/* Pagination */}
+              {/* Phân trang */}
               <Pagination
                 current={pagination.current}
                 total={pagination.total}
@@ -506,15 +503,15 @@ const QuestionList = () => {
         </div>
       </Card>
 
-      {/* Delete Confirmation Modal */}
+      {/* Xác nhận xóa */}
       <ConfirmModal
         isOpen={deleteModal.show}
         onClose={() => setDeleteModal({ show: false, questionId: null })}
         onConfirm={() => handleDelete(deleteModal.questionId)}
-        title="Delete Question"
-        message="Are you sure you want to delete this question? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
+        title="Xóa câu hỏi"
+        message="Bạn có chắc chắn muốn xóa câu hỏi này? Hành động này không thể hoàn tác."
+        confirmText="Xóa"
+        cancelText="Hủy"
         variant="danger"
       />
     </div>

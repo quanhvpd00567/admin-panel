@@ -32,23 +32,17 @@ import NotFound from './pages/NotFound';
 // Import education management pages (Phase 7)
 import EducationDashboard from './pages/education/EducationDashboard';
 
-
 import SubjectList from './pages/education/subjects/SubjectList';
 import CreateSubject from './pages/education/subjects/CreateSubject';
 import EditSubject from './pages/education/subjects/EditSubject';
 import ViewSubject from './pages/education/subjects/ViewSubject';
 import ClassList from './pages/education/classes/ClassList';
-import CreateClass from './pages/education/classes/CreateClass';
-import EditClass from './pages/education/classes/EditClass';
-import ViewClass from './pages/education/classes/ViewClass';
-import ClassSchedule from './pages/education/classes/ClassSchedule';
 
 // Import quiz management pages (Phase 9.1)
 import QuizListV1 from './pages/quizzes/QuizListV1';
 import EditQuiz from './pages/quizzes/EditQuiz';
 import QuizDetail from './pages/quizzes/QuizDetail';
 import TakeQuiz from './pages/quizzes/TakeQuiz';
-import { StudentMakeQuizzes, StudentQuizResults, StudentAssignedQuizzes} from './pages/student/index';
 // import MakeQuizzes from './pages/student/MakeQuizzes';
 import TakeQuizNature from './pages/quizzes/TakeQuizNature';
 import CreateQuizV1 from './pages/quizzes/CreateQuizV1'; // Ensure CreateQuizV1 is imported
@@ -300,38 +294,6 @@ export const router = createBrowserRouter([
               <ManagerRoute>
                 <ClassList />
               </ManagerRoute>
-            ),
-          },
-          {
-            path: 'create',
-            element: (
-              <ManagerRoute>
-                <CreateClass />
-              </ManagerRoute>
-            ),
-          },
-          {
-            path: 'edit/:id',
-            element: (
-              <ManagerRoute>
-                <EditClass />
-              </ManagerRoute>
-            ),
-          },
-          {
-            path: ':id',
-            element: (
-              <ProtectedRoute>
-                <ViewClass />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: 'schedule',
-            element: (
-              <ProtectedRoute>
-                <ClassSchedule />
-              </ProtectedRoute>
             ),
           },
         ],

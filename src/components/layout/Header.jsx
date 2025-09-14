@@ -54,25 +54,7 @@ const Header = ({ onMenuClick }) => {
 
   // Generate breadcrumbs from current path
   const generateBreadcrumbs = () => {
-    const pathSegments = location.pathname.split('/').filter(Boolean);
-    const breadcrumbs = [{ name: 'Dashboard', href: ROUTES.DASHBOARD }];
-
-    let currentPath = '';
-    pathSegments.forEach((segment, index) => {
-      currentPath += `/${segment}`;
-      if (index === pathSegments.length - 1 && pathSegments.length > 1) {
-        // Don't make the last segment a link
-        breadcrumbs.push({
-          name: segment.charAt(0).toUpperCase() + segment.slice(1),
-        });
-      } else if (pathSegments.length > 1) {
-        breadcrumbs.push({
-          name: segment.charAt(0).toUpperCase() + segment.slice(1),
-          href: currentPath,
-        });
-      }
-    });
-
+    let breadcrumbs = [{ name: 'Dashboard', href: ROUTES.DASHBOARD }];
     return breadcrumbs;
   };
 
@@ -100,10 +82,10 @@ const Header = ({ onMenuClick }) => {
           >
             <div className="flex-shrink-0 flex items-center">
               <div className="h-8 w-8 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">B</span>
+                <span className="text-white font-bold text-lg">Q</span>
               </div>
               <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-white hidden sm:block">
-                Blog Admin
+                Hệ thống quản lý học sinh
               </span>
             </div>
           </Link>

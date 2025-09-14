@@ -110,7 +110,7 @@ const QuizDetail = () => {
       <div className="flex items-center justify-between mb-6">
         <Button variant="outline" onClick={() => navigate('/quizzes')} className="flex items-center">
           <FaArrowLeft className="w-4 h-4 mr-2" />
-          Quay lại
+          Danh sach bài kiểm tra
         </Button>
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Chi tiết bài kiểm tra</h1>
       </div>

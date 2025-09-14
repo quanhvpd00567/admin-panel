@@ -59,7 +59,7 @@ const QuizListV1 = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      {/* Header */}
+      {/* Tiêu đề */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Quản lý bài kiểm tra</h1>
         <Button variant="primary" onClick={() => navigate('/quizzes/create-v1')} className="flex items-center">
@@ -68,12 +68,12 @@ const QuizListV1 = () => {
         </Button>
       </div>
 
-      {/* Filters */}
+      {/* Bộ lọc */}
       <Card className="mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Input Tên */}
+          {/* Tên bài kiểm tra */}
           <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">Tên</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">Tên bài kiểm tra</label>
             <Input
               name="search"
               value={filters.search}
@@ -82,7 +82,7 @@ const QuizListV1 = () => {
             />
           </div>
 
-          {/* Select Lớp */}
+          {/* Lớp */}
           <div className="flex flex-col">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">Lớp</label>
             <Select
@@ -98,7 +98,7 @@ const QuizListV1 = () => {
             </Select>
           </div>
 
-          {/* Select Trạng thái */}
+          {/* Trạng thái */}
           <div className="flex flex-col">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">Trạng thái</label>
             <Select
@@ -113,7 +113,7 @@ const QuizListV1 = () => {
             />
           </div>
 
-          {/* Create From */}
+          {/* Ngày tạo từ */}
           <div className="flex flex-col">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">Ngày tạo từ</label>
             <DatePicker
@@ -128,7 +128,7 @@ const QuizListV1 = () => {
             />
           </div>
 
-          {/* Create To */}
+          {/* Ngày tạo đến */}
           <div className="flex flex-col">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">Ngày tạo đến</label>
             <DatePicker
@@ -147,7 +147,7 @@ const QuizListV1 = () => {
           <Button
             variant="primary"
             className="flex items-center px-6 py-2"
-            onClick={handleSearch} // Trigger search on button click
+            onClick={handleSearch}
           >
             <FaSearch className="w-4 h-4 mr-2" />
             Tìm kiếm
@@ -163,7 +163,7 @@ const QuizListV1 = () => {
         </div>
       </Card>
 
-      {/* Quiz List */}
+      {/* Danh sách bài kiểm tra */}
       <Card>
         <div className="overflow-x-auto">
           {loading ? (
@@ -175,22 +175,22 @@ const QuizListV1 = () => {
               <thead className="bg-gray-100 dark:bg-gray-800">
                 <tr>
                   <th className="border border-gray-300 dark:border-gray-700 px-4 py-3 text-left font-medium text-gray-700 dark:text-gray-300 w-1/3">
-                    Title
+                    Tiêu đề
                   </th>
                   <th className="border border-gray-300 dark:border-gray-700 px-4 py-3 text-left font-medium text-gray-700 dark:text-gray-300 w-1/4">
-                    Subject
+                    Chủ đề
                   </th>
                   <th className="border border-gray-300 dark:border-gray-700 px-4 py-3 text-center font-medium text-gray-700 dark:text-gray-300 w-24 whitespace-nowrap">
-                    Class
+                    Lớp
                   </th>
                   <th className="border border-gray-300 dark:border-gray-700 px-4 py-3 text-center font-medium text-gray-700 dark:text-gray-300 w-44 whitespace-nowrap">
-                    Status
+                    Trạng thái
                   </th>
                   <th className="border border-gray-300 dark:border-gray-700 px-2 py-3 text-left font-medium text-gray-700 dark:text-gray-300 w-40 whitespace-nowrap">
                     Ngày tạo
                   </th>
                   <th className="border border-gray-300 dark:border-gray-700 px-2 py-3 text-center font-medium text-gray-700 dark:text-gray-300 w-32">
-                    Action
+                    Hành động
                   </th>
                 </tr>
               </thead>
@@ -228,8 +228,6 @@ const QuizListV1 = () => {
                     <td className="border border-gray-300 dark:border-gray-700 px-2 py-3 text-center">
                       <div className="flex justify-center space-x-2">
                         <FaEye onClick={() => navigate('/quizzes/' + quiz._id)} className="w-4 h-4 mr-1 cursor-pointer" />
-                        <FaEdit onClick={() => navigate('/quizzes/edit/' + quiz._id)} className="w-4 h-4 mr-1 cursor-pointer" />
-                        <FaTrash className="w-4 h-4 mr-1 cursor-pointer" />
                       </div>
                     </td>
                   </tr>

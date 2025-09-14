@@ -5,8 +5,11 @@ import { FaUserCircle } from 'react-icons/fa';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import { showToast } from '../../../components/ui';
+import { parentAPI } from '../../../services/parentAPI';
 
-const ChildInfoModal = ({ isOpen, onClose, child, isAddNew, onSave }) => {
+const ChildInfoModal = ({ isOpen, onClose, child, isAddNew }) => {
+
+
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
       firstName: '',
@@ -23,7 +26,18 @@ const ChildInfoModal = ({ isOpen, onClose, child, isAddNew, onSave }) => {
 
   // Update form data when `child` changes
   useEffect(() => {
-    if (child) {
+    if (isAddNew) {
+      setIsChangingPassword(false);
+      reset({
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        defaultPassword: 'Abc@12345',
+      });
+    } else if (child) {
       reset({
         firstName: child.firstName || '',
         lastName: child.lastName || '',
@@ -31,21 +45,32 @@ const ChildInfoModal = ({ isOpen, onClose, child, isAddNew, onSave }) => {
         email: child.email || '',
         password: '',
         confirmPassword: '',
-        defaultPassword: 'Abc@12345'
       });
     }
-  }, [child, reset]);
+  }, [isAddNew, child, reset]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (isChangingPassword && data.password !== data.confirmPassword) {
       showToast.error('Mật khẩu và xác nhận mật khẩu không khớp!');
       return;
     }
-    // onSave(data); // Call the onSave function passed as a prop
-    showToast.success('Thông tin đã được cập nhật!');
-    onClose();
-  };
+    let response = null;
+    if (isAddNew) {
+      data.password = data.defaultPassword; // Set default password for new child
+      delete data.confirmPassword;
+      delete data.defaultPassword;
+      response = await parentAPI.addChild(data);
+    } else {
+      response = await parentAPI.updateChild(child._id, data);
+    }
 
+    if (response.success) {
+        showToast.success(isAddNew ? 'Đã thêm con thành công!' : 'Thông tin đã được cập nhật!');
+    } else {
+      showToast.error(response.error);
+    }
+    onClose();
+  }
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="md">
       <form onSubmit={handleSubmit(onSubmit)} className="p-6">
@@ -90,6 +115,8 @@ const ChildInfoModal = ({ isOpen, onClose, child, isAddNew, onSave }) => {
             </label>
             <Input
               {...register('username', { required: 'Tên đăng nhập là bắt buộc' })}
+              readOnly={!isAddNew}
+              disabled={!isAddNew}
               placeholder="Nhập tên đăng nhập"
               error={errors.username?.message}
             />
