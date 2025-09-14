@@ -92,7 +92,7 @@ const StudentAssignedQuizzes = () => {
                     {studentQuiz.quizz.title}
                   </td>
                   <td className="text-center px-6 py-4 whitespace-nowrap">
-                    {studentQuiz.number_of_attempts || 0}
+                    {studentQuiz.number_of_attempts || 0} / {studentQuiz.quizz.maxAttempts === 0 ? '∞' : studentQuiz.quizz.maxAttempts}
                   </td>
                   <td className="text-left px-6 py-4 whitespace-nowrap">
                     <span className='font-mono font-semibold text-lg'>

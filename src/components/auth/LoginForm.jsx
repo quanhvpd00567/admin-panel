@@ -5,6 +5,7 @@ import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
+import { showToast } from '../ui';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +13,7 @@ const LoginForm = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [rootErrors, setRootErrors] = useState(null);
 
   // Get redirect path from location state or default to dashboard
   const from = location.state?.from?.pathname || '/dashboard';
@@ -25,20 +27,22 @@ const LoginForm = () => {
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      email: 'admin@learningms.com',
-      password: 'Admin123!@#',
+      email: '',
+      password: '',
       rememberMe: false,
     },
   });
 
   const onSubmit = async (data, event) => {
-    event?.preventDefault(); // Prevent default form submission
+    // event?.preventDefault(); // Prevent default form submission
     setIsLoading(true);
     clearErrors();
+    // setRootErrors({}); // Clear root errors
     try {
       const result = await login(data.email, data.password, data.rememberMe);
       if (result.success) {
         // Redirect to intended page or dashboard
+        showToast.success('Đăng nhập thành công.');
         navigate(from, { replace: true });
       } else {
         // Handle login errors
@@ -48,18 +52,11 @@ const LoginForm = () => {
             message: result.message,
           });
         } else {
-          setError('root', {
-            type: 'manual',
-            message: result.message || 'Login failed. Please try again.',
-          });
+          showToast.error('Email hoặc mật khẩu không đúng. Vui lòng thử lại.');
         }
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      setError('root', {
-        type: 'manual',
-        message: 'An unexpected error occurred. Please try again.',
-      });
+    } catch {
+      showToast.error('Có lỗi xảy ra. Vui lòng thử lại.');
     } finally {
       setIsLoading(false);
     }
@@ -78,17 +75,8 @@ const LoginForm = () => {
             <FaUser className="h-6 w-6 text-white" />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Sign in to your account
+            Đăng nhập
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Or{' '}
-            <Link
-              to="/register"
-              className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
-            >
-              create a new account
-            </Link>
-          </p>
         </div>
 
         {/* Login Form */}
@@ -100,16 +88,12 @@ const LoginForm = () => {
                 id="email"
                 type="email"
                 autoComplete="email"
-                placeholder="Email address"
+                placeholder="Email hoặc tên đăng nhập"
                 icon={FaUser}
                 variant="outlined"
                 error={errors.email?.message}
                 {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address',
-                  },
+                  required: 'Vui lòng nhập email hoặc tên đăng nhập',
                 })}
               />
             </div>
@@ -121,15 +105,15 @@ const LoginForm = () => {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
-                  placeholder="Password"
+                  placeholder="Mật khẩu"
                   icon={FaLock}
                   variant="outlined"
                   error={errors.password?.message}
                   {...register('password', {
-                    required: 'Password is required',
+                    required: 'Vui lòng nhập mật khẩu',
                     minLength: {
                       value: 6,
-                      message: 'Password must be at least 6 characters',
+                      message: 'Mật khẩu phải có ít nhất 6 ký tự',
                     },
                   })}
                 />
@@ -161,7 +145,7 @@ const LoginForm = () => {
                 htmlFor="rememberMe"
                 className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
               >
-                Remember me
+                Ghi nhớ tài khoản
               </label>
             </div>
 
@@ -170,7 +154,7 @@ const LoginForm = () => {
                 to="/forgot-password"
                 className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
               >
-                Forgot your password?
+                Quên mật khẩu?
               </Link>
             </div>
           </div>
@@ -194,26 +178,8 @@ const LoginForm = () => {
               disabled={isSubmitting || isLoading}
               loading={isSubmitting || isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
             </Button>
-          </div>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-              Demo Credentials:
-            </h3>
-            <div className="space-y-1 text-xs text-gray-600 dark:text-gray-400">
-              <div>
-                <strong>Admin:</strong> admin@learningms.com / admin123
-              </div>
-              <div>
-                <strong>Manager:</strong> manager@learningms.com / manager123
-              </div>
-              <div>
-                <strong>User:</strong> user@learningms.com / user123
-              </div>
-            </div>
           </div>
         </form>
       </div>

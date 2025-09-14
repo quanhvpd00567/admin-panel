@@ -56,11 +56,11 @@ export const QUESTION_VALIDATION = {
 // Answer initialization templates
 export const ANSWER_TEMPLATES = {
   true_false: [
-    { text: 'True', isCorrect: false },
-    { text: 'False', isCorrect: false }
+    { text: 'Đúng', isCorrect: true },
+    { text: 'Sai', isCorrect: false }
   ],
   multiple_choice: [
-    { text: '', isCorrect: false },
+    { text: '', isCorrect: true },
     { text: '', isCorrect: false }
   ],
   single_choice: [

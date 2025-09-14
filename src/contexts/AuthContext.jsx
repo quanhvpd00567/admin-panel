@@ -25,6 +25,8 @@ import {
   getTokenErrorMessage,
 } from '../utils/authUtils';
 import { authAPI } from '../services/authAPI';
+import { useNavigate } from 'react-router-dom';
+import { showToast } from '../components/ui';
 
 // Create AuthContext
 const AuthContext = createContext(undefined);
@@ -48,6 +50,7 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Token storage keys
   const TOKEN_KEY = 'blog_admin_token';
@@ -290,9 +293,7 @@ export const AuthProvider = ({ children }) => {
       storeAuthData(authToken, null, userData, rememberMe);
 
       return { success: true, user: userData };
-    } catch (error) {
-      console.error('Login error:', error);
-
+    } catch {
       return {
         success: false,
         message: 'An unexpected error occurred. Please try again.',
@@ -331,10 +332,14 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       if (token) {
-        await authAPI.logout();
+       const response = await authAPI.logout();
+        if (response.success) {
+          showToast.success('Thoat đăng nhập thành công');
+          navigate('/login');
+        }
       }
-    } catch (error) {
-      console.error('Logout error:', error);
+    } catch {
+      showToast.error('Đã xảy ra lỗi khi đăng xuất. Vui lòng thử lại.');
     } finally {
       clearAuthData();
     }

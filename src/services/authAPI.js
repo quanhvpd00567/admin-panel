@@ -25,8 +25,6 @@ export const authAPI = {
    */
   async login(email, password) {
     try {
-      console.log('Attempting login with:', { email, password: '***' });
-      
       const response = await authApiClient.post('/auth/admin/login', {
         email,
         password,
@@ -62,10 +60,6 @@ export const authAPI = {
         },
       };
     } catch (error) {
-      console.error('Login error:', error);
-      console.error('Error response:', error.response?.data);
-      console.error('Error status:', error.response?.status);
-      
       const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
       
       return {
@@ -95,13 +89,10 @@ export const authAPI = {
         message: 'Logged out successfully',
       };
     } catch (error) {
-      console.error('Logout error:', error);
-      
       // Even if logout fails on server, clear local storage
       localStorage.removeItem('blog_admin_token');
       localStorage.removeItem('blog_admin_refresh');
       delete authApiClient.defaults.headers.common.Authorization;
-
       return {
         success: true,
         message: 'Logged out successfully',

@@ -3,8 +3,8 @@
  * Top navigation bar with user menu, notifications, and theme toggle
  */
 
-import { useState, Fragment } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useState, Fragment, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import {
   FaBars,
@@ -19,12 +19,13 @@ import clsx from 'clsx';
 import { ROUTES } from '../../constants/routes.js';
 import ThemeToggle from '../ui/ThemeToggle.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-import { authAPI } from '../../services/authAPI.js';
+import Logo from "../../assets/react.svg";
 
 const Header = ({ onMenuClick }) => {
   const location = useLocation();
   const { user, logout, isAuthenticated } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
 
   // Use real user data from AuthContext - only show if authenticated
   const currentUser = isAuthenticated && user ? {
@@ -75,7 +76,9 @@ const Header = ({ onMenuClick }) => {
             <FaBars className="h-6 w-6" aria-hidden="true" />
           </button>
 
-          {/* Logo */}
+          {/* show Logo */}
+          <img src={Logo} alt="Logo" />
+
           <Link
             to={ROUTES.DASHBOARD}
             className="flex items-center ml-4 lg:ml-0"

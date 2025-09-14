@@ -78,7 +78,11 @@ export const router = createBrowserRouter([
       // Public routes
       {
         index: true,
-        element: <Home />,
+        element: (
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'ui-preview',

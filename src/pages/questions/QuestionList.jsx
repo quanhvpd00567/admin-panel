@@ -368,10 +368,6 @@ const QuestionList = () => {
                   <FaSearch className="mr-1" />
                   Tìm kiếm
                 </Button>
-                <Button variant="outline" onClick={loadQuestions} className="flex-1 h-full">
-                  <FaSync className="mr-1" />
-                  Làm mới
-                </Button>
               </div>
             </div>
           </div>

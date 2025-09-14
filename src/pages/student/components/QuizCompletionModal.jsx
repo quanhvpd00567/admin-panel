@@ -1,17 +1,9 @@
 import { FaTrophy, FaSmileBeam, FaStar, FaCheckCircle } from "react-icons/fa";
 import Button from "../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const QuizCompletionModal = ({ quiz, isOpen, onClose, resultData }) => {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (isOpen) {
-      const audio = new Audio('/assets/sounds/congratulations.mp3');
-      audio.play();
-    }
-  }, [isOpen]);
-
   if (!isOpen) return null;
 
   return (
@@ -35,6 +27,7 @@ const QuizCompletionModal = ({ quiz, isOpen, onClose, resultData }) => {
         <div className="relative z-10 text-center">
           <FaTrophy className="text-7xl text-yellow-500 mx-auto mb-4 animate-bounce" />
           <h3 className="text-4xl font-extrabold text-yellow-800 mb-4">Chúc mừng! 🎉</h3>
+        
           <p className="text-yellow-700 mb-6 leading-relaxed text-lg">
             Bạn đã hoàn thành bài kiểm tra một cách xuất sắc! Hãy tiếp tục cố gắng và đạt được nhiều thành tích hơn nữa.
           </p>

@@ -1,7 +1,6 @@
 import { FaTree, FaSun, FaFeather, FaHeart, FaExclamationTriangle } from "react-icons/fa"
 import Button from "../../../components/ui/Button"
 
-
 const QuizSubmitModal = ({ stats, onCancel, onConfirm }) => {
   return (
     <div className="text-center relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-3xl border-1 border-green-200">

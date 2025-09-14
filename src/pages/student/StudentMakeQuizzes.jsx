@@ -221,7 +221,7 @@ const StudentMakeQuizzes = () => {
                   onToggleFlag={toggleFlag}
                   onPrevious={goToPrevious}
                   onNext={goToNext}
-                   isDisabledSubmit={isDisabledSubmit}
+                  isDisabledSubmit={isDisabledSubmit}
                 />
               )}
             </div>

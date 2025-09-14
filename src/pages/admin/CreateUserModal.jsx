@@ -150,7 +150,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Profile Picture
               </label>
               <input
@@ -176,7 +176,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
           {/* Basic Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 First Name *
               </label>
               <Input
@@ -191,7 +191,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Last Name *
               </label>
               <Input
@@ -209,7 +209,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
           {/* Contact Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Email Address *
               </label>
               <Input
@@ -228,7 +228,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Username
               </label>
               <Input
@@ -247,7 +247,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
 
           {/* Phone Number */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
               Phone Number
             </label>
             <Input
@@ -266,7 +266,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
           {/* Password */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Password *
               </label>
               <Input
@@ -286,7 +286,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Confirm Password *
               </label>
               <Input
@@ -305,7 +305,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
           {/* Role and Status */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Role *
               </label>
               <Select
@@ -321,7 +321,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
                 Status *
               </label>
               <Select
@@ -339,7 +339,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
 
           {/* Email Verification */}
           <div>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-2 text-left">
               <input
                 type="checkbox"
                 {...register('isEmailVerified')}
@@ -353,7 +353,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
 
           {/* Department */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
               Department
             </label>
             <Input
@@ -368,7 +368,7 @@ const CreateUserModal = ({ onClose, onSuccess }) => {
 
           {/* Bio */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
               Bio
             </label>
             <TextArea
