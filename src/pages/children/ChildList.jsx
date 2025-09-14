@@ -4,20 +4,19 @@ import Card from '../../components/ui/Card';
 import { FaEye } from 'react-icons/fa';
 import { LoadingSpinner, showToast } from '../../components/ui';
 import ChildInfoModal from './components/ChildInfoModal'; // Import ChildInfoModal
+import { useNavigate } from 'react-router-dom';
 
 const ChildList = () => {
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigator = useNavigate();
   const [selectedChild, setSelectedChild] = useState(null); // State for selected child
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
   const [isAddingChild, setIsAddingChild] = useState(false); // State for adding new child
-  const calledRef = useRef(false);
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     const fetchChildren = async () => {
-      // if (calledRef.current) return;
-      // calledRef.current = true;
       try {
         setLoading(true);
         const response = await parentAPI.getChildren();
@@ -141,6 +140,14 @@ const ChildList = () => {
                       >
                         <FaEye className="inline w-4 h-4 mr-2" />
                         Xem
+                      </button>
+                      {/* add button view result  */}
+                      <button
+                        onClick={() => navigator(`/children/${child._id}/results`)} // Navigate to results page
+                        className="ml-4 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-all duration-300 shadow-md flex items-center justify-center"
+                      >
+                        <FaEye className="inline w-4 h-4 mr-2" />
+                        Kết quả
                       </button>
                     </td>
                   </tr>

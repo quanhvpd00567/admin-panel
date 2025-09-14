@@ -55,6 +55,7 @@ import QuestionDetail from './pages/questions/QuestionDetail';
 
 // Import child management pages (Phase 10)
 import ChildList from './pages/children/ChildList';
+import ChildResults from './pages/children/ChildResults';
 
 // Import AI pages
 import { AiDashboard, AiGenerateProcess} from './pages/ai';
@@ -413,6 +414,14 @@ export const router = createBrowserRouter([
               </ManagerRoute>
             ),
           },
+          {
+            path: ':id/results',
+            element: (
+              <ProtectedRoute>
+                <ChildResults />
+              </ProtectedRoute>
+            ),
+          }
         ],
       },
 

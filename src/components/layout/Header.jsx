@@ -19,10 +19,8 @@ import clsx from 'clsx';
 import { ROUTES } from '../../constants/routes.js';
 import ThemeToggle from '../ui/ThemeToggle.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-import Logo from "../../assets/react.svg";
 
 const Header = ({ onMenuClick }) => {
-  const location = useLocation();
   const { user, logout, isAuthenticated } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -39,8 +37,6 @@ const Header = ({ onMenuClick }) => {
     avatar: null,
     role: 'Guest',
   };
-
-  console.log('🔍 Header user data:', { isAuthenticated, user, currentUser });
 
   const handleLogout = async () => {
     try {
@@ -75,9 +71,6 @@ const Header = ({ onMenuClick }) => {
             <span className="sr-only">Open main menu</span>
             <FaBars className="h-6 w-6" aria-hidden="true" />
           </button>
-
-          {/* show Logo */}
-          <img src={Logo} alt="Logo" />
 
           <Link
             to={ROUTES.DASHBOARD}

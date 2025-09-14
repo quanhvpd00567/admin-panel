@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { makeQuizAPI } from '../../services/quizzes/index';
 import Card from '../../components/ui/Card';
@@ -13,7 +13,6 @@ const StudentQuizResults = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [quizResults, setQuizResults] = useState(null);
-  const calledRef = useRef(false);
   const [questions, setQuestions] = useState([]);
   const [totalPoints, setTotalPoints] = useState(0);
   const [expandedQuestion, setExpandedQuestion] = useState(null);
@@ -23,8 +22,6 @@ const StudentQuizResults = () => {
   const [listQuestionUnattempted, setListQuestionUnattempted] = useState([]);
   useEffect(() => {
     const fetchQuizResults = async () => {
-      if (calledRef.current) return;
-      calledRef.current = true;
       try {
         setLoading(true);
         const response = await makeQuizAPI.getHistory(id);

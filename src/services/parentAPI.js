@@ -53,6 +53,30 @@ export const parentAPI = {
         data: null
       };
     }
+  },
+
+  getChildResults:  async (childId, params) => {
+    try {
+      const response = await apiClient.get(`/children/${childId}/results`, { params });
+      return {
+        success: true,
+        data: response.data.data.results,
+        childName: response.data.data.childName,
+        pagination: {
+          total: response.data.data.total,
+          limit: response.data.data.limit,
+          page: response.data.data.page,
+          totalPage: response.data.data.pages,
+        },
+        error: null
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message || 'Failed to fetch child results',
+        data: null
+      };
+    }
   }
 };
   
