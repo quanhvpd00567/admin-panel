@@ -216,7 +216,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <span className="text-white font-bold text-lg">B</span>
               </div>
               <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-white">
-                Hệ thống quản lý học sinh
+                Hệ thống quản lý học tập
               </span>
             </div>
           </div>

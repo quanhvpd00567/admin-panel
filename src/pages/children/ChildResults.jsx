@@ -29,7 +29,11 @@ const ChildResults = () => {
         if (!child) {
           setChild({ fullName: resultsResponse.childName });
         }
-        setPagination(resultsResponse.pagination || { page: 1, totalPages: 1, total: 0, limit: 5 });
+        setPagination(prev => ({
+          ...prev,
+          total: resultsResponse.pagination.total,
+          totalPages: resultsResponse.pagination.totalPages,
+        }));
       } else {
         showToast.error('Không thể lấy kết quả học tập.');
       }
@@ -52,6 +56,8 @@ const ChildResults = () => {
   }
 
   const handleSearch = () => {
+    console.log(1212);
+    
     fetchChildResults();
   }
 

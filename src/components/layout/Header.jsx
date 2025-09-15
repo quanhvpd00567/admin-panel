@@ -81,7 +81,7 @@ const Header = ({ onMenuClick }) => {
                 <span className="text-white font-bold text-lg">Q</span>
               </div>
               <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-white hidden sm:block">
-                Hệ thống quản lý học sinh
+                Hệ thống quản lý học tập
               </span>
             </div>
           </Link>
