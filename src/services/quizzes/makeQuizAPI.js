@@ -24,7 +24,6 @@ export const makeQuizAPI = {
         };
       }
     } catch (error) {
-      console.error('Get quizzes error:', error);
       return {
         success: false,
         error: error.response?.data?.message || 'Network error occurred',
@@ -32,9 +31,9 @@ export const makeQuizAPI = {
     }
   },
 
-  async getHistory(historyId) {
+  async getHistory(historyId, params = {}) {
     try {
-     const response = await apiClient.get(ENDPOINTS.GET_HISTORY(historyId));
+     const response = await apiClient.get(ENDPOINTS.GET_HISTORY(historyId), { params });
       if (response.data.status === 'success') {
         return {
           success: true,

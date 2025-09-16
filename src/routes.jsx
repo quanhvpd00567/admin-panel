@@ -56,9 +56,10 @@ import QuestionDetail from './pages/questions/QuestionDetail';
 // Import child management pages (Phase 10)
 import ChildList from './pages/children/ChildList';
 import ChildResults from './pages/children/ChildResults';
+import StudentQuizResults from './pages/student/StudentQuizResults';
 
 // Import AI pages
-import { AiDashboard, AiGenerateProcess} from './pages/ai';
+import { AiDashboard, AiGenerateProcess } from './pages/ai';
 
 // Import route guards
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -361,7 +362,7 @@ export const router = createBrowserRouter([
 
       // Student routes
       ...studentRoutes,
-  
+
       // Quiz Results routes
       {
         path: 'questions',
@@ -421,7 +422,15 @@ export const router = createBrowserRouter([
                 <ChildResults />
               </ProtectedRoute>
             ),
-          }
+          },
+          {
+            path: 'quizzes/:id/results',
+            element: (
+              <ProtectedRoute>
+                <StudentQuizResults />
+              </ProtectedRoute>
+            ),
+          },
         ],
       },
 

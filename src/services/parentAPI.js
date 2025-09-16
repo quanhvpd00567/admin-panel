@@ -66,7 +66,7 @@ export const parentAPI = {
           total: response.data.data.total,
           limit: response.data.data.limit,
           page: response.data.data.page,
-          totalPage: response.data.data.pages,
+          totalPages: response.data.data.totalPages,
         },
         error: null
       };

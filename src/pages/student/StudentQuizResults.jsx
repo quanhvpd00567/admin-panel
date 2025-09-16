@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { makeQuizAPI } from '../../services/quizzes/index';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -9,6 +9,9 @@ import { showToast } from '../../components/ui';
 import { format } from 'date-fns';
 
 const StudentQuizResults = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const childId = searchParams.get("child_id");
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,7 @@ const StudentQuizResults = () => {
     const fetchQuizResults = async () => {
       try {
         setLoading(true);
-        const response = await makeQuizAPI.getHistory(id);
+        const response = await makeQuizAPI.getHistory(id, { child_id: childId });
         if (response.success) {
           setQuizResults(response.data);
           setQuestions(response.data.student_quiz.quizz.questions || []);
@@ -96,7 +99,19 @@ const StudentQuizResults = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto p-6">
-        <h1 className="text-4xl font-extrabold text-center text-indigo-800 mb-8">Kết quả bài làm</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-4xl font-extrabold text-center text-indigo-800 mb-8">Kết quả bài làm</h1>
+          {childId && (
+            <Button
+              variant="secondary"
+              onClick={() => navigate(`/children/${childId}/results`)}
+              className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all duration-300 shadow-md"
+            >
+              <FaArrowLeft className="w-4 h-4 mr-2" />
+              Quay lại
+            </Button>
+          )}
+        </div>
 
         {/* Thông tin cơ bản */}
         <Card className="mb-8 bg-white shadow-lg rounded-xl p-6">

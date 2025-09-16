@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import { parentAPI } from '../../services/parentAPI';
 import Card from '../../components/ui/Card';
 import { LoadingSpinner, showToast } from '../../components/ui';
@@ -7,12 +7,14 @@ import Pagination from '../../components/ui/Pagination';
 import { FaEye, FaSearch, FaTimes } from 'react-icons/fa';
 
 const ChildResults = () => {
+  const navigator = useNavigate();
   const { id } = useParams();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [child, setChild] = useState(null);
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0, limit: 5 });
+  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0, limit: 10 });
   const [searchTerm, setSearchTerm] = useState('');
+  const paramUrl = new URLSearchParams({ child_id: id });
 
   const fetchChildResults = async () => {
     try {
@@ -46,6 +48,8 @@ const ChildResults = () => {
 
   useEffect(() => {
     fetchChildResults();
+    console.log(pagination);
+
   }, [id, pagination.page, pagination.limit]);
 
   const handlePageChange = (newPage) => {
@@ -56,8 +60,6 @@ const ChildResults = () => {
   }
 
   const handleSearch = () => {
-    console.log(1212);
-    
     fetchChildResults();
   }
 
@@ -125,6 +127,9 @@ const ChildResults = () => {
                     Bài kiểm tra
                   </th>
                   <th className="text-center px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider w-28">
+                    Số lần làm
+                  </th>
+                  <th className="text-center px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider w-28">
                     Điểm
                   </th>
                   <th className="text-center px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider w-32">
@@ -149,6 +154,9 @@ const ChildResults = () => {
                     </td>
                     <td className="line-clamp-1 align-middle text-left px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-300">
                       {result.quizz?.title || 'N/A'}
+                    </td>
+                    <td className="text-center px-4 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      {result.number_of_attempts || 0} / {result.quizz?.maxAttempts}
                     </td>
                     <td className="text-center px-4 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                       {result.last_history?.total_score || 0} / {result.quizz.totalPoints || 0}
@@ -183,12 +191,16 @@ const ChildResults = () => {
                       )}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                      <button
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 shadow-md flex items-center justify-center"
-                      >
-                        <FaEye className="w-4 h-4 mr-2" />
-                        Xem
-                      </button>
+                      {result.last_history?._id && (
+                        <button
+                          onClick={() => navigator(`/children/quizzes/${result.last_history?._id}/results?${paramUrl.toString()}`)}
+                          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 shadow-md flex items-center justify-center"
+                        >
+                          <FaEye className="w-4 h-4 mr-2" />
+                          Xem
+                          {/* {`/children/${result.last_history?._id}/results?${paramUrl.toString()}`} */}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
